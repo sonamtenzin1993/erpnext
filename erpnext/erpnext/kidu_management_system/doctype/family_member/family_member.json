@@ -1,0 +1,37 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-09-12 15:14:36.582030",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "father_name",
+  "father_cid"
+ ],
+ "fields": [
+  {
+   "fieldname": "father_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Father Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "father_cid",
+   "fieldtype": "Data",
+   "label": "Father CID"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-09-12 15:16:07.401815",
+ "modified_by": "Administrator",
+ "module": "Kidu Management System",
+ "name": "Family Member",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
