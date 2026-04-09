@@ -1,0 +1,63 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "hash",
+ "creation": "2025-11-03 13:03:26.467618",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "kidu_recipient_section",
+  "cid",
+  "full_name",
+  "dzongkhag",
+  "land_size_acres"
+ ],
+ "fields": [
+  {
+   "fieldname": "kidu_recipient_section",
+   "fieldtype": "Section Break",
+   "label": "Kidu Recipient"
+  },
+  {
+   "fieldname": "cid",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "CID"
+  },
+  {
+   "fieldname": "dzongkhag",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Dzongkhag",
+   "reqd": 1
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "land_size_acres",
+   "fieldtype": "Float",
+   "label": "Land Size (Acres)",
+   "precision": "4"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-03-12 17:59:55.659669",
+ "modified_by": "Administrator",
+ "module": "Kidu Management",
+ "name": "Kidu Recipient",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

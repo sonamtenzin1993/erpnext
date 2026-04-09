@@ -1,0 +1,230 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-29 13:18:50.431014",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "amended_from",
+  "kidu_registration_no",
+  "cid",
+  "applicant_name",
+  "dob",
+  "gender",
+  "contact_no",
+  "occupation",
+  "column_break_mlcb",
+  "dzongkhag",
+  "gewog",
+  "village",
+  "house_no",
+  "thram_no",
+  "kidu_type",
+  "kidu_sub_type",
+  "application",
+  "profiling_details_section",
+  "appeal_reason",
+  "profile_date",
+  "appeal_place",
+  "land_size",
+  "brief_background",
+  "photo",
+  "section_break_xwut",
+  "family_member",
+  "fetch_land_details",
+  "family_land_detail"
+ ],
+ "fields": [
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Kidu",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "kidu_registration_no",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Kidu Registration No"
+  },
+  {
+   "fieldname": "applicant_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Applicant Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cid",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "CID",
+   "reqd": 1
+  },
+  {
+   "fieldname": "dob",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Dob",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Link",
+   "label": "Gender",
+   "options": "Gender",
+   "reqd": 1
+  },
+  {
+   "fieldname": "contact_no",
+   "fieldtype": "Phone",
+   "label": "Contact No",
+   "reqd": 1
+  },
+  {
+   "fieldname": "occupation",
+   "fieldtype": "Link",
+   "label": "Occupation",
+   "options": "Occupation"
+  },
+  {
+   "fieldname": "dzongkhag",
+   "fieldtype": "Data",
+   "label": "Dzongkhag"
+  },
+  {
+   "fieldname": "gewog",
+   "fieldtype": "Data",
+   "label": "Gewog"
+  },
+  {
+   "fieldname": "village",
+   "fieldtype": "Data",
+   "label": "Village"
+  },
+  {
+   "fieldname": "kidu_type",
+   "fieldtype": "Link",
+   "label": "Kidu Type",
+   "options": "Kidu Type Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "kidu_sub_type",
+   "fieldtype": "Link",
+   "label": "Kidu Sub Type",
+   "options": "Kidu Sub Type"
+  },
+  {
+   "fieldname": "application",
+   "fieldtype": "Attach",
+   "label": "Application",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_mlcb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_xwut",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "family_member",
+   "fieldtype": "Table",
+   "label": "Family Member",
+   "options": "Family"
+  },
+  {
+   "fieldname": "thram_no",
+   "fieldtype": "Data",
+   "label": "Thram No"
+  },
+  {
+   "fieldname": "house_no",
+   "fieldtype": "Data",
+   "label": "House No"
+  },
+  {
+   "fieldname": "profiling_details_section",
+   "fieldtype": "Section Break",
+   "label": "Profiling Details"
+  },
+  {
+   "fieldname": "appeal_reason",
+   "fieldtype": "Data",
+   "label": "Appeal Reason"
+  },
+  {
+   "fieldname": "profile_date",
+   "fieldtype": "Date",
+   "label": "Profile Date"
+  },
+  {
+   "fieldname": "appeal_place",
+   "fieldtype": "Data",
+   "label": "Appeal Place"
+  },
+  {
+   "fieldname": "brief_background",
+   "fieldtype": "Text Editor",
+   "label": "Brief Background"
+  },
+  {
+   "fieldname": "land_size",
+   "fieldtype": "Data",
+   "label": "Land Size"
+  },
+  {
+   "fieldname": "family_land_detail",
+   "fieldtype": "Table",
+   "label": "Family Land Detail",
+   "options": "Family Land Detail"
+  },
+  {
+   "fieldname": "photo",
+   "fieldtype": "Attach Image",
+   "label": "Photo"
+  },
+  {
+   "fieldname": "fetch_land_details",
+   "fieldtype": "Button",
+   "label": "Fetch Land details"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-10-24 12:37:02.470781",
+ "modified_by": "Administrator",
+ "module": "Kidu Management",
+ "name": "Kidu",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

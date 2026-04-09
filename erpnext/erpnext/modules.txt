@@ -18,4 +18,4 @@ Communication
 Telephony
 Bulk Transaction
 Subcontracting
-Kidu Management System
+Kidu Management

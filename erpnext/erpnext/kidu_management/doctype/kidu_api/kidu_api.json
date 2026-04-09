@@ -1,0 +1,133 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-05 15:29:13.710998",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "vehicle_tab",
+  "section_break_hzsu",
+  "cid",
+  "search",
+  "section_break_wmju",
+  "vehicle_detail",
+  "tab_break_jyzf",
+  "section_break_jxyc",
+  "shareholding_tab",
+  "tab_break_tbkl",
+  "section_break_bcrc",
+  "family_land_detail_tab",
+  "income_tax_tab",
+  "income_tab",
+  "propert_tab",
+  "property_tax_tbl"
+ ],
+ "fields": [
+  {
+   "fieldname": "cid",
+   "fieldtype": "Data",
+   "label": "CID"
+  },
+  {
+   "fieldname": "search",
+   "fieldtype": "Button",
+   "label": "Search"
+  },
+  {
+   "fieldname": "section_break_wmju",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "vehicle_detail",
+   "fieldtype": "Table",
+   "label": "Vehicle Detail",
+   "options": "Vehicle Detail"
+  },
+  {
+   "fieldname": "section_break_jxyc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "shareholding_tab",
+   "fieldtype": "Table",
+   "label": "Shareholding",
+   "options": "Shareholding"
+  },
+  {
+   "fieldname": "section_break_bcrc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "family_land_detail_tab",
+   "fieldtype": "Table",
+   "label": "Family Land Detail",
+   "options": "Family Land Detail"
+  },
+  {
+   "fieldname": "vehicle_tab",
+   "fieldtype": "Tab Break",
+   "label": "Vehicle"
+  },
+  {
+   "fieldname": "tab_break_tbkl",
+   "fieldtype": "Tab Break",
+   "label": "Family Land Detail",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tab_break_jyzf",
+   "fieldtype": "Tab Break",
+   "label": "Shareholding",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_hzsu",
+   "fieldtype": "Section Break",
+   "read_only": 1
+  },
+  {
+   "fieldname": "income_tax_tab",
+   "fieldtype": "Tab Break",
+   "label": "Income Tax"
+  },
+  {
+   "fieldname": "income_tab",
+   "fieldtype": "Table",
+   "options": "Income"
+  },
+  {
+   "fieldname": "propert_tab",
+   "fieldtype": "Tab Break",
+   "label": "Property Tax"
+  },
+  {
+   "fieldname": "property_tax_tbl",
+   "fieldtype": "Table",
+   "options": "property"
+  }
+ ],
+ "hide_toolbar": 1,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-12-09 15:15:48.230637",
+ "modified_by": "Administrator",
+ "module": "Kidu Management",
+ "name": "Kidu API",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

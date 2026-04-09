@@ -1,0 +1,66 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-09 12:51:19.730016",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "building_type",
+  "location",
+  "rental_income",
+  "tax_paid",
+  "year",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "building_type",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Building Type"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Location"
+  },
+  {
+   "fieldname": "rental_income",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Rental Income"
+  },
+  {
+   "fieldname": "tax_paid",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Tax Paid"
+  },
+  {
+   "fieldname": "year",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Year"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Status"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-12-09 12:55:24.734406",
+ "modified_by": "Administrator",
+ "module": "Kidu Management",
+ "name": "Income",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

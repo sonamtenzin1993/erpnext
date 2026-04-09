@@ -1,0 +1,200 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-28 14:38:33.009150",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_16ef",
+  "amended_from",
+  "registration_no",
+  "kidu_type",
+  "kidu_sub_type",
+  "application_channel",
+  "rc",
+  "registration_date",
+  "application_mode",
+  "cid",
+  "full_name",
+  "dob",
+  "contact_no",
+  "emergency_contact_no",
+  "gender",
+  "dzongkhag",
+  "gewog",
+  "village",
+  "application",
+  "member"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_16ef",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Kidu Registration",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "registration_no",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "in_standard_filter": 1,
+   "label": "Registration No"
+  },
+  {
+   "fieldname": "kidu_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Kidu Type",
+   "options": "Kidu Type Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "registration_date",
+   "fieldtype": "Date",
+   "label": "Registration Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "application_mode",
+   "fieldtype": "Link",
+   "label": "Application Mode",
+   "options": "Application Mode",
+   "reqd": 1
+  },
+  {
+   "fieldname": "member",
+   "fieldtype": "Table",
+   "label": "Kidu Applicants",
+   "options": "Member"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "cid",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "CID"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Full Name"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "dob",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Dob"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "gender",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Gender",
+   "options": "Gender"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "dzongkhag",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Dzongkhag"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "gewog",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Gewog"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "village",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Village"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "application",
+   "fieldtype": "Attach",
+   "label": "Application"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "contact_no",
+   "fieldtype": "Phone",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Contact No",
+   "reqd": 1
+  },
+  {
+   "fieldname": "kidu_sub_type",
+   "fieldtype": "Link",
+   "label": "Kidu Sub Type",
+   "options": "Kidu Sub Type"
+  },
+  {
+   "fieldname": "application_channel",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Application Channel",
+   "options": "Application Channel"
+  },
+  {
+   "fieldname": "rc",
+   "fieldtype": "Data",
+   "label": "RC"
+  },
+  {
+   "allow_on_submit": 1,
+   "fetch_if_empty": 1,
+   "fieldname": "emergency_contact_no",
+   "fieldtype": "Phone",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Emergency Contact No"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-09 10:56:58.535477",
+ "modified_by": "Administrator",
+ "module": "Kidu Management",
+ "name": "Kidu Registration",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

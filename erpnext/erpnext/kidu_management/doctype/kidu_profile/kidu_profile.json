@@ -1,0 +1,239 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-29 09:33:06.525284",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_wfan",
+  "amended_from",
+  "registration_no",
+  "application_mode",
+  "cid",
+  "full_name",
+  "dob",
+  "contact_no",
+  "emergency_contact_no",
+  "dzongkhag",
+  "gewog",
+  "village",
+  "kidu_type",
+  "rc",
+  "kidu_sub_type",
+  "application_channel",
+  "gender",
+  "application",
+  "appeal_reason",
+  "profile_date",
+  "land_size",
+  "column_break_njez",
+  "photo",
+  "section_break_otrr",
+  "brief_background",
+  "ground_for_decision",
+  "member"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_wfan",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Kidu Profile",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "profile_date",
+   "fieldtype": "Date",
+   "label": "Profile Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "land_size",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Land Size"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "brief_background",
+   "fieldtype": "Text Editor",
+   "label": "Brief Background",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cid",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "CID",
+   "no_copy": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Full Name",
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "dob",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Dob",
+   "read_only": 1
+  },
+  {
+   "fieldname": "application_mode",
+   "fieldtype": "Link",
+   "label": "Application Mode",
+   "options": "Application Mode",
+   "read_only": 1
+  },
+  {
+   "fieldname": "kidu_type",
+   "fieldtype": "Link",
+   "label": "Kidu Type",
+   "options": "Kidu Type Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "gewog",
+   "fieldtype": "Data",
+   "label": "Gewog",
+   "read_only": 1
+  },
+  {
+   "fieldname": "village",
+   "fieldtype": "Data",
+   "label": "Village",
+   "read_only": 1
+  },
+  {
+   "fieldname": "registration_no",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Registration No",
+   "options": "Kidu Registration",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Link",
+   "label": "Gender",
+   "options": "Gender",
+   "read_only": 1
+  },
+  {
+   "fieldname": "dzongkhag",
+   "fieldtype": "Data",
+   "label": "Dzongkhag",
+   "read_only": 1
+  },
+  {
+   "fieldname": "appeal_reason",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Appeal Reason",
+   "reqd": 1
+  },
+  {
+   "fieldname": "application",
+   "fieldtype": "Attach",
+   "label": "Application",
+   "read_only": 1
+  },
+  {
+   "fieldname": "member",
+   "fieldtype": "Table",
+   "label": "Kidu Member",
+   "options": "Member",
+   "read_only": 1
+  },
+  {
+   "fieldname": "contact_no",
+   "fieldtype": "Phone",
+   "label": "Contact No",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "photo",
+   "fieldtype": "Attach Image",
+   "label": "Photo"
+  },
+  {
+   "fieldname": "column_break_njez",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_otrr",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "kidu_sub_type",
+   "fieldtype": "Link",
+   "label": "Kidu Sub Type",
+   "options": "Kidu Sub Type"
+  },
+  {
+   "fieldname": "emergency_contact_no",
+   "fieldtype": "Phone",
+   "label": "Emergency Contact No"
+  },
+  {
+   "fieldname": "application_channel",
+   "fieldtype": "Link",
+   "label": "Application Channel",
+   "options": "Application Channel"
+  },
+  {
+   "fieldname": "rc",
+   "fieldtype": "Data",
+   "label": "RC"
+  },
+  {
+   "fieldname": "ground_for_decision",
+   "fieldtype": "Text",
+   "label": "Ground for Decision"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-09 11:13:59.328895",
+ "modified_by": "Administrator",
+ "module": "Kidu Management",
+ "name": "Kidu Profile",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
