@@ -1,5 +1,3 @@
-# Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
-# For license information, please see license.txt
 
 import frappe
 from frappe.model.document import Document
@@ -14,110 +12,72 @@ class Kasho(Document):
 
     if TYPE_CHECKING:
         from erpnext.kidu_management.doctype.kidu_recipient.kidu_recipient import KiduRecipient
+        from erpnext.leadership_archival.doctype.award_and_appointment.award_and_appointment import AwardandAppointment
         from frappe.types import DF
 
+        agency: DF.Link | None
         amended_from: DF.Link | None
+        awardappointment: DF.Table[AwardandAppointment]
         document_type: DF.Link
-        dzongkhag: DF.Link
+        dzongkhag: DF.Link | None
         issue_date: DF.Date
-        kasho: DF.Attach
+        kasho: DF.Attach | None
         kasho_no: DF.Data | None
         kasho_type: DF.Link
         kidu_recipient: DF.Table[KiduRecipient]
+        medal_title: DF.Link | None
+        recipient_type: DF.Link
         registration_no: DF.Data | None
     # end: auto-generated types
+    from typing import TYPE_CHECKING
 
-    # def autoname(self):
-    #     frappe.msgprint('document_name')
-    #      if self.document_name=='Kasho':
-    #         # Populate child table before generating name
-    #         self.append_members_to_kidu_recipient()
+    if TYPE_CHECKING:
+        from erpnext.kidu_management.doctype.kidu_recipient.kidu_recipient import KiduRecipient
+        from erpnext.leadership_archival.doctype.award_and_appointment.award_and_appointment import AwardandAppointment
+        from frappe.types import DF
 
-    #         # Count total recipients
-    #         recipient_count = len(self.kidu_recipient)
-            
-    #         kidu_type_code=frappe.get_value(
-    #             "Kidu Type Name",  # target Doctype
-    #             {"name": self.kasho_type},  # filter condition
-    #             ["kidu_type_code"],  # fields to fetch
-    #             as_dict=True
-    #         ).get('kidu_type_code')
+        agency: DF.Link | None
+        amended_from: DF.Link | None
+        awardappointment: DF.Table[AwardandAppointment]
+        document_type: DF.Link
+        dzongkhag: DF.Link | None
+        issue_date: DF.Date
+        kasho: DF.Attach | None
+        kasho_no: DF.Data | None
+        kasho_type: DF.Link
+        kidu_recipient: DF.Table[KiduRecipient]
+        medal_title: DF.Link | None
+        recipient_type: DF.Link
+        registration_no: DF.Data | None
 
-    #         dzongkhag_code=frappe.get_value(
-    #             "Dzongkhag",  # target Doctype
-    #             {"name": self.dzongkhag},  # filter condition
-    #             ["dzongkhag_code"],  # fields to fetch
-    #             as_dict=True
-    #         ).get('dzongkhag_code')
-
-    #         # Generate Kasho number 
-    #         kasho_no=generate_kasho_no(
-    #             kidu_type_code=kidu_type_code,
-    #             dzongkhag_code=dzongkhag_code,
-    #             recipient_count=recipient_count
-    #         )
-    #         self.name = kasho_no
-    #     else:
-    #         document_type = (self.document_name or '').strip().upper()
-    #         if document_type == "LAND":
-    #             prefix = "LAND"
-    #         elif document_type == "CENSUS":
-    #             prefix = "CEN"
-    #         elif document_type == "LEGAL":
-    #             prefix = "LEGAL"
-    #         elif document_type == "MEDICAL EXPENSE":
-    #             prefix = "ME"
-    #         elif document_type == "DISASTER":
-    #             prefix = "DS"
-    #         elif document_type == "GOENSHO ZHABTOG":
-    #             prefix = "GZ"
-    #         elif document_type == "MARRIAGE CERTIFICATE":
-    #             prefix = "MC"
-    #         elif document_type == "ROYAL SOELRA":
-    #             prefix = "RS"
-    #         elif document_type == "TRAVEL DOCUMENT":
-    #             prefix = "TD"
-    #         elif document_type == "NOC/Security Clearance":
-    #             prefix = "NOC"
-    #         elif document_type == "VISA":
-    #             prefix = "VISA"
-    #         elif document_type == "WORK PERMIT":
-    #             prefix = "WP"
-    #         else:
-    #             prefix = "MISC"
-    #         series_format = f"{prefix} ####"
-            
-    #         self.name = series_format
     def autoname(self):
         document_type = (self.document_type or "").strip().upper()
 
         if document_type == "KASHO":
             # Populate child table before generating name
             self.append_members_to_kidu_recipient()
-
-            # Count total recipients
-            recipient_count = len(self.kidu_recipient or [])
-
-            kidu_type_code = frappe.get_value(
-                "Kidu Type Name",
-                self.kasho_type,
-                "kidu_type_code"
-            )
-
-            dzongkhag_code = frappe.get_value(
-                "Dzongkhag",
-                self.dzongkhag,
-                "dzongkhag_code"
-            )
+            
+            #Count total recipients
+            if self.kasho_type=="Appointment":
+                recipient_count = len(self.awardappointment or [])
+                institution_code=frappe.get_value("Agency",self.agency,"agency_code")
+            elif self.kasho_type=="Award":
+                recipient_count = len(self.awardappointment or [])
+                institution_code=frappe.get_value("Title",self.medal_title,"title_code")
+            else:
+                recipient_count = len(self.kidu_recipient or [])
+                institution_code=frappe.get_value("Dzongkhag",self.dzongkhag,"dzongkhag_code")
+                
+            kasho_type_code = frappe.get_value("Kidu Type Name",self.kasho_type,"kidu_type_code")
 
             # Generate Kasho number
             kasho_no = generate_kasho_no(
-                kidu_type_code=kidu_type_code,
-                dzongkhag_code=dzongkhag_code,
+                kasho_type_code=kasho_type_code,
+                institution_code=institution_code,
                 recipient_count=recipient_count,
                 kasho_issued_date=self.issue_date
             )
-
+            
             self.name=kasho_no
             self.kasho_no=kasho_no
 
@@ -147,13 +107,15 @@ class Kasho(Document):
                 prefix = "VISA"
             elif "WORK PERMIT" in kasho_type:
                 prefix = "WP"
+            elif "APPOINTMENT" in kasho_type:
+                prefix = "AP"
+            elif "AW" in kasho_type:
+                prefix = "AW"
             else:
                 prefix = "MISC"
             kasho_no = frappe.model.naming.make_autoname(f"{prefix}.####")
             self.name=kasho_no
             self.kasho_no=kasho_no
-
-
 
     def append_members_to_kidu_recipient(self):
         """
@@ -174,6 +136,39 @@ class Kasho(Document):
             child.cid = row.get("cid")
             child.full_name = row.get("full_name")
             child.dzongkhag = row.get("dzongkhag")
+
+    def on_submit(self):
+        #Save to Award and Recognition
+        for row in self.awardappointment:
+
+            # Find Profile using child table CID
+            profile_name = frappe.db.get_value(
+                "Key Person Registry",
+                {"cid": row.cid},
+                "name"
+            )
+
+            # Skip if Profile does not exist
+            if not profile_name:
+                continue
+
+            # Get Profile document
+            profile_doc = frappe.get_doc("Key Person Registry", profile_name)
+
+            # Add Ward and Appointment
+            profile_doc.append("award_recognition", {
+                "title": row.title,
+                "location": row.location,
+                "event_name": row.event_name,
+                "conferred_by": row.conferred_by,
+                "citation": row.citation,
+                "honor": "National",
+                
+            })
+
+            # Save
+            profile_doc.save(ignore_permissions=True)
+
 
 
 @frappe.whitelist()
@@ -235,32 +230,32 @@ def fetch_citizen_photo_base64(cid):
     
     return base64_image
 
+@frappe.whitelist()
+def get_award_profile(cid):
+    return frappe.db.get_value(
+        "Key Person Registry",
+        {"cid": cid},
+        ["registry_name", "dob"],
+        as_dict=True
+    )
 
-def generate_kasho_no(kidu_type_code, dzongkhag_code, recipient_count,kasho_issued_date):
+def generate_kasho_no(kasho_type_code, institution_code, recipient_count,kasho_issued_date):
     """
     Generate Kasho number in the format:
     [KashoType][yymmdd][Dzongkhag][Serial][RecipientCount]
     """
     kasho_issued_date_converted = getdate(kasho_issued_date)
-    kidu_type_code = f"{int(kidu_type_code):02d}"
-    # frappe.msgprint(kasho_issued_date)
+    kasho_type_code = f"{int(kasho_type_code):02d}"
     date_part = kasho_issued_date_converted.strftime("%y%m%d")
-    dzongkhag_code = f"{int(dzongkhag_code):02d}"
+    kasho_type_code = f"{int(kasho_type_code):02d}"
 
-    # Serial number (11-13 digits)
-    last_kasho = frappe.db.sql("""
-        SELECT name FROM `tabKasho`
-        WHERE name LIKE %s
-        ORDER BY creation DESC LIMIT 1
-    """, (f"{kidu_type_code}{date_part}{dzongkhag_code}%",))
-
-    if last_kasho:
-        last_serial = int(last_kasho[0][0][10:13])
-        next_serial = last_serial + 1
-    else:
-        next_serial = 1
-
+    total_count_kasho_on_that_date = frappe.db.count(
+        "Kasho",
+        filters={"issue_date": ["like", f"{kasho_issued_date_converted}%"]}
+    )
+    next_serial = total_count_kasho_on_that_date + 1
     serial_part = f"{next_serial:03d}"
     recipient_part = f"{int(recipient_count):04d}"
 
-    return f"{kidu_type_code}{date_part}{dzongkhag_code}{serial_part}{recipient_part}"
+    return f"{kasho_type_code}{date_part}{institution_code}{serial_part}{recipient_part}"
+

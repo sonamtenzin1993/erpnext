@@ -26,9 +26,12 @@
   {
    "fieldname": "cid",
    "fieldtype": "Data",
-   "label": "CID"
+   "in_list_view": 1,
+   "label": "CID",
+   "reqd": 1
   },
   {
+   "bold": 1,
    "fieldname": "search",
    "fieldtype": "Button",
    "label": "Search"
@@ -110,7 +113,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-12-09 15:15:48.230637",
+ "modified": "2026-04-30 16:04:46.968448",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Kidu API",

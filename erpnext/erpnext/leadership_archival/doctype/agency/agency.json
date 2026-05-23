@@ -1,0 +1,67 @@
+{
+ "actions": [],
+ "autoname": "field:agency",
+ "creation": "2026-05-06 12:10:47.343579",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_0peu",
+  "amended_from",
+  "agency",
+  "agency_code"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_0peu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Agency",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "agency",
+   "fieldtype": "Data",
+   "label": "Agency",
+   "unique": 1
+  },
+  {
+   "fieldname": "agency_code",
+   "fieldtype": "Data",
+   "label": "Agency Code"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-05-09 15:25:48.350427",
+ "modified_by": "Administrator",
+ "module": "Leadership Archival",
+ "name": "Agency",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

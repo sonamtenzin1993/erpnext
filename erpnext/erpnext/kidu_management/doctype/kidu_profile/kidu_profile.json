@@ -8,6 +8,7 @@
   "section_break_wfan",
   "amended_from",
   "registration_no",
+  "batch_no",
   "application_mode",
   "cid",
   "full_name",
@@ -89,7 +90,6 @@
    "fieldname": "dob",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "in_standard_filter": 1,
    "label": "Dob",
    "read_only": 1
   },
@@ -208,12 +208,18 @@
    "fieldname": "ground_for_decision",
    "fieldtype": "Text",
    "label": "Ground for Decision"
+  },
+  {
+   "fieldname": "batch_no",
+   "fieldtype": "Link",
+   "label": "Batch No",
+   "options": "Batch No"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-09 11:13:59.328895",
+ "modified": "2026-04-28 17:31:40.629860",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Kidu Profile",

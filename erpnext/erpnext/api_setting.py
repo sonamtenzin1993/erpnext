@@ -16,7 +16,6 @@ def generate_token():
         }
     
     response = requests.post(token_url, data=data)
-
     # Handle the response
     if response.status_code == 200:
         token = response.json().get('access_token')
@@ -316,6 +315,7 @@ def get_family_land_detail_profile(cid=None):
                 'Content-Type': 'application/json'
             }
             response = requests.get(api_url, headers=headers)
+
             if response.status_code != 200:
                 frappe.throw(f"{response.text}")
             if response.status_code == 200:
@@ -331,6 +331,7 @@ def get_family_land_detail_profile(cid=None):
                     if cid:
                         family_tree_url= f"{family_tree_url}/{householdNo}"
                     family_response = requests.get(family_tree_url, headers=headers)
+                    # frappe.msgprint(str(family_response.text))
                     if family_response.status_code != 200:
                         frappe.throw(f"{family_response.text}")
                     if family_response.status_code == 200:

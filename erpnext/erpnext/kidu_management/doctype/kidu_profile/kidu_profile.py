@@ -28,6 +28,7 @@ class KiduProfile(Document):
 		application: DF.Attach | None
 		application_channel: DF.Link | None
 		application_mode: DF.Link | None
+		batch_no: DF.Link | None
 		brief_background: DF.TextEditor
 		cid: DF.Data | None
 		contact_no: DF.Phone | None

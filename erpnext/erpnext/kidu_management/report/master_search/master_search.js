@@ -8,6 +8,12 @@ frappe.query_reports["Master Search"] = {
             "label": "CID",
             "fieldtype": "Data",
             "placeholder": "Enter CID"
+        },
+        {
+            "fieldname": "registration_no",
+            "label": "Registration No",
+            "fieldtype": "Data",
+            "placeholder": "Registration No"
         }
 
 	]

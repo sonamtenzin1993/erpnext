@@ -4,7 +4,8 @@
 frappe.ui.form.on("Kidu API", {
    
     refresh(frm) {
-         frm.disable_save();
+        frm.set_df_property('cid', 'placeholder', '');
+        frm.disable_save();
     },
 
     search(frm) {

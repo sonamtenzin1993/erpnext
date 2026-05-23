@@ -1,0 +1,55 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-07 14:18:30.195677",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_mszu",
+  "amended_from",
+  "book_or_article_name",
+  "year_of_publication"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_mszu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Publication",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "book_or_article_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Book/ Article Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "year_of_publication",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Year of Publication",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-05-07 14:23:13.897722",
+ "modified_by": "Administrator",
+ "module": "Leadership Archival",
+ "name": "Publication",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

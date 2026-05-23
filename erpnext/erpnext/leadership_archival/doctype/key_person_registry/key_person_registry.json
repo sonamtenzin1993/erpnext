@@ -1,0 +1,269 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2026-05-06 11:24:42.645406",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "personal_information_section",
+  "amended_from",
+  "cid",
+  "registry_name",
+  "dob",
+  "section_break_gjdf",
+  "dzongkhag",
+  "gewog",
+  "village",
+  "section_break_efte",
+  "email",
+  "phone_no",
+  "present_dzongkhag",
+  "present_gewog",
+  "present_village",
+  "social_media_account",
+  "designation",
+  "award_and_recognition_section",
+  "column_break_pzrk",
+  "award_recognition",
+  "section_break_uplm",
+  "professional_information",
+  "section_break_oijx",
+  "career_history",
+  "section_break_bvyv",
+  "education_and_qualification",
+  "legal_and_administrative_records_section",
+  "resignationorterminationrecord",
+  "publication_section",
+  "publication",
+  "section_break_usge",
+  "photograph",
+  "associated_organization",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_gjdf",
+   "fieldtype": "Section Break",
+   "label": "Permanent Address"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Key Person Registry",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "cid",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "CID"
+  },
+  {
+   "fieldname": "registry_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "dob",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Dob"
+  },
+  {
+   "fieldname": "personal_information_section",
+   "fieldtype": "Section Break",
+   "label": "Personal Information"
+  },
+  {
+   "fieldname": "dzongkhag",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Dzongkhag"
+  },
+  {
+   "fieldname": "gewog",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Gewog"
+  },
+  {
+   "fieldname": "village",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Village"
+  },
+  {
+   "fieldname": "section_break_uplm",
+   "fieldtype": "Section Break",
+   "label": "Professional Information"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "professional_information",
+   "fieldtype": "Table",
+   "options": "Professional Information"
+  },
+  {
+   "fieldname": "section_break_oijx",
+   "fieldtype": "Section Break",
+   "label": "Career History"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "career_history",
+   "fieldtype": "Table",
+   "options": "Career History"
+  },
+  {
+   "fieldname": "section_break_efte",
+   "fieldtype": "Section Break",
+   "label": "Contact Details"
+  },
+  {
+   "fieldname": "section_break_bvyv",
+   "fieldtype": "Section Break",
+   "label": "Education and Qualification"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "education_and_qualification",
+   "fieldtype": "Table",
+   "options": "Education and Qualification"
+  },
+  {
+   "fieldname": "legal_and_administrative_records_section",
+   "fieldtype": "Section Break",
+   "label": "Legal and Administrative Records"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "resignationorterminationrecord",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Resignation/Termination Record"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "publication_section",
+   "fieldtype": "Section Break",
+   "label": "Publication"
+  },
+  {
+   "fieldname": "section_break_usge",
+   "fieldtype": "Section Break",
+   "label": "Miscellaneous"
+  },
+  {
+   "fieldname": "photograph",
+   "fieldtype": "Attach Image",
+   "label": "Photograph"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "phone_no",
+   "fieldtype": "Phone",
+   "label": "Phone No"
+  },
+  {
+   "fieldname": "present_dzongkhag",
+   "fieldtype": "Data",
+   "label": "Present Dzongkhag"
+  },
+  {
+   "fieldname": "present_gewog",
+   "fieldtype": "Data",
+   "label": "Present Gewog"
+  },
+  {
+   "fieldname": "present_village",
+   "fieldtype": "Data",
+   "label": "Present Village"
+  },
+  {
+   "fieldname": "social_media_account",
+   "fieldtype": "Data",
+   "label": "Social Media Account"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "publication",
+   "fieldtype": "Table",
+   "options": "Publication"
+  },
+  {
+   "fieldname": "associated_organization",
+   "fieldtype": "Table",
+   "label": "Associated Organization",
+   "options": "Associated Organization"
+  },
+  {
+   "fieldname": "award_and_recognition_section",
+   "fieldtype": "Section Break",
+   "label": "Award and Recognition"
+  },
+  {
+   "allow_bulk_edit": 1,
+   "allow_on_submit": 1,
+   "fieldname": "award_recognition",
+   "fieldtype": "Table",
+   "options": "Award and Recognition"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "status",
+   "fieldtype": "Link",
+   "label": "Status",
+   "options": "Status",
+   "reqd": 1
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation",
+   "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "column_break_pzrk",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-05-19 10:29:37.181257",
+ "modified_by": "Administrator",
+ "module": "Leadership Archival",
+ "name": "Key Person Registry",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

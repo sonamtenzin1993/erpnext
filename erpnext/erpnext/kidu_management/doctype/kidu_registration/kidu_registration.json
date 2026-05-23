@@ -7,22 +7,22 @@
  "field_order": [
   "section_break_16ef",
   "amended_from",
-  "registration_no",
+  "cid",
+  "full_name",
+  "dob",
+  "gender",
+  "contact_no",
+  "emergency_contact_no",
+  "dzongkhag",
+  "gewog",
+  "village",
   "kidu_type",
   "kidu_sub_type",
   "application_channel",
   "rc",
-  "registration_date",
   "application_mode",
-  "cid",
-  "full_name",
-  "dob",
-  "contact_no",
-  "emergency_contact_no",
-  "gender",
-  "dzongkhag",
-  "gewog",
-  "village",
+  "registration_date",
+  "registration_no",
   "application",
   "member"
  ],
@@ -88,7 +88,6 @@
    "fieldname": "full_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "in_standard_filter": 1,
    "label": "Full Name"
   },
   {
@@ -131,7 +130,8 @@
    "allow_on_submit": 1,
    "fieldname": "application",
    "fieldtype": "Attach",
-   "label": "Application"
+   "label": "Application",
+   "reqd": 1
   },
   {
    "allow_on_submit": 1,
@@ -149,10 +149,10 @@
    "options": "Kidu Sub Type"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "application_channel",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "in_standard_filter": 1,
    "label": "Application Channel",
    "options": "Application Channel"
   },
@@ -167,14 +167,13 @@
    "fieldname": "emergency_contact_no",
    "fieldtype": "Phone",
    "in_list_view": 1,
-   "in_standard_filter": 1,
    "label": "Emergency Contact No"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-09 10:56:58.535477",
+ "modified": "2026-04-29 11:28:13.805578",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Kidu Registration",

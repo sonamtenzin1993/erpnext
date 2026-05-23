@@ -24,7 +24,7 @@ class KiduAPI(Document):
         from erpnext.kidu_management.doctype.vehicle_detail.vehicle_detail import VehicleDetail
         from frappe.types import DF
 
-        cid: DF.Data | None
+        cid: DF.Data
         family_land_detail_tab: DF.Table[FamilyLandDetail]
         income_tab: DF.Table[Income]
         property_tax_tbl: DF.Table[property]

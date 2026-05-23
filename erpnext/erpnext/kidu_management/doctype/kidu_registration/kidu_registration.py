@@ -19,7 +19,7 @@ class KiduRegistration(Document):
 		from frappe.types import DF
 
 		amended_from: DF.Link | None
-		application: DF.Attach | None
+		application: DF.Attach
 		application_channel: DF.Link | None
 		application_mode: DF.Link
 		cid: DF.Data | None

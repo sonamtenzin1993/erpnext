@@ -10,13 +10,17 @@
   "kasho_no",
   "kasho_type",
   "dzongkhag",
+  "agency",
+  "medal_title",
   "issue_date",
   "document_type",
   "kasho",
+  "recipient_type",
   "search_section",
   "registration_no",
   "section_break_jbyv",
-  "kidu_recipient"
+  "kidu_recipient",
+  "awardappointment"
  ],
  "fields": [
   {
@@ -48,8 +52,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Dzongkhag",
-   "options": "Dzongkhag",
-   "reqd": 1
+   "options": "Dzongkhag"
   },
   {
    "allow_on_submit": 1,
@@ -57,8 +60,7 @@
    "fieldtype": "Table",
    "in_standard_filter": 1,
    "label": "Kidu Recipients",
-   "options": "Kidu Recipient",
-   "reqd": 1
+   "options": "Kidu Recipient"
   },
   {
    "fieldname": "kasho_no",
@@ -77,8 +79,7 @@
   {
    "fieldname": "kasho",
    "fieldtype": "Attach",
-   "label": "Kasho",
-   "reqd": 1
+   "label": "Kasho"
   },
   {
    "fieldname": "search_section",
@@ -101,12 +102,38 @@
    "label": "Documen Type",
    "options": "Document Type",
    "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "awardappointment",
+   "fieldtype": "Table",
+   "label": "Award/Appointment",
+   "options": "Award and Appointment"
+  },
+  {
+   "fieldname": "agency",
+   "fieldtype": "Link",
+   "label": "Agency",
+   "options": "Agency"
+  },
+  {
+   "fieldname": "medal_title",
+   "fieldtype": "Link",
+   "label": "Medal/Title",
+   "options": "Title"
+  },
+  {
+   "fieldname": "recipient_type",
+   "fieldtype": "Link",
+   "label": "Recipient Type",
+   "options": "Recipient Type",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-03-25 15:49:46.324781",
+ "modified": "2026-05-19 09:55:43.909881",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Kasho",
