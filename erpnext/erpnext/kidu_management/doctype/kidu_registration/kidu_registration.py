@@ -87,7 +87,10 @@ class KiduRegistration(Document):
 			"TRAVEL DOCUMENT": "TD",
 			"NOC/SECURITY CLEARANCE": "NOC",
 			"VISA": "VISA",
-			"WORK PERMIT": "WP"
+			"WORK PERMIT": "WP",
+			"MEDICAL REFERRAL": "MF",
+   			"STAY PERMIT": "SP",
+			"VISA": "VISA",
 		}
 		
 		prefix = prefix_map.get(kidu_type, "MISC")
