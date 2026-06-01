@@ -124,52 +124,56 @@ frappe.ui.form.on("Leadership Appointment", {
 
 });
 
-
 function toggle_child_tables(frm) {
+
+    // STEP 1: RESET EVERYTHING FIRST (IMPORTANT)
+    frm.set_df_property('awardappointment', 'hidden', 1);
+    frm.set_df_property('awardappointment', 'reqd', 0);
+
+    frm.set_df_property('appointment', 'hidden', 1);
+    frm.set_df_property('appointment', 'reqd', 0);
+
+    frm.set_df_property('kidu_recipient', 'hidden', 1);
+    frm.set_df_property('kidu_recipient', 'reqd', 0);
+
+    frm.set_df_property('registration_no', 'hidden', 1);
+    frm.set_df_property('dzongkhag', 'hidden', 1);
+    frm.set_df_property('dzongkhag', 'reqd', 0);
+
+    frm.set_df_property('agency', 'hidden', 1);
+    frm.set_df_property('agency', 'reqd', 0);
+
+    frm.set_df_property('medal_title', 'hidden', 1);
+    frm.set_df_property('medal_title', 'reqd', 0);
+
+    // STEP 2: APPLY BASED ON TYPE
     if (frm.doc.kasho_type === "Award") {
+
         frm.set_df_property('awardappointment', 'hidden', 0);
         frm.set_df_property('awardappointment', 'reqd', 1);
-        frm.set_df_property('kidu_recipient', 'hidden', 1);
-        frm.set_df_property('kidu_recipient', 'reqd', 0);
-        frm.set_df_property('Appointment', 'hidden', 1);
-        frm.set_df_property('Appointment', 'reqd', 0);
-        frm.set_df_property('registration_no', 'hidden', 1);
-        frm.set_df_property('dzongkhag', 'hidden', 1);
-        frm.set_df_property('dzongkhag', 'reqd', 0);
-        frm.set_df_property('agency', 'reqd', 0);
-        frm.set_df_property('agency', 'hidden', 1);
-        frm.set_df_property('medal_title', 'reqd', 1);
+
         frm.set_df_property('medal_title', 'hidden', 0);
-    }else if (frm.doc.kasho_type === "Appointment"){
+        frm.set_df_property('medal_title', 'reqd', 1);
+
+    } 
+    else if (frm.doc.kasho_type === "Appointment") {
+
         frm.set_df_property('appointment', 'hidden', 0);
         frm.set_df_property('appointment', 'reqd', 1);
-        frm.set_df_property('awardappointment', 'hidden', 1);
-        frm.set_df_property('awardappointment', 'reqd', 0);
-        frm.set_df_property('kidu_recipient', 'hidden', 1);
-        frm.set_df_property('kidu_recipient', 'reqd', 0);
-        frm.set_df_property('registration_no', 'hidden', 1);
-        frm.set_df_property('dzongkhag', 'hidden', 1);
-        frm.set_df_property('dzongkhag', 'reqd', 0);
-        frm.set_df_property('agency', 'reqd', 1);
+
         frm.set_df_property('agency', 'hidden', 0);
-        frm.set_df_property('medal_title', 'reqd', 0);
-        frm.set_df_property('medal_title', 'hidden', 1);
-        
-    }else {
-        frm.set_df_property('awardappointment', 'hidden', 1);
-        frm.set_df_property('awardappointment', 'reqd', 0);
-        frm.set_df_property('appointment', 'hidden', 1);
-        frm.set_df_property('appointment', 'reqd', 0);
+        frm.set_df_property('agency', 'reqd', 1);
+
+    } 
+    else {
+
+        // DEFAULT MODE (Kidu Recipient)
         frm.set_df_property('kidu_recipient', 'hidden', 0);
         frm.set_df_property('kidu_recipient', 'reqd', 1);
+
         frm.set_df_property('registration_no', 'hidden', 0);
         frm.set_df_property('dzongkhag', 'hidden', 0);
         frm.set_df_property('dzongkhag', 'reqd', 1);
-        frm.set_df_property('medal_title', 'hidden', 1);
-        frm.set_df_property('medal_title', 'reqd', 0);  
-        frm.set_df_property('agency', 'hidden', 1);
-        frm.set_df_property('appointment', 'hidden', 1);
-        frm.set_df_property('appointment', 'reqd', 0);
     }
 
     frm.refresh_fields();
