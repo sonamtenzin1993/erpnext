@@ -13,10 +13,12 @@ class Kasho(Document):
     if TYPE_CHECKING:
         from erpnext.kidu_management.doctype.kidu_recipient.kidu_recipient import KiduRecipient
         from erpnext.leadership_archival.doctype.award_and_appointment.award_and_appointment import AwardandAppointment
+        from erpnext.leadership_archival.doctype.leadership_appointment.leadership_appointment import LeadershipAppointment
         from frappe.types import DF
 
         agency: DF.Link | None
         amended_from: DF.Link | None
+        appointment: DF.Table[LeadershipAppointment]
         awardappointment: DF.Table[AwardandAppointment]
         document_type: DF.Link
         dzongkhag: DF.Link | None
@@ -59,7 +61,7 @@ class Kasho(Document):
             
             #Count total recipients
             if self.kasho_type=="Appointment":
-                recipient_count = len(self.awardappointment or [])
+                recipient_count = len(self.appointment or [])
                 institution_code=frappe.get_value("Agency",self.agency,"agency_code")
             elif self.kasho_type=="Award":
                 recipient_count = len(self.awardappointment or [])
@@ -162,14 +164,39 @@ class Kasho(Document):
                 "event_name": row.event_name,
                 "conferred_by": row.conferred_by,
                 "citation": row.citation,
-                "honor": "National",
-                
+                "honor": "National",     
             })
 
             # Save
             profile_doc.save(ignore_permissions=True)
+            
+        for row in self.appointment:
 
+            # Find Profile using child table CID
+            profile_name = frappe.db.get_value(
+                "Key Person Registry",
+                {"cid": row.cid},
+                "name"
+            )
 
+            # Skip if Profile does not exist
+            if not profile_name:
+                continue
+
+            profile_doc = frappe.get_doc("Key Person Registry", profile_name)
+
+            profile_doc.append("professional_information", {
+                "cid": row.cid,
+                "position": row.position,
+                "organization": row.organization,
+                "conferred_by": row.conferred_by,
+                "start_term": row.start_term,
+                "end_term": row.end_term,   
+                "employee_status": row.employee_status,  
+            })
+
+            # Save
+            profile_doc.save(ignore_permissions=True)
 
 @frappe.whitelist()
 def get_kasho_member_data(registration_no):

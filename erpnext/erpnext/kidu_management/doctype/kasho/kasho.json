@@ -20,7 +20,8 @@
   "registration_no",
   "section_break_jbyv",
   "kidu_recipient",
-  "awardappointment"
+  "awardappointment",
+  "appointment"
  ],
  "fields": [
   {
@@ -107,7 +108,7 @@
    "allow_on_submit": 1,
    "fieldname": "awardappointment",
    "fieldtype": "Table",
-   "label": "Award/Appointment",
+   "label": "Award",
    "options": "Award and Appointment"
   },
   {
@@ -128,12 +129,18 @@
    "label": "Recipient Type",
    "options": "Recipient Type",
    "reqd": 1
+  },
+  {
+   "fieldname": "appointment",
+   "fieldtype": "Table",
+   "label": "Appointment",
+   "options": "Leadership Appointment"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-19 09:55:43.909881",
+ "modified": "2026-05-26 15:12:08.262918",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Kasho",

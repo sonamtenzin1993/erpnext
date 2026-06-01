@@ -27,8 +27,6 @@
   "award_recognition",
   "section_break_uplm",
   "professional_information",
-  "section_break_oijx",
-  "career_history",
   "section_break_bvyv",
   "education_and_qualification",
   "legal_and_administrative_records_section",
@@ -107,18 +105,7 @@
    "allow_on_submit": 1,
    "fieldname": "professional_information",
    "fieldtype": "Table",
-   "options": "Professional Information"
-  },
-  {
-   "fieldname": "section_break_oijx",
-   "fieldtype": "Section Break",
-   "label": "Career History"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "career_history",
-   "fieldtype": "Table",
-   "options": "Career History"
+   "options": "Leadership Appointment"
   },
   {
    "fieldname": "section_break_efte",
@@ -242,7 +229,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-19 10:29:37.181257",
+ "modified": "2026-06-01 16:57:24.798216",
  "modified_by": "Administrator",
  "module": "Leadership Archival",
  "name": "Key Person Registry",

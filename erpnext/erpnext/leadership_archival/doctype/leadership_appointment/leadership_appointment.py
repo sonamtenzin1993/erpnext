@@ -1,11 +1,11 @@
-# Copyright (c) 2026, Frappe Technologies and contributors
+# Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
 # import frappe
 from frappe.model.document import Document
 
 
-class ProfessionalInformation(Document):
+class LeadershipAppointment(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -14,14 +14,16 @@ class ProfessionalInformation(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		conferred_by: DF.Link | None
-		employee_status: DF.Link
-		end_date: DF.Date | None
+		cid: DF.Data | None
+		conferred_by: DF.Link
+		duration: DF.Int
+		employee_status: DF.Link | None
+		end_term: DF.Date
 		organization: DF.Link
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data
 		position: DF.Link
-		start_date: DF.Date
+		start_term: DF.Date
 	# end: auto-generated types
 	pass
