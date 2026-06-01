@@ -1,8 +1,7 @@
-
 frappe.ui.form.on("Kasho", {
-	refresh(frm) {
+    refresh(frm) {
         toggle_child_tables(frm);
-	},
+    },
     kasho_type: function(frm) {
         toggle_child_tables(frm);
     },
@@ -175,4 +174,3 @@ function toggle_child_tables(frm) {
 
     frm.refresh_fields();
 }
-

@@ -2,9 +2,9 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Key Person Registry", {
-	refresh(frm) {
+    refresh(frm) {
 
-	},
+    },
     cid:function(frm){
         if(frm.doc.cid.length==11){
             frappe.call({

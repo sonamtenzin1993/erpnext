@@ -1,4 +1,3 @@
-
 import frappe
 from frappe.model.document import Document
 from datetime import datetime
@@ -285,4 +284,3 @@ def generate_kasho_no(kasho_type_code, institution_code, recipient_count,kasho_i
     recipient_part = f"{int(recipient_count):04d}"
 
     return f"{kasho_type_code}{date_part}{institution_code}{serial_part}{recipient_part}"
-
