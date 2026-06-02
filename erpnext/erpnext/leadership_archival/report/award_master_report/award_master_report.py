@@ -15,13 +15,11 @@ def get_columns():
         {"label": "CID", "fieldname": "cid", "fieldtype": "Data", "width": 150},
         {"label": "DoB", "fieldname": "dob", "fieldtype": "phone", "width": 150},
         {"label": "Contact No", "fieldname": "contact_no", "fieldtype": "phone", "width": 150},
-        {"label": "Title", "fieldname": "title", "fieldtype": "Data", "width": 150},
-        {"label": "Location", "fieldname": "location", "fieldtype": "Data", "width": 150},
-        {"label": "Event Name", "fieldname": "event_name", "fieldtype": "Data", "width": 150},
+        {"label": "Position","options": "Position", "fieldname": "position", "fieldtype": "Link", "width": 150},
+        {"label": "Organization","options": "Organization", "fieldname": "organization", "fieldtype": "Link", "width": 150},
         {"label": "Confer By","options": "Conferred By", "fieldname": "conferred_by", "fieldtype": "Link", "width": 150},
-        {"label": "Citation", "fieldname": "citation", "fieldtype": "Data", "width": 150},
-        {"label": "Award or Appointment Date", "fieldname": "issued_date", "fieldtype": "Data", "width": 150},
-        {"label": "PostThumous","fieldname": "postThumous", "fieldtype": "check", "width": 150},
+        {"label": "Start Term","fieldname": "start_term", "fieldtype": "Date", "width": 150},
+        {"label": "End Term","fieldname": "end_term", "fieldtype": "Date", "width": 150},
         {"label": "Link to Profile","options": "Key Person Registry", "fieldname": "profile", "fieldtype": "Link", "width": 150},
         {"label": "Kasho","options": "Kasho", "fieldname": "kasho", "fieldtype": "Link", "width": 150},
     ]
@@ -32,10 +30,10 @@ def get_data(filters):
     if filters.get("cid"):
         conditions.append("aw.cid = %(cid)s")
 
-    if filters.get("title_medal"):
-        conditions.append("aw.title = %(title_medal)s")
+    if filters.get("position"):
+        conditions.append("aw.position = %(position)s")
     # ✅ FORCE Kasho Type (no frontend dependency)
-    conditions.append("k.kasho_type IN ('Award')")
+    conditions.append("k.kasho_type IN ('Appointment')")
         
     start_date = filters.get("start_date")
     end_date = filters.get("end_date")
@@ -61,17 +59,16 @@ def get_data(filters):
 			aw.cid AS cid,
 			kpr.registry_name AS recipientName,
 			kpr.dob AS dob,
-			aw.title AS title,
-			aw.location AS location,
-			aw.event_name AS event_name,
+			aw.position AS position,
+			aw.organization AS organization,
 			aw.conferred_by AS conferred_by,
-			aw.citation AS citation,
 			k.issue_date AS issued_date,
-			aw.citation AS citation,
 			k.name AS kasho,
-			kpr.name AS profile,
-			aw.postThumous AS postThumous
-		FROM `tabAward and Appointment` aw
+			aw.start_term AS start_term,
+			aw.end_term as end_term,
+			aw.employee_status AS employee_status,
+			kpr.name AS profile
+		FROM `tabLeadership Appointment` aw
 		INNER JOIN `tabKasho` k 
 			ON aw.parent = k.name
 		LEFT JOIN `tabKey Person Registry` kpr 
