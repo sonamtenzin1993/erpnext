@@ -211,59 +211,59 @@ frappe.ui.form.on("Member", {  // Replace with your child table DocType
                         //     }
                         // });
                         frappe.call({
-    method: "erpnext.kidu_management.doctype.kidu_profile.kidu_profile.fetch_citizen_photo_base64",
-    args: {
-        cid: row.cid
-    },
-    callback: function(photo_r) {
+                            method: "erpnext.kidu_management.doctype.kidu_profile.kidu_profile.fetch_citizen_photo_base64",
+                            args: {
+                                cid: row.cid
+                            },
+                            callback: function(photo_r) {
 
-        if (photo_r.message && photo_r.message.image) {
+                                if (photo_r.message && photo_r.message.image) {
 
-            let base64_img = photo_r.message.image;
+                                    let base64_img = photo_r.message.image;
 
-            let filename = row.cid + "_photo.jpeg";
+                                    let filename = row.cid + "_photo.jpeg";
 
-            frappe.call({
-                method: "frappe.client.insert",
-                args: {
-                    doc: {
-                        doctype: "File",
+                                    frappe.call({
+                                        method: "frappe.client.insert",
+                                        args: {
+                                            doc: {
+                                                doctype: "File",
 
-                        file_name: filename,
+                                                file_name: filename,
 
-                        // IMPORTANT: Attach to CHILD ROW
-                        attached_to_doctype: cdt,
-                        attached_to_name: cdn,
-                        attached_to_field: "photo",
+                                                // IMPORTANT: Attach to CHILD ROW
+                                                attached_to_doctype: cdt,
+                                                attached_to_name: cdn,
+                                                attached_to_field: "photo",
 
-                        is_private: 1,
+                                                is_private: 1,
 
-                        content: base64_img,
-                        decode: 1
-                    }
-                },
-                callback: function(file_r) {
+                                                content: base64_img,
+                                                decode: 1
+                                            }
+                                        },
+                                        callback: function(file_r) {
 
-                    if (file_r && file_r.message) {
+                                            if (file_r && file_r.message) {
 
-                        let file_doc = file_r.message;
+                                                let file_doc = file_r.message;
 
-                        // Save file URL into child table field
-                        frappe.model.set_value(
-                            cdt,
-                            cdn,
-                            "photo",
-                            file_doc.file_url
-                        );
+                                                // Save file URL into child table field
+                                                frappe.model.set_value(
+                                                    cdt,
+                                                    cdn,
+                                                    "photo",
+                                                    file_doc.file_url
+                                                );
 
-                        // Refresh child table
-                        frm.refresh_field("member");
-                    }
-                }
-            });
-        }
-    }
-});
+                                                // Refresh child table
+                                                frm.refresh_field("member");
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
                     } else {
                         row.full_name = "";  
                         frappe.msgprint("No record found for CID " + row.cid);
