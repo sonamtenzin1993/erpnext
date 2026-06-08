@@ -57,7 +57,6 @@ frappe.ui.form.on("Kidu Registration", {
             });
         }
     },
-
     kidu_type:function (frm){
         let selected_kidu_type = frm.doc.kidu_type;
         // frm.trigger('toggle_child_table_visibility');
@@ -142,6 +141,129 @@ frappe.ui.form.on("Member", {  // Replace with your child table DocType
                         row.dzongkhag = r.message.dzongkhagName; 
                         row.gewog = r.message.gewogName; 
                         row.village = r.message.villageName; 
+
+                        // frappe.call({
+                        //     method: "erpnext.kidu_management.doctype.kidu_profile.kidu_profile.fetch_citizen_photo_base64",
+                        //     args: { cid: row.cid },
+                        //     callback: function(r) {
+                        //         if(r.message){
+                        //             let base64_img = r.message.image; // Base64 from API
+                        //             let doctype = frm.doc.doctype;    // Current DocType
+                        //             let docname = frm.doc.name;       // Current document name
+                        //             let fieldname = "photo";          // Field to attach image
+                        //             let filename = "citizen_photo.jpeg";
+
+                        //             // 1️⃣ Option: Set directly as data URL (quick display, not stored as File doc)
+                        //             let data_url = "data:image/jpeg;base64," + base64_img;
+                        //             frm.set_value(fieldname, data_url);
+                        //             frm.refresh_field(fieldname);
+
+                        //             // 2️⃣ Option: Properly save as File in Frappe (recommended)
+                        //             frappe.call({
+                        //                 method: "frappe.client.insert",
+                        //                 args: {
+                        //                     doc: {
+                        //                         doctype: "File",
+                        //                         file_name: filename,
+                        //                         attached_to_doctype: doctype,
+                        //                         attached_to_name: docname,
+                        //                         attached_to_field: fieldname,
+                        //                         is_private: 1,
+                        //                         content: base64_img,
+                        //                         decode: 1
+                        //                     }
+                        //                 },
+                        //                 callback: function(file_r) {
+                        //                     if(file_r && file_r.message){
+                        //                         let file_doc = file_r.message;
+
+                        //                         // Set the DocType image field to the file URL
+                        //                         frm.set_value("photo", file_doc.file_url);  // e.g., /private/files/citizen_photo.jpeg
+                        //                         frm.refresh_field("photo");
+                        //                         // frappe.msgprint(`File "${file_doc.file_name}" attached successfully.`);
+                        //                     }
+                        //                 }
+                        //             });
+                        //         }
+                        //     }
+                        // });
+                        // frappe.call({
+                        //     method: "erpnext.kidu_management.doctype.kidu_profile.kidu_profile.fetch_citizen_photo_base64",
+                        //     args: {
+                        //         cid: row.cid
+                        //     },
+                        //     callback: function(photo_r) {
+                        //         if (photo_r.message && photo_r.message.image) {
+
+                        //             // Convert Base64 to Data URL
+                        //             let data_url = "data:image/jpeg;base64," + photo_r.message.image;
+
+                        //             // Set photo in the child table row
+                        //             frappe.model.set_value(
+                        //                 cdt,
+                        //                 cdn,
+                        //                 "photo",
+                        //                 data_url
+                        //             );
+
+                        //             frm.refresh_field("member");
+                        //         }
+                        //     }
+                        // });
+                        frappe.call({
+    method: "erpnext.kidu_management.doctype.kidu_profile.kidu_profile.fetch_citizen_photo_base64",
+    args: {
+        cid: row.cid
+    },
+    callback: function(photo_r) {
+
+        if (photo_r.message && photo_r.message.image) {
+
+            let base64_img = photo_r.message.image;
+
+            let filename = row.cid + "_photo.jpeg";
+
+            frappe.call({
+                method: "frappe.client.insert",
+                args: {
+                    doc: {
+                        doctype: "File",
+
+                        file_name: filename,
+
+                        // IMPORTANT: Attach to CHILD ROW
+                        attached_to_doctype: cdt,
+                        attached_to_name: cdn,
+                        attached_to_field: "photo",
+
+                        is_private: 1,
+
+                        content: base64_img,
+                        decode: 1
+                    }
+                },
+                callback: function(file_r) {
+
+                    if (file_r && file_r.message) {
+
+                        let file_doc = file_r.message;
+
+                        // Save file URL into child table field
+                        frappe.model.set_value(
+                            cdt,
+                            cdn,
+                            "photo",
+                            file_doc.file_url
+                        );
+
+                        // Refresh child table
+                        frm.refresh_field("member");
+                    }
+                }
+            });
+        }
+    }
+});
                     } else {
                         row.full_name = "";  
                         frappe.msgprint("No record found for CID " + row.cid);
