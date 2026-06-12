@@ -43,6 +43,7 @@ class KiduProfile(Document):
 		kidu_type: DF.Link | None
 		land_size: DF.Data | None
 		member: DF.Table[Member]
+		organization: DF.Link | None
 		photo: DF.AttachImage | None
 		profile_date: DF.Date
 		rc: DF.Data | None

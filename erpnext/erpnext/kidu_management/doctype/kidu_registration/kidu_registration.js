@@ -141,88 +141,15 @@ frappe.ui.form.on("Member", {  // Replace with your child table DocType
                         row.dzongkhag = r.message.dzongkhagName; 
                         row.gewog = r.message.gewogName; 
                         row.village = r.message.villageName; 
-
-                        // frappe.call({
-                        //     method: "erpnext.kidu_management.doctype.kidu_profile.kidu_profile.fetch_citizen_photo_base64",
-                        //     args: { cid: row.cid },
-                        //     callback: function(r) {
-                        //         if(r.message){
-                        //             let base64_img = r.message.image; // Base64 from API
-                        //             let doctype = frm.doc.doctype;    // Current DocType
-                        //             let docname = frm.doc.name;       // Current document name
-                        //             let fieldname = "photo";          // Field to attach image
-                        //             let filename = "citizen_photo.jpeg";
-
-                        //             // 1️⃣ Option: Set directly as data URL (quick display, not stored as File doc)
-                        //             let data_url = "data:image/jpeg;base64," + base64_img;
-                        //             frm.set_value(fieldname, data_url);
-                        //             frm.refresh_field(fieldname);
-
-                        //             // 2️⃣ Option: Properly save as File in Frappe (recommended)
-                        //             frappe.call({
-                        //                 method: "frappe.client.insert",
-                        //                 args: {
-                        //                     doc: {
-                        //                         doctype: "File",
-                        //                         file_name: filename,
-                        //                         attached_to_doctype: doctype,
-                        //                         attached_to_name: docname,
-                        //                         attached_to_field: fieldname,
-                        //                         is_private: 1,
-                        //                         content: base64_img,
-                        //                         decode: 1
-                        //                     }
-                        //                 },
-                        //                 callback: function(file_r) {
-                        //                     if(file_r && file_r.message){
-                        //                         let file_doc = file_r.message;
-
-                        //                         // Set the DocType image field to the file URL
-                        //                         frm.set_value("photo", file_doc.file_url);  // e.g., /private/files/citizen_photo.jpeg
-                        //                         frm.refresh_field("photo");
-                        //                         // frappe.msgprint(`File "${file_doc.file_name}" attached successfully.`);
-                        //                     }
-                        //                 }
-                        //             });
-                        //         }
-                        //     }
-                        // });
-                        // frappe.call({
-                        //     method: "erpnext.kidu_management.doctype.kidu_profile.kidu_profile.fetch_citizen_photo_base64",
-                        //     args: {
-                        //         cid: row.cid
-                        //     },
-                        //     callback: function(photo_r) {
-                        //         if (photo_r.message && photo_r.message.image) {
-
-                        //             // Convert Base64 to Data URL
-                        //             let data_url = "data:image/jpeg;base64," + photo_r.message.image;
-
-                        //             // Set photo in the child table row
-                        //             frappe.model.set_value(
-                        //                 cdt,
-                        //                 cdn,
-                        //                 "photo",
-                        //                 data_url
-                        //             );
-
-                        //             frm.refresh_field("member");
-                        //         }
-                        //     }
-                        // });
                         frappe.call({
                             method: "erpnext.kidu_management.doctype.kidu_profile.kidu_profile.fetch_citizen_photo_base64",
                             args: {
                                 cid: row.cid
                             },
                             callback: function(photo_r) {
-
                                 if (photo_r.message && photo_r.message.image) {
-
                                     let base64_img = photo_r.message.image;
-
                                     let filename = row.cid + "_photo.jpeg";
-
                                     frappe.call({
                                         method: "frappe.client.insert",
                                         args: {
@@ -282,13 +209,17 @@ function toggle_fields(frm) {
     let application_mode = frm.doc.application_mode; // Assuming you have a field to determine type
 
 
-       // 🔥 FORCE CLEAR FIRST
-    frm.set_value('emergency_contact_no', '');
+    // 🔥 FORCE CLEAR FIRST
 
+    frm.set_value('emergency_contact_no', '');
     // THEN set actual value from doc
     if (frm.doc.emergency_contact_no) {
         frm.set_value('emergency_contact_no', frm.doc.emergency_contact_no);
     }
+    
+    
+    
+
 
     frm.refresh_field('emergency_contact_no');
     if (application_mode === 'Individual') {
@@ -300,7 +231,9 @@ function toggle_fields(frm) {
         frm.set_df_property('gewog', 'hidden', 0);
         frm.set_df_property('village', 'hidden', 0);
         frm.set_df_property('member', 'hidden', 1);
-
+        frm.set_df_property('organization', 'hidden', 1);
+        frm.set_df_property('contact_no', 'hidden', 0);
+        frm.set_df_property('emergency_contact_no', 'hidden', 0);
         // Set required
         frm.set_df_property('cid', 'reqd', 1);
         frm.set_df_property('full_name', 'reqd', 1);
@@ -310,6 +243,8 @@ function toggle_fields(frm) {
         frm.set_df_property('gewog', 'reqd', 1);
         frm.set_df_property('village', 'reqd', 1);
         frm.set_df_property('member', 'reqd', 0);
+        frm.set_df_property('organization', 'reqd', 0);
+        frm.set_df_property('contact_no', 'reqd', 1);
     } 
     else if (application_mode === 'Group') {
         frm.set_df_property('cid', 'hidden', 1);
@@ -321,6 +256,10 @@ function toggle_fields(frm) {
         frm.set_df_property('village', 'hidden', 1);
         frm.set_df_property('member', 'hidden', 1);
         frm.set_df_property('member', 'hidden', 0);
+        frm.set_df_property('organization', 'hidden', 1);
+        frm.set_df_property('emergency_contact_no', 'hidden', 1);
+        frm.set_df_property('contact_no', 'hidden', 1);
+
 
         // Set required
         frm.set_df_property('cid', 'reqd', 0);
@@ -331,6 +270,8 @@ function toggle_fields(frm) {
         frm.set_df_property('gewog', 'reqd', 0);
         frm.set_df_property('village', 'reqd', 0);
         frm.set_df_property('member', 'reqd', 1);
+        frm.set_df_property('organization', 'reqd', 0);
+        frm.set_df_property('contact_no', 'reqd', 0);
     } 
     else if (application_mode === 'Individual and Member') {
         frm.set_df_property('cid', 'hidden', 0);
@@ -341,6 +282,10 @@ function toggle_fields(frm) {
         frm.set_df_property('gewog', 'hidden', 0);
         frm.set_df_property('village', 'hidden', 0);
         frm.set_df_property('member', 'hidden', 0);
+        frm.set_df_property('organization', 'hidden', 1);
+        frm.set_df_property('emergency_contact_no', 'hidden', 0);
+        frm.set_df_property('contact_no', 'hidden', 0);
+
 
          // Set required for both individual and member
         frm.set_df_property('cid', 'reqd', 1);
@@ -351,5 +296,30 @@ function toggle_fields(frm) {
         frm.set_df_property('gewog', 'reqd', 1);
         frm.set_df_property('village', 'reqd', 1);
         frm.set_df_property('member', 'reqd', 1);
+        frm.set_df_property('organization', 'reqd', 0);
+        frm.set_df_property('contact_no', 'reqd', 1);
+    }else if (application_mode === 'Organization'){
+        frm.set_df_property('cid', 'hidden', 1);
+        frm.set_df_property('full_name', 'hidden', 1);
+        frm.set_df_property('dob', 'hidden', 1);
+        frm.set_df_property('gender', 'hidden', 1);
+        frm.set_df_property('dzongkhag', 'hidden', 0);
+        frm.set_df_property('gewog', 'hidden', 0);
+        frm.set_df_property('village', 'hidden', 0);
+        frm.set_df_property('member', 'hidden', 1);
+        frm.set_df_property('organization', 'hidden', 0);
+        frm.set_df_property('emergency_contact_no', 'hidden', 1);
+        frm.set_df_property('contact_no', 'hidden', 1);
+        // Set required
+        frm.set_df_property('cid', 'reqd', 0);
+        frm.set_df_property('full_name', 'reqd', 0);
+        frm.set_df_property('dob', 'reqd', 0);
+        frm.set_df_property('gender', 'reqd', 0);
+        frm.set_df_property('dzongkhag', 'reqd', 1);
+        frm.set_df_property('gewog', 'reqd', 1);
+        frm.set_df_property('village', 'reqd', 1);
+        frm.set_df_property('member', 'reqd', 0);
+        frm.set_df_property('organization', 'reqd', 1);
+        frm.set_df_property('contact_no', 'reqd', 0);
     }
 }

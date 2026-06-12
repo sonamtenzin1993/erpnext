@@ -7,7 +7,9 @@
  "field_order": [
   "section_break_16ef",
   "amended_from",
+  "application_mode",
   "cid",
+  "organization",
   "full_name",
   "dob",
   "gender",
@@ -20,7 +22,6 @@
   "kidu_sub_type",
   "application_channel",
   "rc",
-  "application_mode",
   "registration_date",
   "registration_no",
   "application",
@@ -139,8 +140,7 @@
    "fieldtype": "Phone",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Contact No",
-   "reqd": 1
+   "label": "Contact No"
   },
   {
    "fieldname": "kidu_sub_type",
@@ -154,7 +154,8 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Application Channel",
-   "options": "Application Channel"
+   "options": "Application Channel",
+   "reqd": 1
   },
   {
    "fieldname": "rc",
@@ -168,12 +169,18 @@
    "fieldtype": "Phone",
    "in_list_view": 1,
    "label": "Emergency Contact No"
+  },
+  {
+   "fieldname": "organization",
+   "fieldtype": "Link",
+   "label": "Organization",
+   "options": "Organization"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-29 11:28:13.805578",
+ "modified": "2026-06-08 15:57:49.818037",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Kidu Registration",

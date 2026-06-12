@@ -20,10 +20,10 @@ class KiduRegistration(Document):
 
 		amended_from: DF.Link | None
 		application: DF.Attach
-		application_channel: DF.Link | None
+		application_channel: DF.Link
 		application_mode: DF.Link
 		cid: DF.Data | None
-		contact_no: DF.Phone
+		contact_no: DF.Phone | None
 		dob: DF.Date | None
 		dzongkhag: DF.Data | None
 		emergency_contact_no: DF.Phone | None
@@ -33,6 +33,7 @@ class KiduRegistration(Document):
 		kidu_sub_type: DF.Link | None
 		kidu_type: DF.Link
 		member: DF.Table[Member]
+		organization: DF.Link | None
 		rc: DF.Data | None
 		registration_date: DF.Date
 		registration_no: DF.Data | None

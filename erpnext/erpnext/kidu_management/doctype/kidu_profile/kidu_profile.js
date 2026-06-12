@@ -66,6 +66,13 @@
             });
 
             // Populate Profile fields
+            frm.set_df_property('emergency_contact_no', 'hidden', 1);
+            if(frm.doc.application_mode==='Organization' || frm.doc.application_mode==='Group'){
+                frm.set_df_property('photo', 'reqd', 0);
+                frm.set_df_property('photo', 'hidden', 1);
+            }else{
+                frm.set_df_property('photo', 'reqd', 1);
+                frm.set_df_property('photo', 'hidden', 0);            }
             frm.set_value('cid', reg.cid || '');
             frm.set_value('full_name', reg.full_name || '');
             frm.set_value('dob', reg.dob || '');
@@ -81,6 +88,8 @@
             frm.set_value('gewog', reg.gewog || '');
             frm.set_value('village', reg.village || '');
             frm.set_value('kidu_sub_type', reg.kidu_sub_type || '');
+            frm.set_value('organization', reg.organization || '');
+
 
             // Clear existing child table rows
     frm.clear_table('member'); // 'members' = your child table fieldname
