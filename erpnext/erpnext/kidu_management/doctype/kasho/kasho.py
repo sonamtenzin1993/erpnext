@@ -275,9 +275,16 @@ def generate_kasho_no(kasho_type_code, institution_code, recipient_count,kasho_i
     date_part = kasho_issued_date_converted.strftime("%y%m%d")
     kasho_type_code = f"{int(kasho_type_code):02d}"
 
+    # total_count_kasho_on_that_date = frappe.db.count(
+    #     "Kasho",
+    #     filters={"issue_date": ["like", f"{kasho_issued_date_converted}%"]}
+    # )
     total_count_kasho_on_that_date = frappe.db.count(
         "Kasho",
-        filters={"issue_date": ["like", f"{kasho_issued_date_converted}%"]}
+        filters={
+            "issue_date": kasho_issued_date_converted,
+            "document_type": "Kasho"
+        }
     )
     next_serial = total_count_kasho_on_that_date + 1
     serial_part = f"{next_serial:03d}"
