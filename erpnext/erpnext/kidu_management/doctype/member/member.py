@@ -15,7 +15,7 @@ class Member(Document):
 		from frappe.types import DF
 
 		cid: DF.Data
-		contact_no: DF.Phone
+		contact_no: DF.Data
 		dob: DF.Date
 		dzongkhag: DF.Data
 		full_name: DF.Data

@@ -57,8 +57,7 @@
    "fieldname": "end_term",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "End Term",
-   "reqd": 1
+   "label": "End Term"
   },
   {
    "fieldname": "duration",
@@ -78,7 +77,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-05-26 16:51:06.848059",
+ "modified": "2026-06-18 13:14:19.892095",
  "modified_by": "Administrator",
  "module": "Leadership Archival",
  "name": "Leadership Appointment",

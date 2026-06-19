@@ -89,6 +89,7 @@
             frm.set_value('village', reg.village || '');
             frm.set_value('kidu_sub_type', reg.kidu_sub_type || '');
             frm.set_value('organization', reg.organization || '');
+            frm.set_value('is_soelra', reg.is_soelra || 0);
 
 
             // Clear existing child table rows

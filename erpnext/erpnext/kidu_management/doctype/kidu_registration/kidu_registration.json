@@ -19,6 +19,7 @@
   "gewog",
   "village",
   "kidu_type",
+  "is_soelra",
   "kidu_sub_type",
   "application_channel",
   "rc",
@@ -137,7 +138,7 @@
   {
    "allow_on_submit": 1,
    "fieldname": "contact_no",
-   "fieldtype": "Phone",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Contact No"
@@ -166,7 +167,7 @@
    "allow_on_submit": 1,
    "fetch_if_empty": 1,
    "fieldname": "emergency_contact_no",
-   "fieldtype": "Phone",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Emergency Contact No"
   },
@@ -175,12 +176,18 @@
    "fieldtype": "Link",
    "label": "Organization",
    "options": "Organization"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_soelra",
+   "fieldtype": "Check",
+   "label": "Is Soelra"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-08 15:57:49.818037",
+ "modified": "2026-06-18 17:00:46.682438",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Kidu Registration",

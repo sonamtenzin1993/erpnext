@@ -8,14 +8,15 @@ frappe.ui.form.on("Kidu Registration", {
 	refresh(frm) {
         toggle_fields(frm);
 
-        if (frm.doc.kidu_type === 'Land') {
+        if (frm.doc.kidu_type === 'Land' && !frm.doc.is_soelra) {
             frm.set_df_property('kidu_sub_type', 'hidden', 0);
-             frm.set_df_property('kidu_sub_type', 'reqd', 1);
+            frm.set_df_property('kidu_sub_type', 'reqd', 1);
         } else {
             frm.set_df_property('kidu_sub_type', 'hidden', 1);
             frm.set_df_property('kidu_sub_type', 'reqd', 0);
         }
 	},
+
     onload(frm){
        if (frm.doc.kidu_type === 'Land') {
             frm.set_df_property('kidu_sub_type', 'hidden', 0);
@@ -26,6 +27,7 @@ frappe.ui.form.on("Kidu Registration", {
 }
 
     },
+
     cid:function(frm){
         if(frm.doc.cid.length==11){
             frappe.call({
@@ -49,6 +51,10 @@ frappe.ui.form.on("Kidu Registration", {
                         frm.set_value('dzongkhag',r.message.dzongkhagName);
                         frm.set_value('gewog',r.message.gewogName);
                         frm.set_value('village',r.message.villageName);
+                        
+                        if (r.message.mobileNumber) {
+                         frm.set_value('contact_no',r.message.mobileNumber);
+                        }
                     } else {
                         frappe.msgprint("No Land found");
                         frm.set_df_property('kidu_sub_type', 'hidden', 1);
@@ -57,6 +63,7 @@ frappe.ui.form.on("Kidu Registration", {
             });
         }
     },
+
     kidu_type:function (frm){
         let selected_kidu_type = frm.doc.kidu_type;
         // frm.trigger('toggle_child_table_visibility');
@@ -91,7 +98,6 @@ frappe.ui.form.on("Kidu Registration", {
     },
 });
 
-
 frappe.ui.form.on("Member", {  // Replace with your child table DocType
     cid: function(frm, cdt, cdn) {
         let row = locals[cdt][cdn];
@@ -121,8 +127,7 @@ frappe.ui.form.on("Member", {  // Replace with your child table DocType
                         let name = [r.message.firstName, r.message.middleName, r.message.lastName]
                             .filter(Boolean)
                             .join(" ");
-                        row.full_name = name;
-
+                        row.full_name = name; 
                         // Date of birth formatting
                         if (r.message.dob) {
                             let parts = r.message.dob.split("/");
@@ -133,14 +138,13 @@ frappe.ui.form.on("Member", {  // Replace with your child table DocType
                                 row.dob = r.message.dob;
                             }
                         }
-
                         // Gender
                         row.gender = r.message.gender === 'M' ? 'Male' : 'Female';
-
                         // Other fields
                         row.dzongkhag = r.message.dzongkhagName; 
                         row.gewog = r.message.gewogName; 
                         row.village = r.message.villageName; 
+                        row.contact_no = r.message.mobileNumber; 
                         frappe.call({
                             method: "erpnext.kidu_management.doctype.kidu_profile.kidu_profile.fetch_citizen_photo_base64",
                             args: {

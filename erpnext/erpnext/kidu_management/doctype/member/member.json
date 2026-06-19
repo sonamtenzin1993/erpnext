@@ -76,7 +76,7 @@
   },
   {
    "fieldname": "contact_no",
-   "fieldtype": "Phone",
+   "fieldtype": "Data",
    "label": "Contact No",
    "reqd": 1
   }
@@ -84,7 +84,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-10-31 10:47:46.469490",
+ "modified": "2026-06-18 16:55:41.317913",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Member",

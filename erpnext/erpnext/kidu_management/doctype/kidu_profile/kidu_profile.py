@@ -31,14 +31,15 @@ class KiduProfile(Document):
 		batch_no: DF.Link | None
 		brief_background: DF.TextEditor
 		cid: DF.Data | None
-		contact_no: DF.Phone | None
+		contact_no: DF.Data | None
 		dob: DF.Date | None
 		dzongkhag: DF.Data | None
-		emergency_contact_no: DF.Phone | None
+		emergency_contact_no: DF.Data | None
 		full_name: DF.Data | None
 		gender: DF.Link | None
 		gewog: DF.Data | None
 		ground_for_decision: DF.Text | None
+		is_soelra: DF.Check
 		kidu_sub_type: DF.Link | None
 		kidu_type: DF.Link | None
 		land_size: DF.Data | None

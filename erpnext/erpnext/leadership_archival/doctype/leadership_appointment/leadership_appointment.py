@@ -18,7 +18,7 @@ class LeadershipAppointment(Document):
 		conferred_by: DF.Link
 		duration: DF.Int
 		employee_status: DF.Link | None
-		end_term: DF.Date
+		end_term: DF.Date | None
 		organization: DF.Link
 		parent: DF.Data
 		parentfield: DF.Data

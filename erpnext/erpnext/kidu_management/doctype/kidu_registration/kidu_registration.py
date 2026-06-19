@@ -23,13 +23,14 @@ class KiduRegistration(Document):
 		application_channel: DF.Link
 		application_mode: DF.Link
 		cid: DF.Data | None
-		contact_no: DF.Phone | None
+		contact_no: DF.Data | None
 		dob: DF.Date | None
 		dzongkhag: DF.Data | None
-		emergency_contact_no: DF.Phone | None
+		emergency_contact_no: DF.Data | None
 		full_name: DF.Data | None
 		gender: DF.Link | None
 		gewog: DF.Data | None
+		is_soelra: DF.Check
 		kidu_sub_type: DF.Link | None
 		kidu_type: DF.Link
 		member: DF.Table[Member]
