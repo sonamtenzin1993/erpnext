@@ -17,6 +17,7 @@ class KiduRecipient(Document):
 		cid: DF.Data | None
 		dzongkhag: DF.Data
 		full_name: DF.Data
+		kidu_registration_no: DF.Link | None
 		land_size_acres: DF.Float
 		parent: DF.Data
 		parentfield: DF.Data
