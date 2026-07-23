@@ -19,7 +19,7 @@ class KiduRegistration(Document):
 		from frappe.types import DF
 
 		amended_from: DF.Link | None
-		application: DF.Attach
+		application: DF.Attach | None
 		application_channel: DF.Link
 		application_mode: DF.Link
 		cid: DF.Data | None
@@ -93,6 +93,7 @@ class KiduRegistration(Document):
 			"MEDICAL REFERRAL": "MF",
    			"STAY PERMIT": "SP",
 			"VISA": "VISA",
+			"PASSPORT": "PP"
 		}
 		
 		prefix = prefix_map.get(kidu_type, "MISC")

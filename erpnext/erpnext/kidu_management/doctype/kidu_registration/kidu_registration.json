@@ -133,8 +133,7 @@
    "allow_on_submit": 1,
    "fieldname": "application",
    "fieldtype": "Attach",
-   "label": "Application",
-   "reqd": 1
+   "label": "Application"
   },
   {
    "allow_on_submit": 1,
@@ -188,7 +187,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-19 11:13:29.856740",
+ "modified": "2026-07-23 10:44:02.313690",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Kidu Registration",
