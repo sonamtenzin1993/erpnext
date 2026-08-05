@@ -54,6 +54,8 @@ frappe.ui.form.on("Kidu Registration", {
                         
                         if (r.message.mobileNumber) {
                          frm.set_value('contact_no',r.message.mobileNumber);
+                        }else{
+                            frm.set_value('contact_no','');
                         }
                     } else {
                         frappe.msgprint("No Land found");
@@ -213,19 +215,15 @@ function toggle_fields(frm) {
     let application_mode = frm.doc.application_mode; // Assuming you have a field to determine type
 
 
-    // 🔥 FORCE CLEAR FIRST
+    // // 🔥 FORCE CLEAR FIRST
 
-    frm.set_value('emergency_contact_no', '');
-    // THEN set actual value from doc
-    if (frm.doc.emergency_contact_no) {
-        frm.set_value('emergency_contact_no', frm.doc.emergency_contact_no);
-    }
+    // frm.set_value('emergency_contact_no', '');
+    // // THEN set actual value from doc
+    // if (frm.doc.emergency_contact_no) {
+    //     frm.set_value('emergency_contact_no', frm.doc.emergency_contact_no);
+    // }
     
-    
-    
-
-
-    frm.refresh_field('emergency_contact_no');
+    // frm.refresh_field('emergency_contact_no');
     if (application_mode === 'Individual') {
         frm.set_df_property('cid', 'hidden', 0);
         frm.set_df_property('full_name', 'hidden', 0);
