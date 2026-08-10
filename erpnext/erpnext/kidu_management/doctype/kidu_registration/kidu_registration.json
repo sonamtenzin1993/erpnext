@@ -144,6 +144,7 @@
    "label": "Contact No"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "kidu_sub_type",
    "fieldtype": "Link",
    "label": "Kidu Sub Type",
@@ -187,7 +188,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-08-05 16:08:10.658316",
+ "modified": "2026-08-07 10:08:55.675461",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Kidu Registration",

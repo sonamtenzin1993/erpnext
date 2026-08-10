@@ -48,6 +48,7 @@
    "precision": "4"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "kidu_registration_no",
    "fieldtype": "Link",
    "label": "Kidu Registration No",
@@ -57,7 +58,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-06-19 15:36:41.259015",
+ "modified": "2026-08-06 16:44:33.646605",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Kidu Recipient",

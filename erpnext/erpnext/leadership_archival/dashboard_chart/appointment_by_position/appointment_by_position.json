@@ -1,0 +1,33 @@
+{
+ "chart_name": "Appointment By Position",
+ "chart_type": "Report",
+ "creation": "2026-08-10 15:13:40.127470",
+ "custom_options": "{\n    \"colors\": [\"#2E7D32\"],\n    \"height\": \"400\",\n    \"axisOptions\": {\n        \"yAxisStep\": 20\n    }\n}",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2026-08-10 15:33:32.086398",
+ "modified_by": "Administrator",
+ "module": "Leadership Archival",
+ "name": "Appointment By Position",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Appointment By Position",
+ "roles": [],
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "x_field": "position",
+ "y_axis": [
+  {
+   "y_field": "total_appointment"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "chart_name": "Award by Medal",
+ "chart_type": "Report",
+ "creation": "2026-08-10 11:43:15.268779",
+ "custom_options": "",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 7,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2026-08-10 15:35:51.678470",
+ "modified_by": "Administrator",
+ "module": "Leadership Archival",
+ "name": "Award by Medal",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Award By Medal",
+ "roles": [],
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Donut",
+ "use_report_chart": 0,
+ "x_field": "medal_name",
+ "y_axis": [
+  {
+   "y_field": "total_medal"
+  }
+ ]
+}

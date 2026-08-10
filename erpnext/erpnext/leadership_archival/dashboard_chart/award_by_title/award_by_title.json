@@ -1,0 +1,32 @@
+{
+ "chart_name": "Award By Title",
+ "chart_type": "Report",
+ "creation": "2026-08-07 13:55:33.188806",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 1,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2026-08-07 14:15:38.438039",
+ "modified_by": "Administrator",
+ "module": "Leadership Archival",
+ "name": "Award By Title",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Award Master Report",
+ "roles": [],
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Line",
+ "use_report_chart": 0,
+ "x_field": "organization",
+ "y_axis": [
+  {
+   "y_field": "profile"
+  }
+ ]
+}
