@@ -1,0 +1,204 @@
+app_name = "apex_dashboard"
+app_title = "Apex Char Dashboard"
+app_publisher = "Sonam Tenzin"
+app_description = "Chart"
+app_email = "stenzin@ogz.bt"
+app_license = "mit"
+# Apps
+# ------------------
+
+# required_apps = []
+
+# Each item in the list will be shown as an app in the apps page
+# add_to_apps_screen = [
+# 	{
+# 		"name": "apex_dashboard",
+# 		"logo": "/assets/apex_dashboard/logo.png",
+# 		"title": "Apex Char Dashboard",
+# 		"route": "/apex_dashboard",
+# 		"has_permission": "apex_dashboard.api.permission.has_app_permission"
+# 	}
+# ]
+
+# Includes in <head>
+# ------------------
+
+# include js, css files in header of desk.html
+# app_include_css = "/assets/apex_dashboard/css/apex_dashboard.css"
+#app_include_js = "/assets/apex_dashboard/js/apex_dashboard.js"
+app_include_js = [
+    "apex_dashboard.bundle.js"
+]
+
+# Jinja
+# ----------
+
+# add methods and filters to jinja environment
+# jinja = {
+# 	"methods": "apex_dashboard.utils.jinja_methods",
+# 	"filters": "apex_dashboard.utils.jinja_filters"
+# }
+
+# Installation
+# ------------
+
+# before_install = "apex_dashboard.install.before_install"
+# after_install = "apex_dashboard.install.after_install"
+
+# Uninstallation
+# ------------
+
+# before_uninstall = "apex_dashboard.uninstall.before_uninstall"
+# after_uninstall = "apex_dashboard.uninstall.after_uninstall"
+
+# Integration Setup
+# ------------------
+# To set up dependencies/integrations with other apps
+# Name of the app being installed is passed as an argument
+
+# before_app_install = "apex_dashboard.utils.before_app_install"
+# after_app_install = "apex_dashboard.utils.after_app_install"
+
+# Integration Cleanup
+# -------------------
+# To clean up dependencies/integrations with other apps
+# Name of the app being uninstalled is passed as an argument
+
+# before_app_uninstall = "apex_dashboard.utils.before_app_uninstall"
+# after_app_uninstall = "apex_dashboard.utils.after_app_uninstall"
+
+# Desk Notifications
+# ------------------
+# See frappe.core.notifications.get_notification_config
+
+# notification_config = "apex_dashboard.notifications.get_notification_config"
+
+# Permissions
+# -----------
+# Permissions evaluated in scripted ways
+
+# permission_query_conditions = {
+# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
+# }
+#
+# has_permission = {
+# 	"Event": "frappe.desk.doctype.event.event.has_permission",
+# }
+
+# DocType Class
+# ---------------
+# Override standard doctype classes
+
+# override_doctype_class = {
+# 	"ToDo": "custom_app.overrides.CustomToDo"
+# }
+
+# Document Events
+# ---------------
+# Hook on document methods and events
+
+# doc_events = {
+# 	"*": {
+# 		"on_update": "method",
+# 		"on_cancel": "method",
+# 		"on_trash": "method"
+# 	}
+# }
+
+# Scheduled Tasks
+# ---------------
+
+# scheduler_events = {
+# 	"all": [
+# 		"apex_dashboard.tasks.all"
+# 	],
+# 	"daily": [
+# 		"apex_dashboard.tasks.daily"
+# 	],
+# 	"hourly": [
+# 		"apex_dashboard.tasks.hourly"
+# 	],
+# 	"weekly": [
+# 		"apex_dashboard.tasks.weekly"
+# 	],
+# 	"monthly": [
+# 		"apex_dashboard.tasks.monthly"
+# 	],
+# }
+
+# Testing
+# -------
+
+# before_tests = "apex_dashboard.install.before_tests"
+
+# Overriding Methods
+# ------------------------------
+#
+# override_whitelisted_methods = {
+# 	"frappe.desk.doctype.event.event.get_events": "apex_dashboard.event.get_events"
+# }
+#
+# each overriding function accepts a `data` argument;
+# generated from the base implementation of the doctype dashboard,
+# along with any modifications made in other Frappe apps
+# override_doctype_dashboards = {
+# 	"Task": "apex_dashboard.task.get_dashboard_data"
+# }
+
+# exempt linked doctypes from being automatically cancelled
+#
+# auto_cancel_exempted_doctypes = ["Auto Repeat"]
+
+# Ignore links to specified DocTypes when deleting documents
+# -----------------------------------------------------------
+
+# ignore_links_on_delete = ["Communication", "ToDo"]
+
+# Request Events
+# ----------------
+# before_request = ["apex_dashboard.utils.before_request"]
+# after_request = ["apex_dashboard.utils.after_request"]
+
+# Job Events
+# ----------
+# before_job = ["apex_dashboard.utils.before_job"]
+# after_job = ["apex_dashboard.utils.after_job"]
+
+# User Data Protection
+# --------------------
+
+# user_data_fields = [
+# 	{
+# 		"doctype": "{doctype_1}",
+# 		"filter_by": "{filter_by}",
+# 		"redact_fields": ["{field_1}", "{field_2}"],
+# 		"partial": 1,
+# 	},
+# 	{
+# 		"doctype": "{doctype_2}",
+# 		"filter_by": "{filter_by}",
+# 		"partial": 1,
+# 	},
+# 	{
+# 		"doctype": "{doctype_3}",
+# 		"strict": False,
+# 	},
+# 	{
+# 		"doctype": "{doctype_4}"
+# 	}
+# ]
+
+# Authentication and authorization
+# --------------------------------
+
+# auth_hooks = [
+# 	"apex_dashboard.auth.validate"
+# ]
+
+# Automatically update python controller files with type annotations for this app.
+# export_python_type_annotations = True
+
+# default_log_clearing_doctypes = {
+# 	"Logging DocType Name": 30  # days to retain logs
+# }
+
