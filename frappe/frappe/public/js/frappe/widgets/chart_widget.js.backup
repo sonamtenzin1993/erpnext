@@ -524,84 +524,15 @@ export default class ChartWidget extends Widget {
 	}
 
 	async render() {
-		// let setup_dashboard_chart = () => {
-		// 	const chart_args = this.get_chart_args();
-
-		// 	if (!this.dashboard_chart) {
-		// 		this.dashboard_chart = frappe.utils.make_chart(this.chart_wrapper[0], chart_args);
-		// 	} else {
-		// 		this.dashboard_chart.update(this.data);
-		// 	}
-		// 	if (window.ApexDashboardRenderer) {
-
-		// 		console.log(
-		// 			"Using ApexCharts for Dashboard Chart:",
-		// 			this.chart_doc.name
-		// 		);
-
-		// 		this.dashboard_chart =
-		// 			window.ApexDashboardRenderer.render(
-		// 				this.chart_wrapper[0],
-		// 				chart_args
-		// 			);
-
-		// 	} else {
-
-		// 		console.warn(
-		// 			"ApexDashboardRenderer not loaded. Using Frappe Chart."
-		// 		);
-
-		// 		if (!this.dashboard_chart) {
-		// 			this.dashboard_chart =
-		// 				frappe.utils.make_chart(
-		// 					this.chart_wrapper[0],
-		// 					chart_args
-		// 				);
-		// 		} else {
-		// 			this.dashboard_chart.update(this.data);
-		// 		}
-		// 	}
-		// };
-
 		let setup_dashboard_chart = () => {
-    const chart_args = this.get_chart_args();
+			const chart_args = this.get_chart_args();
 
-    console.log(
-        "Using ApexCharts for Dashboard Chart:",
-        this.chart_doc.name
-    );
-
-    console.log(
-        "Apex chart args:",
-        chart_args
-    );
-
-    if (
-        window.ApexDashboardRenderer &&
-        typeof window.ApexDashboardRenderer.render === "function"
-    ) {
-        const container = this.chart_wrapper?.[0];
-
-        if (!container) {
-            console.error(
-                "ApexCharts: chart container not found"
-            );
-            return;
-        }
-
-        this.dashboard_chart =
-            window.ApexDashboardRenderer.render(
-                container,
-                chart_args
-            );
-
-        return;
-    }
-
-    console.error(
-        "ApexDashboardRenderer is not loaded"
-    );
-};
+			if (!this.dashboard_chart) {
+				this.dashboard_chart = frappe.utils.make_chart(this.chart_wrapper[0], chart_args);
+			} else {
+				this.dashboard_chart.update(this.data);
+			}
+		};
 
 		if (!this.data || !this.data.labels || !Object.keys(this.data).length) {
 			this.chart_wrapper.hide();
@@ -624,7 +555,6 @@ export default class ChartWidget extends Widget {
 			this.chart_doc.type == "Heatmap" && this.render_heatmap_legend();
 		}
 	}
-	
 
 	get_chart_args() {
 		let colors = this.get_chart_colors();

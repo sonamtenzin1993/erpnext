@@ -1,0 +1,21 @@
+.dashboard-chart .chart-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    height: auto !important;
+    min-height: 400px !important;
+}
+
+.dashboard-chart .chart-container svg.frappe-chart {
+    flex-shrink: 0 !important;
+}
+
+.dashboard-chart .chart-legend {
+    position: static !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-top: 20px !important;
+}
