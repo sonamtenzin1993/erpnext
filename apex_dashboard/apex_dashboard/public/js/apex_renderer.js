@@ -12,25 +12,73 @@
             console.log("Chart data:", config.data);
             console.log("Chart colors:", config.colors);
 
+            /*
+             * =====================================================
+             * NORMALIZE CHART TYPE
+             * =====================================================
+             */
+
+            const chartType =
+                String(config.type || "bar").toLowerCase();
+
+            console.log(
+                "Normalized chart type:",
+                chartType
+            );
+
+            /*
+             * =====================================================
+             * CHECK CONTAINER
+             * =====================================================
+             */
+
             if (!container) {
-                console.error("ApexCharts container not found");
+
+                console.error(
+                    "ApexCharts container not found"
+                );
+
                 return;
             }
 
-            if (typeof window.ApexCharts === "undefined") {
-                console.error("ApexCharts library is not loaded");
+            /*
+             * =====================================================
+             * CHECK APEXCHARTS
+             * =====================================================
+             */
+
+            if (
+                typeof window.ApexCharts ===
+                "undefined"
+            ) {
+
+                console.error(
+                    "ApexCharts library is not loaded"
+                );
+
                 return;
             }
+
+            /*
+             * =====================================================
+             * CLEAR CONTAINER
+             * =====================================================
+             */
 
             container.innerHTML = "";
 
-            const chart_element = document.createElement("div");
+            const chart_element =
+                document.createElement("div");
 
-            chart_element.style.width = "100%";
+            chart_element.style.width =
+                "100%";
+
             chart_element.style.height =
-                (config.height || 400) + "px";
+                (config.height || 500) + "px";
 
-            container.appendChild(chart_element);
+            container.appendChild(
+                chart_element
+            );
 
             let series = [];
             let labels = [];
@@ -48,10 +96,13 @@
                     config.data
                 );
 
-                labels = config.data.labels || [];
+                labels =
+                    config.data.labels || [];
 
                 /*
-                 * Frappe format:
+                 * =================================================
+                 * DATASETS FORMAT
+                 * =================================================
                  *
                  * datasets: [
                  *     {
@@ -59,6 +110,7 @@
                  *         values: [10, 20, 30]
                  *     }
                  * ]
+                 *
                  */
 
                 if (
@@ -66,52 +118,84 @@
                     config.data.datasets.length
                 ) {
 
-                    series = config.data.datasets.map(
-                        dataset => {
+                    series =
+                        config.data.datasets.map(
+                            dataset => {
 
-                            return {
-                                name: dataset.name || "Value",
-                                data: dataset.values || []
-                            };
+                                return {
+                                    name:
+                                        dataset.name ||
+                                        "Value",
 
-                        }
-                    );
+                                    data:
+                                        dataset.values ||
+                                        []
+                                };
+
+                            }
+                        );
 
                 }
 
                 /*
-                 * Alternative format:
+                 * =================================================
+                 * SIMPLE VALUES FORMAT
+                 * =================================================
                  *
                  * {
                  *     labels: [],
                  *     values: []
                  * }
+                 *
                  */
 
-                else if (config.data.values) {
+                else if (
+                    config.data.values
+                ) {
 
                     series = [
                         {
                             name: "Value",
-                            data: config.data.values
+
+                            data:
+                                config.data.values
                         }
                     ];
 
                 }
+
             }
 
             /*
              * =====================================================
-             * FALLBACK
+             * FALLBACK SERIES
              * =====================================================
              */
 
-            if (!series.length && config.series) {
-                series = config.series;
+            if (
+                !series.length &&
+                config.series
+            ) {
+
+                series =
+                    config.series;
+
             }
 
-            if (!labels.length && config.labels) {
-                labels = config.labels;
+            /*
+             * =====================================================
+             * FALLBACK LABELS
+             * =====================================================
+             */
+
+            if (
+                !labels.length &&
+                config.labels
+            ) {
+
+                labels =
+                    config.labels;
+
             }
 
             /*
@@ -121,8 +205,8 @@
              */
 
             if (
-                config.type === "pie" ||
-                config.type === "donut"
+                chartType === "pie" ||
+                chartType === "donut"
             ) {
 
                 /*
@@ -147,7 +231,9 @@
                 ) {
 
                     series =
-                        config.data.datasets[0].values || [];
+                        config.data
+                            .datasets[0]
+                            .values || [];
 
                 }
 
@@ -156,9 +242,11 @@
                     config.data.values
                 ) {
 
-                    series = config.data.values;
+                    series =
+                        config.data.values;
 
                 }
+
             }
 
             /*
@@ -183,12 +271,14 @@
                 if (
                     Array.isArray(series) &&
                     series.length &&
-                    typeof series[0] !== "object"
+                    typeof series[0] !==
+                        "object"
                 ) {
 
                     series = [
                         {
                             name: "Value",
+
                             data: series
                         }
                     ];
@@ -196,6 +286,12 @@
                 }
 
             }
+
+            /*
+             * =====================================================
+             * DEBUG DATA
+             * =====================================================
+             */
 
             console.log(
                 "Apex labels:",
@@ -215,28 +311,65 @@
 
             const options = {
 
+                /*
+                 * =================================================
+                 * CHART
+                 * =================================================
+                 */
+
                 chart: {
-                    type: config.type || "bar",
-                    height: config.height || 400,
+
+                    type:
+                        chartType,
+                    height:
+                        config.height || 500,
 
                     toolbar: {
-                        show: true
+                        show: false
                     }
+
                 },
 
-                series: series,
+                /*
+                 * =================================================
+                 * SERIES
+                 * =================================================
+                 */
 
-                labels: labels,
+                series:
+                    series,
+
+                /*
+                 * =================================================
+                 * LABELS
+                 * =================================================
+                 */
+
+                labels:
+                    labels,
+
+                /*
+                 * =================================================
+                 * COLORS
+                 * =================================================
+                 */
 
                 colors:
-                    Array.isArray(config.colors) &&
+
+                    Array.isArray(
+                        config.colors
+                    ) &&
                     config.colors.length
+
                         ? config.colors.filter(
                             color =>
-                                typeof color === "string" &&
+                                typeof color ===
+                                    "string" &&
                                 color.trim()
                         )
+
                         : [
+
                             "#F683AE",
                             "#318AD8",
                             "#48BB74",
@@ -249,12 +382,28 @@
 
                 /*
                  * =================================================
+                 * WHITE PIE / DONUT BORDER
+                 * =================================================
+                 */
+
+                stroke: {
+                    // show: false
+                    show: chartType === "line",
+                            width: chartType === "line" ? 3 : 0,
+                            curve:"straight"
+                },
+
+                /*
+                 * =================================================
                  * X AXIS
                  * =================================================
                  */
 
                 xaxis: {
-                    categories: labels
+
+                    categories:
+                        labels
+
                 },
 
                 /*
@@ -264,8 +413,10 @@
                  */
 
                 dataLabels: {
+
                     enabled:
                         config.dataLabels !== false
+
                 },
 
                 /*
@@ -275,11 +426,14 @@
                  */
 
                 legend: {
+
                     show:
                         config.legend !== false,
 
                     position:
-                        config.legendPosition || "right"
+                        config.legendPosition ||
+                        "right"
+
                 },
 
                 /*
@@ -289,30 +443,12 @@
                  */
 
                 tooltip: {
+
                     enabled: true
+
                 }
 
             };
-
-            /*
-             * =====================================================
-             * DONUT
-             * =====================================================
-             */
-
-            if (config.type === "donut") {
-                options.chart.type = "donut";
-            }
-
-            /*
-             * =====================================================
-             * PIE
-             * =====================================================
-             */
-
-            if (config.type === "pie") {
-                options.chart.type = "pie";
-            }
 
             /*
              * =====================================================
@@ -320,24 +456,62 @@
              * =====================================================
              */
 
-            if (config.type === "bar") {
+            if (
+    chartType === "bar"
+) {
 
-                options.plotOptions = {
+    options.plotOptions = {
 
-                    bar: {
+        bar: {
 
-                        horizontal:
-                            config.horizontal === true,
+            horizontal: false,
 
-                        columnWidth: "55%",
+            columnWidth:
+                "55%",
 
-                        borderRadius: 4
+            borderRadius: 1
 
-                    }
+        }
 
-                };
+    };
+
+}
+
+            /*
+             * =====================================================
+             * PIE
+             * =====================================================
+             */
+
+            if (
+                chartType === "pie"
+            ) {
+
+                options.chart.type =
+                    "pie";
 
             }
+
+            /*
+             * =====================================================
+             * DONUT
+             * =====================================================
+             */
+
+            if (
+                chartType === "donut"
+            ) {
+
+                options.chart.type =
+                    "donut";
+
+            }
+
+            /*
+             * =====================================================
+             * DEBUG FINAL OPTIONS
+             * =====================================================
+             */
 
             console.log(
                 "ApexCharts final options:",
@@ -346,7 +520,7 @@
 
             /*
              * =====================================================
-             * CREATE CHART
+             * CREATE APEXCHART
              * =====================================================
              */
 
@@ -356,6 +530,12 @@
                     options
                 );
 
+            /*
+             * =====================================================
+             * RENDER
+             * =====================================================
+             */
+
             chart.render();
 
             return chart;
@@ -364,6 +544,12 @@
 
     };
 
+    /*
+     * =========================================================
+     * LOADED
+     * =========================================================
+     */
+
     console.log(
         "Apex Dashboard Renderer loaded"
     );
@@ -371,6 +557,5 @@
     console.log(
         "Tested"
     );
-    
 
 })();

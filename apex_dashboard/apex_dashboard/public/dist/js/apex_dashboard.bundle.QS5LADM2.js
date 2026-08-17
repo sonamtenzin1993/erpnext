@@ -46369,19 +46369,30 @@
         console.log("Chart type:", config.type);
         console.log("Chart data:", config.data);
         console.log("Chart colors:", config.colors);
+        const chartType = String(config.type || "bar").toLowerCase();
+        console.log(
+          "Normalized chart type:",
+          chartType
+        );
         if (!container) {
-          console.error("ApexCharts container not found");
+          console.error(
+            "ApexCharts container not found"
+          );
           return;
         }
         if (typeof window.ApexCharts === "undefined") {
-          console.error("ApexCharts library is not loaded");
+          console.error(
+            "ApexCharts library is not loaded"
+          );
           return;
         }
         container.innerHTML = "";
         const chart_element = document.createElement("div");
         chart_element.style.width = "100%";
-        chart_element.style.height = (config.height || 400) + "px";
-        container.appendChild(chart_element);
+        chart_element.style.height = (config.height || 500) + "px";
+        container.appendChild(
+          chart_element
+        );
         let series = [];
         let labels = [];
         if (config.data) {
@@ -46414,7 +46425,7 @@
         if (!labels.length && config.labels) {
           labels = config.labels;
         }
-        if (config.type === "pie" || config.type === "donut") {
+        if (chartType === "pie" || chartType === "donut") {
           if (config.data && config.data.datasets && config.data.datasets.length) {
             series = config.data.datasets[0].values || [];
           } else if (config.data && config.data.values) {
@@ -46440,15 +46451,17 @@
         );
         const options2 = {
           chart: {
-            type: config.type || "bar",
-            height: config.height || 400,
+            type: chartType,
+            height: config.height || 500,
             toolbar: {
-              show: true
+              show: false
             }
           },
           series,
           labels,
-          colors: Array.isArray(config.colors) && config.colors.length ? config.colors.filter(
+          colors: Array.isArray(
+            config.colors
+          ) && config.colors.length ? config.colors.filter(
             (color) => typeof color === "string" && color.trim()
           ) : [
             "#F683AE",
@@ -46460,6 +46473,11 @@
             "#20B2AA",
             "#D2691E"
           ],
+          stroke: {
+            show: chartType === "line",
+            width: chartType === "line" ? 3 : 0,
+            curve: "straight"
+          },
           xaxis: {
             categories: labels
           },
@@ -46474,20 +46492,20 @@
             enabled: true
           }
         };
-        if (config.type === "donut") {
-          options2.chart.type = "donut";
-        }
-        if (config.type === "pie") {
-          options2.chart.type = "pie";
-        }
-        if (config.type === "bar") {
+        if (chartType === "bar") {
           options2.plotOptions = {
             bar: {
-              horizontal: config.horizontal === true,
+              horizontal: false,
               columnWidth: "55%",
-              borderRadius: 4
+              borderRadius: 1
             }
           };
+        }
+        if (chartType === "pie") {
+          options2.chart.type = "pie";
+        }
+        if (chartType === "donut") {
+          options2.chart.type = "donut";
         }
         console.log(
           "ApexCharts final options:",
@@ -46503,6 +46521,9 @@
     };
     console.log(
       "Apex Dashboard Renderer loaded"
+    );
+    console.log(
+      "Tested"
     );
   })();
 
@@ -46528,4 +46549,4 @@
  *                       alignment; always smooth and non-self-intersecting,
  *                       at the cost of throwing away curve smoothness.
  */
-//# sourceMappingURL=apex_dashboard.bundle.OVPHHTBO.js.map
+//# sourceMappingURL=apex_dashboard.bundle.QS5LADM2.js.map
