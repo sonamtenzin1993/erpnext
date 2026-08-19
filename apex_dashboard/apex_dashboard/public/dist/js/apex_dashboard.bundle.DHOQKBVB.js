@@ -46441,6 +46441,33 @@
             ];
           }
         }
+        if (chartType === "pie" || chartType === "donut") {
+          const grouped = {};
+          labels.forEach(
+            (label, index) => {
+              if (!label) {
+                return;
+              }
+              const value = Number(series[index] || 0);
+              if (grouped[label] === void 0) {
+                grouped[label] = 0;
+              }
+              grouped[label] += value;
+            }
+          );
+          labels = Object.keys(grouped);
+          series = labels.map(
+            (label) => grouped[label]
+          );
+          console.log(
+            "Grouped labels:",
+            labels
+          );
+          console.log(
+            "Grouped series:",
+            series
+          );
+        }
         console.log(
           "Apex labels:",
           labels
@@ -46455,6 +46482,87 @@
             height: config.height || 500,
             toolbar: {
               show: false
+            },
+            events: {
+              dataPointSelection: function(event, chartContext, chartConfig) {
+                if (chartType !== "pie" && chartType !== "donut") {
+                  return;
+                }
+                const index = chartConfig.dataPointIndex;
+                if (index < 0) {
+                  return;
+                }
+                const label = labels[index];
+                const value = series[index];
+                console.log(
+                  "========== PIE CLICK =========="
+                );
+                console.log(
+                  "Index:",
+                  index
+                );
+                console.log(
+                  "Label:",
+                  label
+                );
+                console.log(
+                  "Value:",
+                  value
+                );
+                const clickAction = config.clickAction;
+                if (!clickAction) {
+                  console.log("No clickAction configured");
+                  return;
+                }
+                console.log(
+                  "Click Action:",
+                  clickAction
+                );
+                if (clickAction.type === "report") {
+                  const reportName = clickAction.report;
+                  const filterField = clickAction.field;
+                  const filterValue2 = clickAction.values ? clickAction.values[index] : label;
+                  console.log(
+                    "Opening Report:",
+                    reportName
+                  );
+                  console.log(
+                    "Filter:",
+                    filterField,
+                    "=",
+                    filterValue2
+                  );
+                  frappe.set_route(
+                    "query-report",
+                    reportName
+                  );
+                  setTimeout(() => {
+                    if (!frappe.query_report) {
+                      console.error(
+                        "frappe.query_report not available"
+                      );
+                      return;
+                    }
+                    console.log(
+                      "Applying filter:",
+                      filterField,
+                      "=",
+                      filterValue2
+                    );
+                    frappe.query_report.set_filter_value(
+                      filterField,
+                      filterValue2
+                    );
+                    frappe.query_report.refresh();
+                  }, 1e3);
+                  return;
+                }
+                console.log(
+                  "Click Action:",
+                  clickAction
+                );
+                const filterValue = clickAction.values ? clickAction.values[index] : label;
+              }
             }
           },
           series,
@@ -46549,4 +46657,4 @@
  *                       alignment; always smooth and non-self-intersecting,
  *                       at the cost of throwing away curve smoothness.
  */
-//# sourceMappingURL=apex_dashboard.bundle.QS5LADM2.js.map
+//# sourceMappingURL=apex_dashboard.bundle.DHOQKBVB.js.map

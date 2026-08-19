@@ -288,6 +288,60 @@
             }
 
             /*
+ * =====================================================
+ * GROUP PIE CHART BY TITLE
+ * =====================================================
+ */
+
+if (
+    chartType === "pie" ||
+    chartType === "donut"
+) {
+
+    const grouped = {};
+
+    labels.forEach(
+        (label, index) => {
+
+            if (!label) {
+                return;
+            }
+
+            const value =
+                Number(series[index] || 0);
+
+            if (
+                grouped[label] === undefined
+            ) {
+
+                grouped[label] = 0;
+
+            }
+
+            grouped[label] += value;
+        }
+    );
+
+    labels =
+        Object.keys(grouped);
+
+    series =
+        labels.map(
+            label => grouped[label]
+        );
+
+    console.log(
+        "Grouped labels:",
+        labels
+    );
+
+    console.log(
+        "Grouped series:",
+        series
+    );
+}
+
+            /*
              * =====================================================
              * DEBUG DATA
              * =====================================================
@@ -317,19 +371,263 @@
                  * =================================================
                  */
 
+                // chart: {
+
+                //     type:
+                //         chartType,
+                //     height:
+                //         config.height || 500,
+
+                //     toolbar: {
+                //         show: false
+                //     }
+
+                // },
                 chart: {
 
-                    type:
-                        chartType,
-                    height:
-                        config.height || 500,
+    type: chartType,
 
-                    toolbar: {
-                        show: false
-                    }
+    height: config.height || 500,
 
-                },
+    toolbar: {
+        show: false
+    },
 
+    events: {
+
+    dataPointSelection: function (
+        event,
+        chartContext,
+        chartConfig
+    ) {
+
+        // Only handle pie/donut
+        if (
+            chartType !== "pie" &&
+            chartType !== "donut"
+        ) {
+            return;
+        }
+
+        // Get clicked slice index
+        const index =
+            chartConfig.dataPointIndex;
+
+        if (index < 0) {
+            return;
+        }
+
+        // Get label from renderer variables
+        const label =
+            labels[index];
+
+        // Get value from renderer variables
+        const value =
+            series[index];
+
+        console.log(
+            "========== PIE CLICK =========="
+        );
+
+        console.log(
+            "Index:",
+            index
+        );
+
+        console.log(
+            "Label:",
+            label
+        );
+
+        console.log(
+            "Value:",
+            value
+        );
+
+        // Get click configuration
+        // const clickAction =
+        //     config.clickAction;
+
+        // if (!clickAction) {
+
+        //     console.log(
+        //         "No clickAction configured"
+        //     );
+
+        //     return;
+        // }
+
+        // =====================================================
+        // OPEN LEADERSHIP ARCHIVAL SCRIPT REPORT
+        // =====================================================
+
+        // =====================================================
+// DYNAMIC REPORT CLICK
+// =====================================================
+
+const clickAction = config.clickAction;
+
+if (!clickAction) {
+    console.log("No clickAction configured");
+    return;
+}
+
+console.log(
+    "Click Action:",
+    clickAction
+);
+if (clickAction.type === "report") {
+
+    const reportName =
+        clickAction.report;
+
+    const filterField =
+        clickAction.field;
+
+    const filterValue =
+        clickAction.values
+            ? clickAction.values[index]
+            : label;
+
+    console.log(
+        "Opening Report:",
+        reportName
+    );
+
+    console.log(
+        "Filter:",
+        filterField,
+        "=",
+        filterValue
+    );
+
+    // Open the report first
+    frappe.set_route(
+        "query-report",
+        reportName
+    );
+
+    // Wait for the Query Report to load
+    setTimeout(() => {
+
+        if (!frappe.query_report) {
+
+            console.error(
+                "frappe.query_report not available"
+            );
+
+            return;
+        }
+
+        console.log(
+            "Applying filter:",
+            filterField,
+            "=",
+            filterValue
+        );
+
+        // Apply clicked group as report filter
+        frappe.query_report.set_filter_value(
+            filterField,
+            filterValue
+        );
+
+        // Refresh report using the filter
+        frappe.query_report.refresh();
+
+    }, 1000);
+
+    return;
+}
+
+
+
+        console.log(
+            "Click Action:",
+            clickAction
+        );
+
+        // Get database filter value
+        const filterValue =
+            clickAction.values
+                ? clickAction.values[index]
+                : label;
+
+        // console.log(
+        //     "Filter Value:",
+        //     filterValue
+        // );
+
+        // // ==========================================
+        // // OPEN LIST
+        // // ==========================================
+
+        // if (
+        //     clickAction.type === "list"
+        // ) {
+
+        //     console.log(
+        //         "Opening DocType:",
+        //         clickAction.doctype
+        //     );
+
+        //     console.log(
+        //         "Filter:",
+        //         clickAction.field,
+        //         "=",
+        //         filterValue
+        //     );
+
+        //     frappe.set_route(
+        //         "List",
+        //         clickAction.doctype,
+        //         "List",
+        //         {
+        //             [clickAction.field]:
+        //                 filterValue
+        //         }
+        //     );
+
+        //     return;
+        // }
+
+        // // ==========================================
+        // // OPEN QUERY REPORT
+        // // ==========================================
+
+        // if (
+        //     clickAction.type === "report"
+        // ) {
+
+        //     console.log(
+        //         "Opening Report:",
+        //         clickAction.report
+        //     );
+
+        //     console.log(
+        //         "Filter:",
+        //         clickAction.field,
+        //         "=",
+        //         filterValue
+        //     );
+
+        //     frappe.set_route(
+        //         "query-report",
+        //         clickAction.report,
+        //         {
+        //             [clickAction.field]:
+        //                 filterValue
+        //         }
+        //     );
+
+        //     return;
+        // }
+
+    }
+
+},
+
+},
                 /*
                  * =================================================
                  * SERIES

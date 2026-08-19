@@ -51,10 +51,13 @@ def get_data(filters):
 
     where_clause = " AND ".join(conditions)
 
+    # if where_clause:
+    #     where_clause = "WHERE " + where_clause
+    # else:
+    #     return []  # 🚨 No filters → no data
+    
     if where_clause:
         where_clause = "WHERE " + where_clause
-    else:
-        return []  # 🚨 No filters → no data
 
     return frappe.db.sql(f"""
         SELECT 

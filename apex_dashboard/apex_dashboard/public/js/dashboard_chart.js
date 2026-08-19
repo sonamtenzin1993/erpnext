@@ -1,5 +1,8 @@
 frappe.provide("apex_dashboard");
 
+console.log("========== DASHBOARD CHART CONFIG ==========");
+console.log("CLICK ACTION SHOULD BE HERE");
+
 apex_dashboard.test_chart = function (wrapper) {
 
     const container = document.createElement("div");
@@ -14,16 +17,28 @@ apex_dashboard.test_chart = function (wrapper) {
         type: "pie",
 
         series: [
-            50,
-            30,
-            20
+            258,
+            35, 
+            7, 
+            6,
+            3, 
+            1
         ],
 
         labels: [
-            "Approved",
-            "Pending",
-            "Rejected"
+            "Waiting for Approval",
+            "Kidu Received",
+            "Waiting for Profile", 
+            "Case Closed",
+            "Waiting for NLCS",
+            "Disapproved"
         ],
+
+        clickAction: {
+        type: "list",
+        doctype: "Kidu Profile",
+        field: "workflow_state"
+    },
 
         height: 400,
 

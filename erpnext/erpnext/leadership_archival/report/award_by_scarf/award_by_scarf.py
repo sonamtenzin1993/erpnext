@@ -3,27 +3,12 @@
 
 import frappe
 
+
 def execute(filters=None):
     columns = get_columns()
     data = get_data(filters)
-    
-    chart = {
-        "data": {
-            "labels": [row.title for row in data],
-            "datasets": [
-                {
-                    "values": [row.total_scarf for row in data]
-                }
-            ]
-        },
-        "type": "pie",
-        "colors": [
-            "#8B0000",  # Dark Red
-            "#FFA500",  # Orange
-            "#FFFFFF"   # White
-        ]
-    }
-    return columns, data, None, chart
+
+    return columns, data, None
 
 
 def get_columns():
@@ -43,7 +28,7 @@ def get_columns():
     ]
 
 
-def get_data(filters):
+def get_data(filters=None):
     return frappe.db.sql("""
         SELECT
             aw.title AS title,
@@ -53,7 +38,5 @@ def get_data(filters):
             ON aw.parent = k.name
         WHERE aw.title LIKE '%Scarf%'
         GROUP BY aw.title
+        ORDER BY total_scarf DESC
     """, as_dict=True)
-
-
-
