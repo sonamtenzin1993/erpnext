@@ -6,11 +6,30 @@
 
         render: function (container, config) {
 
-            console.log("Apex Dashboard Renderer started");
-            console.log("Config:", config);
-            console.log("Chart type:", config.type);
-            console.log("Chart data:", config.data);
-            console.log("Chart colors:", config.colors);
+            console.log(
+                "Apex Dashboard Renderer started"
+            );
+
+            console.log(
+                "Config:",
+                config
+            );
+
+            console.log(
+                "Chart type:",
+                config.type
+            );
+
+            console.log(
+                "Chart data:",
+                config.data
+            );
+
+            console.log(
+                "Chart colors:",
+                config.colors
+            );
+
 
             /*
              * =====================================================
@@ -19,12 +38,15 @@
              */
 
             const chartType =
-                String(config.type || "bar").toLowerCase();
+                String(
+                    config.type || "bar"
+                ).toLowerCase();
 
             console.log(
                 "Normalized chart type:",
                 chartType
             );
+
 
             /*
              * =====================================================
@@ -40,6 +62,7 @@
 
                 return;
             }
+
 
             /*
              * =====================================================
@@ -59,6 +82,7 @@
                 return;
             }
 
+
             /*
              * =====================================================
              * CLEAR CONTAINER
@@ -66,6 +90,13 @@
              */
 
             container.innerHTML = "";
+
+
+            /*
+             * =====================================================
+             * CREATE CHART ELEMENT
+             * =====================================================
+             */
 
             const chart_element =
                 document.createElement("div");
@@ -80,8 +111,17 @@
                 chart_element
             );
 
+
+            /*
+             * =====================================================
+             * INITIAL DATA
+             * =====================================================
+             */
+
             let series = [];
+
             let labels = [];
+
 
             /*
              * =====================================================
@@ -96,21 +136,21 @@
                     config.data
                 );
 
+
+                /*
+                 * =================================================
+                 * LABELS
+                 * =================================================
+                 */
+
                 labels =
                     config.data.labels || [];
+
 
                 /*
                  * =================================================
                  * DATASETS FORMAT
                  * =================================================
-                 *
-                 * datasets: [
-                 *     {
-                 *         name: "Total",
-                 *         values: [10, 20, 30]
-                 *     }
-                 * ]
-                 *
                  */
 
                 if (
@@ -123,6 +163,7 @@
                             dataset => {
 
                                 return {
+
                                     name:
                                         dataset.name ||
                                         "Value",
@@ -130,6 +171,7 @@
                                     data:
                                         dataset.values ||
                                         []
+
                                 };
 
                             }
@@ -137,16 +179,11 @@
 
                 }
 
+
                 /*
                  * =================================================
                  * SIMPLE VALUES FORMAT
                  * =================================================
-                 *
-                 * {
-                 *     labels: [],
-                 *     values: []
-                 * }
-                 *
                  */
 
                 else if (
@@ -154,17 +191,23 @@
                 ) {
 
                     series = [
+
                         {
-                            name: "Value",
+
+                            name:
+                                "Value",
 
                             data:
                                 config.data.values
+
                         }
+
                     ];
 
                 }
 
             }
+
 
             /*
              * =====================================================
@@ -182,6 +225,7 @@
 
             }
 
+
             /*
              * =====================================================
              * FALLBACK LABELS
@@ -198,9 +242,39 @@
 
             }
 
+
             /*
              * =====================================================
              * PIE / DONUT
+             * =====================================================
+             *
+             * IMPORTANT:
+             *
+             * The Script Report returns individual records.
+             *
+             * Example:
+             *
+             * Red Scarf
+             * Red Scarf
+             * White Scarf
+             * Red Scarf
+             * Lungmar Scarf
+             *
+             * Frappe is currently generating incorrect chart
+             * values such as:
+             *
+             * [4, 4, 0, 0, 0, ...]
+             *
+             * Therefore, for PIE/DONUT we DO NOT use
+             * Frappe's dataset values.
+             *
+             * Instead:
+             *
+             * EACH REPORT RECORD = 1
+             *
+             * Then the grouping code below counts records
+             * for each title.
+             *
              * =====================================================
              */
 
@@ -210,44 +284,31 @@
             ) {
 
                 /*
-                 * ApexCharts Pie/Donut expects:
-                 *
-                 * series: [10, 20, 30]
-                 *
-                 * NOT:
-                 *
-                 * series: [
-                 *     {
-                 *         name: "Value",
-                 *         data: [10,20,30]
-                 *     }
-                 * ]
+                 * Create one value for every report record.
                  */
 
-                if (
-                    config.data &&
-                    config.data.datasets &&
-                    config.data.datasets.length
-                ) {
+                series =
+                    labels.map(
+                        () => 1
+                    );
 
-                    series =
-                        config.data
-                            .datasets[0]
-                            .values || [];
 
-                }
+                console.log(
+                    "PIE/DONUT: Using one value per report record"
+                );
 
-                else if (
-                    config.data &&
-                    config.data.values
-                ) {
+                console.log(
+                    "PIE/DONUT labels:",
+                    labels
+                );
 
-                    series =
-                        config.data.values;
-
-                }
+                console.log(
+                    "PIE/DONUT generated values:",
+                    series
+                );
 
             }
+
 
             /*
              * =====================================================
@@ -272,78 +333,220 @@
                     Array.isArray(series) &&
                     series.length &&
                     typeof series[0] !==
-                        "object"
+                    "object"
                 ) {
 
                     series = [
-                        {
-                            name: "Value",
 
-                            data: series
+                        {
+
+                            name:
+                                "Value",
+
+                            data:
+                                series
+
                         }
+
                     ];
 
                 }
 
             }
 
-            /*
- * =====================================================
- * GROUP PIE CHART BY TITLE
- * =====================================================
- */
-
-if (
-    chartType === "pie" ||
-    chartType === "donut"
-) {
-
-    const grouped = {};
-
-    labels.forEach(
-        (label, index) => {
-
-            if (!label) {
-                return;
-            }
-
-            const value =
-                Number(series[index] || 0);
-
-            if (
-                grouped[label] === undefined
-            ) {
-
-                grouped[label] = 0;
-
-            }
-
-            grouped[label] += value;
-        }
-    );
-
-    labels =
-        Object.keys(grouped);
-
-    series =
-        labels.map(
-            label => grouped[label]
-        );
-
-    console.log(
-        "Grouped labels:",
-        labels
-    );
-
-    console.log(
-        "Grouped series:",
-        series
-    );
-}
 
             /*
              * =====================================================
-             * DEBUG DATA
+             * DEBUG BEFORE GROUPING
+             * =====================================================
+             */
+
+            if (
+                chartType === "pie" ||
+                chartType === "donut"
+            ) {
+
+                console.log(
+                    "========== BEFORE GROUPING =========="
+                );
+
+                console.log(
+                    "Labels:",
+                    labels
+                );
+
+                console.log(
+                    "Series:",
+                    series
+                );
+
+                console.log(
+                    "Datasets:",
+                    config.data?.datasets
+                );
+
+                console.log(
+                    "FIRST DATASET:",
+                    config.data?.datasets?.[0]
+                );
+
+                console.log(
+                    "FIRST DATASET VALUES:",
+                    config.data?.datasets?.[0]?.values
+                );
+
+                console.log(
+                    "FIRST DATASET NAME:",
+                    config.data?.datasets?.[0]?.name
+                );
+
+                console.log(
+                    "======================================"
+                );
+
+            }
+
+
+            /*
+             * =====================================================
+             * GROUP PIE / DONUT BY LABEL
+             * =====================================================
+             *
+             * Example:
+             *
+             * Red Scarf
+             * Red Scarf
+             * White Scarf
+             * Red Scarf
+             *
+             * becomes:
+             *
+             * Red Scarf      3
+             * White Scarf    1
+             *
+             * =====================================================
+             */
+
+            if (
+                chartType === "pie" ||
+                chartType === "donut"
+            ) {
+
+                const grouped = {};
+
+
+                /*
+                 * Loop through every individual record.
+                 */
+
+                labels.forEach(
+                    (label, index) => {
+
+                        /*
+                         * Ignore empty labels.
+                         */
+
+                        if (
+                            label === undefined ||
+                            label === null ||
+                            String(label).trim() === ""
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        /*
+                         * Each report row is ONE record.
+                         *
+                         * Therefore its value is 1.
+                         */
+
+                        const value =
+                            Number(
+                                series[index]
+                            ) || 0;
+
+
+                        /*
+                         * Create group if
+                         * it does not exist.
+                         */
+
+                        if (
+                            grouped[label] === undefined
+                        ) {
+
+                            grouped[label] = 0;
+
+                        }
+
+
+                        /*
+                         * Add record to group.
+                         */
+
+                        grouped[label] +=
+                            value;
+
+                    }
+                );
+
+
+                /*
+                 * Replace labels with
+                 * grouped labels.
+                 */
+
+                labels =
+                    Object.keys(
+                        grouped
+                    );
+
+
+                /*
+                 * Replace series with
+                 * grouped totals.
+                 */
+
+                series =
+                    labels.map(
+                        label =>
+                            grouped[label]
+                    );
+
+
+                /*
+                 * =================================================
+                 * DEBUG AFTER GROUPING
+                 * =================================================
+                 */
+
+                console.log(
+                    "========== AFTER GROUPING =========="
+                );
+
+                console.log(
+                    "Grouped labels:",
+                    labels
+                );
+
+                console.log(
+                    "Grouped series:",
+                    series
+                );
+
+                console.log(
+                    "===================================="
+                );
+
+            }
+
+
+            /*
+             * =====================================================
+             * FINAL DEBUG DATA
              * =====================================================
              */
 
@@ -357,6 +560,7 @@ if (
                 series
             );
 
+
             /*
              * =====================================================
              * APEXCHARTS OPTIONS
@@ -365,269 +569,324 @@ if (
 
             const options = {
 
+
                 /*
                  * =================================================
                  * CHART
                  * =================================================
                  */
 
-                // chart: {
-
-                //     type:
-                //         chartType,
-                //     height:
-                //         config.height || 500,
-
-                //     toolbar: {
-                //         show: false
-                //     }
-
-                // },
                 chart: {
 
-    type: chartType,
+                    type:
+                        chartType,
 
-    height: config.height || 500,
+                    height:
+                        config.height || 500,
 
-    toolbar: {
-        show: false
-    },
+                    toolbar: {
 
-    events: {
+                        show:
+                            false
 
-    dataPointSelection: function (
-        event,
-        chartContext,
-        chartConfig
-    ) {
-
-        // Only handle pie/donut
-        if (
-            chartType !== "pie" &&
-            chartType !== "donut"
-        ) {
-            return;
-        }
-
-        // Get clicked slice index
-        const index =
-            chartConfig.dataPointIndex;
-
-        if (index < 0) {
-            return;
-        }
-
-        // Get label from renderer variables
-        const label =
-            labels[index];
-
-        // Get value from renderer variables
-        const value =
-            series[index];
-
-        console.log(
-            "========== PIE CLICK =========="
-        );
-
-        console.log(
-            "Index:",
-            index
-        );
-
-        console.log(
-            "Label:",
-            label
-        );
-
-        console.log(
-            "Value:",
-            value
-        );
-
-        // Get click configuration
-        // const clickAction =
-        //     config.clickAction;
-
-        // if (!clickAction) {
-
-        //     console.log(
-        //         "No clickAction configured"
-        //     );
-
-        //     return;
-        // }
-
-        // =====================================================
-        // OPEN LEADERSHIP ARCHIVAL SCRIPT REPORT
-        // =====================================================
-
-        // =====================================================
-// DYNAMIC REPORT CLICK
-// =====================================================
-
-const clickAction = config.clickAction;
-
-if (!clickAction) {
-    console.log("No clickAction configured");
-    return;
-}
-
-console.log(
-    "Click Action:",
-    clickAction
-);
-if (clickAction.type === "report") {
-
-    const reportName =
-        clickAction.report;
-
-    const filterField =
-        clickAction.field;
-
-    const filterValue =
-        clickAction.values
-            ? clickAction.values[index]
-            : label;
-
-    console.log(
-        "Opening Report:",
-        reportName
-    );
-
-    console.log(
-        "Filter:",
-        filterField,
-        "=",
-        filterValue
-    );
-
-    // Open the report first
-    frappe.set_route(
-        "query-report",
-        reportName
-    );
-
-    // Wait for the Query Report to load
-    setTimeout(() => {
-
-        if (!frappe.query_report) {
-
-            console.error(
-                "frappe.query_report not available"
-            );
-
-            return;
-        }
-
-        console.log(
-            "Applying filter:",
-            filterField,
-            "=",
-            filterValue
-        );
-
-        // Apply clicked group as report filter
-        frappe.query_report.set_filter_value(
-            filterField,
-            filterValue
-        );
-
-        // Refresh report using the filter
-        frappe.query_report.refresh();
-
-    }, 1000);
-
-    return;
-}
+                    },
 
 
+                    /*
+                     * =================================================
+                     * CLICK EVENT
+                     * =================================================
+                     */
 
-        console.log(
-            "Click Action:",
-            clickAction
-        );
+                    events: {
 
-        // Get database filter value
-        const filterValue =
-            clickAction.values
-                ? clickAction.values[index]
-                : label;
+                        dataPointSelection:
+                            function (
+                                event,
+                                chartContext,
+                                chartConfig
+                            ) {
 
-        // console.log(
-        //     "Filter Value:",
-        //     filterValue
-        // );
 
-        // // ==========================================
-        // // OPEN LIST
-        // // ==========================================
+                                /*
+                                 * Only handle
+                                 * PIE/DONUT.
+                                 */
 
-        // if (
-        //     clickAction.type === "list"
-        // ) {
+                                if (
+                                    chartType !== "pie" &&
+                                    chartType !== "donut"
+                                ) {
 
-        //     console.log(
-        //         "Opening DocType:",
-        //         clickAction.doctype
-        //     );
+                                    return;
 
-        //     console.log(
-        //         "Filter:",
-        //         clickAction.field,
-        //         "=",
-        //         filterValue
-        //     );
+                                }
 
-        //     frappe.set_route(
-        //         "List",
-        //         clickAction.doctype,
-        //         "List",
-        //         {
-        //             [clickAction.field]:
-        //                 filterValue
-        //         }
-        //     );
 
-        //     return;
-        // }
+                                /*
+                                 * Get clicked
+                                 * slice index.
+                                 */
 
-        // // ==========================================
-        // // OPEN QUERY REPORT
-        // // ==========================================
+                                const index =
+                                    chartConfig
+                                        .dataPointIndex;
 
-        // if (
-        //     clickAction.type === "report"
-        // ) {
 
-        //     console.log(
-        //         "Opening Report:",
-        //         clickAction.report
-        //     );
+                                if (
+                                    index < 0
+                                ) {
 
-        //     console.log(
-        //         "Filter:",
-        //         clickAction.field,
-        //         "=",
-        //         filterValue
-        //     );
+                                    return;
 
-        //     frappe.set_route(
-        //         "query-report",
-        //         clickAction.report,
-        //         {
-        //             [clickAction.field]:
-        //                 filterValue
-        //         }
-        //     );
+                                }
 
-        //     return;
-        // }
 
-    }
+                                /*
+                                 * Get clicked label.
+                                 */
 
-},
+                                const label =
+                                    labels[index];
 
-},
+
+                                /*
+                                 * Get clicked value.
+                                 */
+
+                                const value =
+                                    series[index];
+
+
+                                console.log(
+                                    "========== PIE CLICK =========="
+                                );
+
+                                console.log(
+                                    "Index:",
+                                    index
+                                );
+
+                                console.log(
+                                    "Label:",
+                                    label
+                                );
+
+                                console.log(
+                                    "Value:",
+                                    value
+                                );
+
+
+                                /*
+                                 * =================================================
+                                 * CLICK ACTION
+                                 * =================================================
+                                 */
+
+                                const clickAction =
+                                    config.clickAction;
+
+
+                                if (!clickAction) {
+
+                                    console.log(
+                                        "No clickAction configured"
+                                    );
+
+                                    return;
+
+                                }
+
+
+                                console.log(
+                                    "Click Action:",
+                                    clickAction
+                                );
+
+
+                                /*
+                                 * =================================================
+                                 * REPORT CLICK
+                                 * =================================================
+                                 */
+
+                                if (
+                                    clickAction.type ===
+                                    "report"
+                                ) {
+
+                                    const reportName =
+                                        clickAction.report;
+
+
+                                    const filterField =
+                                        clickAction.field;
+
+
+                                    /*
+                                     * If explicit values
+                                     * are provided, use them.
+                                     *
+                                     * Otherwise use
+                                     * clicked label.
+                                     */
+
+                                    const filterValue =
+                                        clickAction.values
+                                            ? clickAction.values[index]
+                                            : label;
+
+
+                                    console.log(
+                                        "Opening Report:",
+                                        reportName
+                                    );
+
+                                    console.log(
+                                        "Filter:",
+                                        filterField,
+                                        "=",
+                                        filterValue
+                                    );
+
+
+                                    /*
+                                     * Open report.
+                                     */
+
+                                    frappe.set_route(
+                                        "query-report",
+                                        reportName
+                                    );
+
+
+                                    /*
+                                     * Wait for Query Report
+                                     * to load.
+                                     */
+
+                                    setTimeout(
+                                        () => {
+
+                                            if (
+                                                !frappe.query_report
+                                            ) {
+
+                                                console.error(
+                                                    "frappe.query_report not available"
+                                                );
+
+                                                return;
+
+                                            }
+
+
+                                            console.log(
+                                                "Applying filter:",
+                                                filterField,
+                                                "=",
+                                                filterValue
+                                            );
+
+
+                                            /*
+                                             * Apply filter.
+                                             */
+
+                                            frappe.query_report
+                                                .set_filter_value(
+                                                    filterField,
+                                                    filterValue
+                                                );
+
+
+                                            /*
+                                             * Refresh report.
+                                             */
+
+                                            frappe.query_report
+                                                .refresh();
+
+                                        },
+                                        1000
+                                    );
+
+
+                                    return;
+
+                                }
+
+
+                                /*
+                                 * =================================================
+                                 * LIST CLICK
+                                 * =================================================
+                                 */
+
+                                if (
+                                    clickAction.type ===
+                                    "list"
+                                ) {
+
+                                    const filterValue =
+                                        clickAction.values
+                                            ? clickAction.values[index]
+                                            : label;
+
+
+                                    console.log(
+                                        "Opening DocType:",
+                                        clickAction.doctype
+                                    );
+
+
+                                    console.log(
+                                        "Filter:",
+                                        clickAction.field,
+                                        "=",
+                                        filterValue
+                                    );
+
+
+                                    frappe.set_route(
+                                        "List",
+                                        clickAction.doctype,
+                                        "List",
+                                        {
+
+                                            [
+                                                clickAction.field
+                                            ]:
+                                                filterValue
+
+                                        }
+                                    );
+
+
+                                    return;
+
+                                }
+
+
+                                /*
+                                 * =================================================
+                                 * UNKNOWN ACTION
+                                 * =================================================
+                                 */
+
+                                console.warn(
+                                    "Unknown clickAction type:",
+                                    clickAction.type
+                                );
+
+                            }
+
+                    }
+
+                },
+
+
                 /*
                  * =================================================
                  * SERIES
@@ -637,6 +896,7 @@ if (clickAction.type === "report") {
                 series:
                     series,
 
+
                 /*
                  * =================================================
                  * LABELS
@@ -645,6 +905,7 @@ if (clickAction.type === "report") {
 
                 labels:
                     labels,
+
 
                 /*
                  * =================================================
@@ -661,9 +922,12 @@ if (clickAction.type === "report") {
 
                         ? config.colors.filter(
                             color =>
+
                                 typeof color ===
-                                    "string" &&
+                                "string" &&
+
                                 color.trim()
+
                         )
 
                         : [
@@ -676,20 +940,36 @@ if (clickAction.type === "report") {
                             "#6A5ACD",
                             "#20B2AA",
                             "#D2691E"
+
                         ],
+
 
                 /*
                  * =================================================
-                 * WHITE PIE / DONUT BORDER
+                 * PIE / DONUT BORDER
                  * =================================================
+                 *
+                 * No border for PIE/DONUT.
+                 *
+                 * LINE gets width 3.
+                 *
                  */
 
                 stroke: {
-                    // show: false
-                    show: chartType === "line",
-                            width: chartType === "line" ? 3 : 0,
-                            curve:"straight"
+
+                    show:
+                        chartType === "line",
+
+                    width:
+                        chartType === "line"
+                            ? 3
+                            : 0,
+
+                    curve:
+                        "straight"
+
                 },
+
 
                 /*
                  * =================================================
@@ -704,6 +984,7 @@ if (clickAction.type === "report") {
 
                 },
 
+
                 /*
                  * =================================================
                  * DATA LABELS
@@ -716,6 +997,7 @@ if (clickAction.type === "report") {
                         config.dataLabels !== false
 
                 },
+
 
                 /*
                  * =================================================
@@ -734,6 +1016,7 @@ if (clickAction.type === "report") {
 
                 },
 
+
                 /*
                  * =================================================
                  * TOOLTIP
@@ -742,42 +1025,51 @@ if (clickAction.type === "report") {
 
                 tooltip: {
 
-                    enabled: true
+                    enabled:
+                        true
 
                 }
 
             };
 
+
             /*
              * =====================================================
-             * BAR
+             * BAR CHART
              * =====================================================
              */
 
             if (
-    chartType === "bar"
-) {
+                chartType === "bar"
+            ) {
 
-    options.plotOptions = {
+                options.plotOptions = {
 
-        bar: {
+                    bar: {
 
-            horizontal: false,
+                        /*
+                         * Vertical bar chart.
+                         */
 
-            columnWidth:
-                "55%",
+                        horizontal:
+                            false,
 
-            borderRadius: 1
+                        columnWidth:
+                            "55%",
 
-        }
+                        borderRadius:
+                            1
 
-    };
+                    }
 
-}
+                };
+
+            }
+
 
             /*
              * =====================================================
-             * PIE
+             * PIE CHART
              * =====================================================
              */
 
@@ -790,9 +1082,10 @@ if (clickAction.type === "report") {
 
             }
 
+
             /*
              * =====================================================
-             * DONUT
+             * DONUT CHART
              * =====================================================
              */
 
@@ -805,6 +1098,7 @@ if (clickAction.type === "report") {
 
             }
 
+
             /*
              * =====================================================
              * DEBUG FINAL OPTIONS
@@ -815,6 +1109,7 @@ if (clickAction.type === "report") {
                 "ApexCharts final options:",
                 options
             );
+
 
             /*
              * =====================================================
@@ -828,6 +1123,7 @@ if (clickAction.type === "report") {
                     options
                 );
 
+
             /*
              * =====================================================
              * RENDER
@@ -836,11 +1132,19 @@ if (clickAction.type === "report") {
 
             chart.render();
 
+
+            /*
+             * =====================================================
+             * RETURN CHART
+             * =====================================================
+             */
+
             return chart;
 
         }
 
     };
+
 
     /*
      * =========================================================

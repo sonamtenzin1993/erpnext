@@ -46364,12 +46364,29 @@
     console.log("Apex Dashboard Renderer loading...");
     window.ApexDashboardRenderer = {
       render: function(container, config) {
-        console.log("Apex Dashboard Renderer started");
-        console.log("Config:", config);
-        console.log("Chart type:", config.type);
-        console.log("Chart data:", config.data);
-        console.log("Chart colors:", config.colors);
-        const chartType = String(config.type || "bar").toLowerCase();
+        var _a, _b, _c, _d, _e, _f, _g, _h, _i;
+        console.log(
+          "Apex Dashboard Renderer started"
+        );
+        console.log(
+          "Config:",
+          config
+        );
+        console.log(
+          "Chart type:",
+          config.type
+        );
+        console.log(
+          "Chart data:",
+          config.data
+        );
+        console.log(
+          "Chart colors:",
+          config.colors
+        );
+        const chartType = String(
+          config.type || "bar"
+        ).toLowerCase();
         console.log(
           "Normalized chart type:",
           chartType
@@ -46426,11 +46443,20 @@
           labels = config.labels;
         }
         if (chartType === "pie" || chartType === "donut") {
-          if (config.data && config.data.datasets && config.data.datasets.length) {
-            series = config.data.datasets[0].values || [];
-          } else if (config.data && config.data.values) {
-            series = config.data.values;
-          }
+          series = labels.map(
+            () => 1
+          );
+          console.log(
+            "PIE/DONUT: Using one value per report record"
+          );
+          console.log(
+            "PIE/DONUT labels:",
+            labels
+          );
+          console.log(
+            "PIE/DONUT generated values:",
+            series
+          );
         } else {
           if (Array.isArray(series) && series.length && typeof series[0] !== "object") {
             series = [
@@ -46442,22 +46468,61 @@
           }
         }
         if (chartType === "pie" || chartType === "donut") {
+          console.log(
+            "========== BEFORE GROUPING =========="
+          );
+          console.log(
+            "Labels:",
+            labels
+          );
+          console.log(
+            "Series:",
+            series
+          );
+          console.log(
+            "Datasets:",
+            (_a = config.data) == null ? void 0 : _a.datasets
+          );
+          console.log(
+            "FIRST DATASET:",
+            (_c = (_b = config.data) == null ? void 0 : _b.datasets) == null ? void 0 : _c[0]
+          );
+          console.log(
+            "FIRST DATASET VALUES:",
+            (_f = (_e = (_d = config.data) == null ? void 0 : _d.datasets) == null ? void 0 : _e[0]) == null ? void 0 : _f.values
+          );
+          console.log(
+            "FIRST DATASET NAME:",
+            (_i = (_h = (_g = config.data) == null ? void 0 : _g.datasets) == null ? void 0 : _h[0]) == null ? void 0 : _i.name
+          );
+          console.log(
+            "======================================"
+          );
+        }
+        if (chartType === "pie" || chartType === "donut") {
           const grouped = {};
           labels.forEach(
             (label, index) => {
-              if (!label) {
+              if (label === void 0 || label === null || String(label).trim() === "") {
                 return;
               }
-              const value = Number(series[index] || 0);
+              const value = Number(
+                series[index]
+              ) || 0;
               if (grouped[label] === void 0) {
                 grouped[label] = 0;
               }
               grouped[label] += value;
             }
           );
-          labels = Object.keys(grouped);
+          labels = Object.keys(
+            grouped
+          );
           series = labels.map(
             (label) => grouped[label]
+          );
+          console.log(
+            "========== AFTER GROUPING =========="
           );
           console.log(
             "Grouped labels:",
@@ -46466,6 +46531,9 @@
           console.log(
             "Grouped series:",
             series
+          );
+          console.log(
+            "===================================="
           );
         }
         console.log(
@@ -46511,7 +46579,9 @@
                 );
                 const clickAction = config.clickAction;
                 if (!clickAction) {
-                  console.log("No clickAction configured");
+                  console.log(
+                    "No clickAction configured"
+                  );
                   return;
                 }
                 console.log(
@@ -46521,7 +46591,7 @@
                 if (clickAction.type === "report") {
                   const reportName = clickAction.report;
                   const filterField = clickAction.field;
-                  const filterValue2 = clickAction.values ? clickAction.values[index] : label;
+                  const filterValue = clickAction.values ? clickAction.values[index] : label;
                   console.log(
                     "Opening Report:",
                     reportName
@@ -46530,38 +46600,62 @@
                     "Filter:",
                     filterField,
                     "=",
-                    filterValue2
+                    filterValue
                   );
                   frappe.set_route(
                     "query-report",
                     reportName
                   );
-                  setTimeout(() => {
-                    if (!frappe.query_report) {
-                      console.error(
-                        "frappe.query_report not available"
+                  setTimeout(
+                    () => {
+                      if (!frappe.query_report) {
+                        console.error(
+                          "frappe.query_report not available"
+                        );
+                        return;
+                      }
+                      console.log(
+                        "Applying filter:",
+                        filterField,
+                        "=",
+                        filterValue
                       );
-                      return;
-                    }
-                    console.log(
-                      "Applying filter:",
-                      filterField,
-                      "=",
-                      filterValue2
-                    );
-                    frappe.query_report.set_filter_value(
-                      filterField,
-                      filterValue2
-                    );
-                    frappe.query_report.refresh();
-                  }, 1e3);
+                      frappe.query_report.set_filter_value(
+                        filterField,
+                        filterValue
+                      );
+                      frappe.query_report.refresh();
+                    },
+                    1e3
+                  );
                   return;
                 }
-                console.log(
-                  "Click Action:",
-                  clickAction
+                if (clickAction.type === "list") {
+                  const filterValue = clickAction.values ? clickAction.values[index] : label;
+                  console.log(
+                    "Opening DocType:",
+                    clickAction.doctype
+                  );
+                  console.log(
+                    "Filter:",
+                    clickAction.field,
+                    "=",
+                    filterValue
+                  );
+                  frappe.set_route(
+                    "List",
+                    clickAction.doctype,
+                    "List",
+                    {
+                      [clickAction.field]: filterValue
+                    }
+                  );
+                  return;
+                }
+                console.warn(
+                  "Unknown clickAction type:",
+                  clickAction.type
                 );
-                const filterValue = clickAction.values ? clickAction.values[index] : label;
               }
             }
           },
@@ -46657,4 +46751,4 @@
  *                       alignment; always smooth and non-self-intersecting,
  *                       at the cost of throwing away curve smoothness.
  */
-//# sourceMappingURL=apex_dashboard.bundle.DHOQKBVB.js.map
+//# sourceMappingURL=apex_dashboard.bundle.6ZT3I4TV.js.map

@@ -2,16 +2,16 @@
  "chart_name": "Award By Scarf",
  "chart_type": "Report",
  "creation": "2026-08-07 16:29:19.613564",
- "custom_options": "{\n \"colors\": [\"#F27A0A\", \"#F22E0A\",\"#F7F2F2\"],\n \"clickAction\": {\n        \"type\": \"report\",\n        \"report\": \"Award By Scarf\",\n        \"field\": \"total_scarf\"\n    }\n}",
+ "custom_options": "{\n \"colors\": [\"#F27A0A\", \"#F22E0A\",\"#F7F2F2\"],\n \"clickAction\": {\n        \"type\": \"report\",\n        \"report\": \"Award by Scarf\",\n        \"field\": \"title_medal\"\n    }\n}",
  "docstatus": 0,
  "doctype": "Dashboard Chart",
  "dynamic_filters_json": "{}",
  "filters_json": "{}",
  "group_by_type": "Count",
- "idx": 17,
+ "idx": 21,
  "is_public": 0,
  "is_standard": 1,
- "modified": "2026-08-17 19:16:43.614155",
+ "modified": "2026-08-20 11:14:30.848739",
  "modified_by": "Administrator",
  "module": "Leadership Archival",
  "name": "Award By Scarf",
@@ -27,8 +27,7 @@
  "x_field": "title",
  "y_axis": [
   {
-   "color": "",
-   "y_field": "total_scarf"
+   "y_field": "profile"
   }
  ]
 }
