@@ -46361,46 +46361,15 @@
 
   // ../apex_dashboard/apex_dashboard/public/js/apex_renderer.js
   (function() {
-    console.log("Apex Dashboard Renderer loading...");
     window.ApexDashboardRenderer = {
       render: function(container, config) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _i;
-        console.log(
-          "Apex Dashboard Renderer started"
-        );
-        console.log(
-          "Config:",
-          config
-        );
-        console.log(
-          "Chart type:",
-          config.type
-        );
-        console.log(
-          "Chart data:",
-          config.data
-        );
-        console.log(
-          "Chart colors:",
-          config.colors
-        );
         const chartType = String(
           config.type || "bar"
         ).toLowerCase();
-        console.log(
-          "Normalized chart type:",
-          chartType
-        );
         if (!container) {
-          console.error(
-            "ApexCharts container not found"
-          );
           return;
         }
         if (typeof window.ApexCharts === "undefined") {
-          console.error(
-            "ApexCharts library is not loaded"
-          );
           return;
         }
         container.innerHTML = "";
@@ -46413,10 +46382,6 @@
         let series = [];
         let labels = [];
         if (config.data) {
-          console.log(
-            "Frappe chart data:",
-            config.data
-          );
           labels = config.data.labels || [];
           if (config.data.datasets && config.data.datasets.length) {
             series = config.data.datasets.map(
@@ -46446,17 +46411,6 @@
           series = labels.map(
             () => 1
           );
-          console.log(
-            "PIE/DONUT: Using one value per report record"
-          );
-          console.log(
-            "PIE/DONUT labels:",
-            labels
-          );
-          console.log(
-            "PIE/DONUT generated values:",
-            series
-          );
         } else {
           if (Array.isArray(series) && series.length && typeof series[0] !== "object") {
             series = [
@@ -46468,36 +46422,6 @@
           }
         }
         if (chartType === "pie" || chartType === "donut") {
-          console.log(
-            "========== BEFORE GROUPING =========="
-          );
-          console.log(
-            "Labels:",
-            labels
-          );
-          console.log(
-            "Series:",
-            series
-          );
-          console.log(
-            "Datasets:",
-            (_a = config.data) == null ? void 0 : _a.datasets
-          );
-          console.log(
-            "FIRST DATASET:",
-            (_c = (_b = config.data) == null ? void 0 : _b.datasets) == null ? void 0 : _c[0]
-          );
-          console.log(
-            "FIRST DATASET VALUES:",
-            (_f = (_e = (_d = config.data) == null ? void 0 : _d.datasets) == null ? void 0 : _e[0]) == null ? void 0 : _f.values
-          );
-          console.log(
-            "FIRST DATASET NAME:",
-            (_i = (_h = (_g = config.data) == null ? void 0 : _g.datasets) == null ? void 0 : _h[0]) == null ? void 0 : _i.name
-          );
-          console.log(
-            "======================================"
-          );
         }
         if (chartType === "pie" || chartType === "donut") {
           const grouped = {};
@@ -46521,29 +46445,7 @@
           series = labels.map(
             (label) => grouped[label]
           );
-          console.log(
-            "========== AFTER GROUPING =========="
-          );
-          console.log(
-            "Grouped labels:",
-            labels
-          );
-          console.log(
-            "Grouped series:",
-            series
-          );
-          console.log(
-            "===================================="
-          );
         }
-        console.log(
-          "Apex labels:",
-          labels
-        );
-        console.log(
-          "Apex series:",
-          series
-        );
         const options2 = {
           chart: {
             type: chartType,
@@ -46562,46 +46464,14 @@
                 }
                 const label = labels[index];
                 const value = series[index];
-                console.log(
-                  "========== PIE CLICK =========="
-                );
-                console.log(
-                  "Index:",
-                  index
-                );
-                console.log(
-                  "Label:",
-                  label
-                );
-                console.log(
-                  "Value:",
-                  value
-                );
                 const clickAction = config.clickAction;
                 if (!clickAction) {
-                  console.log(
-                    "No clickAction configured"
-                  );
                   return;
                 }
-                console.log(
-                  "Click Action:",
-                  clickAction
-                );
                 if (clickAction.type === "report") {
                   const reportName = clickAction.report;
                   const filterField = clickAction.field;
                   const filterValue = clickAction.values ? clickAction.values[index] : label;
-                  console.log(
-                    "Opening Report:",
-                    reportName
-                  );
-                  console.log(
-                    "Filter:",
-                    filterField,
-                    "=",
-                    filterValue
-                  );
                   frappe.set_route(
                     "query-report",
                     reportName
@@ -46609,17 +46479,8 @@
                   setTimeout(
                     () => {
                       if (!frappe.query_report) {
-                        console.error(
-                          "frappe.query_report not available"
-                        );
                         return;
                       }
-                      console.log(
-                        "Applying filter:",
-                        filterField,
-                        "=",
-                        filterValue
-                      );
                       frappe.query_report.set_filter_value(
                         filterField,
                         filterValue
@@ -46632,16 +46493,6 @@
                 }
                 if (clickAction.type === "list") {
                   const filterValue = clickAction.values ? clickAction.values[index] : label;
-                  console.log(
-                    "Opening DocType:",
-                    clickAction.doctype
-                  );
-                  console.log(
-                    "Filter:",
-                    clickAction.field,
-                    "=",
-                    filterValue
-                  );
                   frappe.set_route(
                     "List",
                     clickAction.doctype,
@@ -46652,10 +46503,6 @@
                   );
                   return;
                 }
-                console.warn(
-                  "Unknown clickAction type:",
-                  clickAction.type
-                );
               }
             }
           },
@@ -46709,10 +46556,6 @@
         if (chartType === "donut") {
           options2.chart.type = "donut";
         }
-        console.log(
-          "ApexCharts final options:",
-          options2
-        );
         const chart = new window.ApexCharts(
           chart_element,
           options2
@@ -46721,12 +46564,6 @@
         return chart;
       }
     };
-    console.log(
-      "Apex Dashboard Renderer loaded"
-    );
-    console.log(
-      "Tested"
-    );
   })();
 
   // ../apex_dashboard/apex_dashboard/public/js/apex_dashboard.bundle.js
@@ -46751,4 +46588,4 @@
  *                       alignment; always smooth and non-self-intersecting,
  *                       at the cost of throwing away curve smoothness.
  */
-//# sourceMappingURL=apex_dashboard.bundle.6ZT3I4TV.js.map
+//# sourceMappingURL=apex_dashboard.bundle.D3WSBPGQ.js.map

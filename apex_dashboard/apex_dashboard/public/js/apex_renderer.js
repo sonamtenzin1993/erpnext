@@ -1,36 +1,9 @@
 (function () {
 
-    console.log("Apex Dashboard Renderer loading...");
 
     window.ApexDashboardRenderer = {
 
         render: function (container, config) {
-
-            console.log(
-                "Apex Dashboard Renderer started"
-            );
-
-            console.log(
-                "Config:",
-                config
-            );
-
-            console.log(
-                "Chart type:",
-                config.type
-            );
-
-            console.log(
-                "Chart data:",
-                config.data
-            );
-
-            console.log(
-                "Chart colors:",
-                config.colors
-            );
-
-
             /*
              * =====================================================
              * NORMALIZE CHART TYPE
@@ -42,11 +15,6 @@
                     config.type || "bar"
                 ).toLowerCase();
 
-            console.log(
-                "Normalized chart type:",
-                chartType
-            );
-
 
             /*
              * =====================================================
@@ -55,10 +23,6 @@
              */
 
             if (!container) {
-
-                console.error(
-                    "ApexCharts container not found"
-                );
 
                 return;
             }
@@ -74,10 +38,6 @@
                 typeof window.ApexCharts ===
                 "undefined"
             ) {
-
-                console.error(
-                    "ApexCharts library is not loaded"
-                );
 
                 return;
             }
@@ -130,11 +90,6 @@
              */
 
             if (config.data) {
-
-                console.log(
-                    "Frappe chart data:",
-                    config.data
-                );
 
 
                 /*
@@ -291,22 +246,6 @@
                     labels.map(
                         () => 1
                     );
-
-
-                console.log(
-                    "PIE/DONUT: Using one value per report record"
-                );
-
-                console.log(
-                    "PIE/DONUT labels:",
-                    labels
-                );
-
-                console.log(
-                    "PIE/DONUT generated values:",
-                    series
-                );
-
             }
 
 
@@ -365,44 +304,6 @@
                 chartType === "pie" ||
                 chartType === "donut"
             ) {
-
-                console.log(
-                    "========== BEFORE GROUPING =========="
-                );
-
-                console.log(
-                    "Labels:",
-                    labels
-                );
-
-                console.log(
-                    "Series:",
-                    series
-                );
-
-                console.log(
-                    "Datasets:",
-                    config.data?.datasets
-                );
-
-                console.log(
-                    "FIRST DATASET:",
-                    config.data?.datasets?.[0]
-                );
-
-                console.log(
-                    "FIRST DATASET VALUES:",
-                    config.data?.datasets?.[0]?.values
-                );
-
-                console.log(
-                    "FIRST DATASET NAME:",
-                    config.data?.datasets?.[0]?.name
-                );
-
-                console.log(
-                    "======================================"
-                );
 
             }
 
@@ -522,25 +423,6 @@
                  * DEBUG AFTER GROUPING
                  * =================================================
                  */
-
-                console.log(
-                    "========== AFTER GROUPING =========="
-                );
-
-                console.log(
-                    "Grouped labels:",
-                    labels
-                );
-
-                console.log(
-                    "Grouped series:",
-                    series
-                );
-
-                console.log(
-                    "===================================="
-                );
-
             }
 
 
@@ -550,15 +432,6 @@
              * =====================================================
              */
 
-            console.log(
-                "Apex labels:",
-                labels
-            );
-
-            console.log(
-                "Apex series:",
-                series
-            );
 
 
             /*
@@ -656,28 +529,6 @@
 
                                 const value =
                                     series[index];
-
-
-                                console.log(
-                                    "========== PIE CLICK =========="
-                                );
-
-                                console.log(
-                                    "Index:",
-                                    index
-                                );
-
-                                console.log(
-                                    "Label:",
-                                    label
-                                );
-
-                                console.log(
-                                    "Value:",
-                                    value
-                                );
-
-
                                 /*
                                  * =================================================
                                  * CLICK ACTION
@@ -689,22 +540,9 @@
 
 
                                 if (!clickAction) {
-
-                                    console.log(
-                                        "No clickAction configured"
-                                    );
-
                                     return;
 
                                 }
-
-
-                                console.log(
-                                    "Click Action:",
-                                    clickAction
-                                );
-
-
                                 /*
                                  * =================================================
                                  * REPORT CLICK
@@ -736,21 +574,6 @@
                                         clickAction.values
                                             ? clickAction.values[index]
                                             : label;
-
-
-                                    console.log(
-                                        "Opening Report:",
-                                        reportName
-                                    );
-
-                                    console.log(
-                                        "Filter:",
-                                        filterField,
-                                        "=",
-                                        filterValue
-                                    );
-
-
                                     /*
                                      * Open report.
                                      */
@@ -772,22 +595,9 @@
                                             if (
                                                 !frappe.query_report
                                             ) {
-
-                                                console.error(
-                                                    "frappe.query_report not available"
-                                                );
-
                                                 return;
 
                                             }
-
-
-                                            console.log(
-                                                "Applying filter:",
-                                                filterField,
-                                                "=",
-                                                filterValue
-                                            );
 
 
                                             /*
@@ -833,22 +643,6 @@
                                         clickAction.values
                                             ? clickAction.values[index]
                                             : label;
-
-
-                                    console.log(
-                                        "Opening DocType:",
-                                        clickAction.doctype
-                                    );
-
-
-                                    console.log(
-                                        "Filter:",
-                                        clickAction.field,
-                                        "=",
-                                        filterValue
-                                    );
-
-
                                     frappe.set_route(
                                         "List",
                                         clickAction.doctype,
@@ -874,12 +668,6 @@
                                  * UNKNOWN ACTION
                                  * =================================================
                                  */
-
-                                console.warn(
-                                    "Unknown clickAction type:",
-                                    clickAction.type
-                                );
-
                             }
 
                     }
@@ -895,8 +683,6 @@
 
                 series:
                     series,
-
-
                 /*
                  * =================================================
                  * LABELS
@@ -1105,11 +891,6 @@
              * =====================================================
              */
 
-            console.log(
-                "ApexCharts final options:",
-                options
-            );
-
 
             /*
              * =====================================================
@@ -1144,20 +925,5 @@
         }
 
     };
-
-
-    /*
-     * =========================================================
-     * LOADED
-     * =========================================================
-     */
-
-    console.log(
-        "Apex Dashboard Renderer loaded"
-    );
-
-    console.log(
-        "Tested"
-    );
 
 })();

@@ -2,7 +2,7 @@
  "chart_name": "Award by Medal",
  "chart_type": "Report",
  "creation": "2026-08-10 11:43:15.268779",
- "custom_options": "",
+ "custom_options": "{\n \"clickAction\": {\n        \"type\": \"report\",\n        \"report\": \"Award By Medal\",\n        \"field\": \"title_medal\"\n    }\n}",
  "docstatus": 0,
  "doctype": "Dashboard Chart",
  "dynamic_filters_json": "{}",
@@ -11,7 +11,7 @@
  "idx": 7,
  "is_public": 0,
  "is_standard": 1,
- "modified": "2026-08-13 16:10:12.461292",
+ "modified": "2026-08-21 15:49:14.663119",
  "modified_by": "Administrator",
  "module": "Leadership Archival",
  "name": "Award by Medal",
@@ -24,10 +24,10 @@
  "timespan": "Last Year",
  "type": "Donut",
  "use_report_chart": 0,
- "x_field": "medal_name",
+ "x_field": "title",
  "y_axis": [
   {
-   "y_field": "total_medal"
+   "y_field": "profile"
   }
  ]
 }
