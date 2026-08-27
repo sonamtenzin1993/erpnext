@@ -34,5 +34,5 @@ frappe.ui.form.on("Key Person Registry", {
                 }
             });
         }
-    },
+    }
 });

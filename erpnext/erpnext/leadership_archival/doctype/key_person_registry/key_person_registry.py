@@ -38,6 +38,7 @@ class KeyPersonRegistry(Document):
         present_gewog: DF.Data | None
         present_village: DF.Data | None
         professional_information: DF.Table[LeadershipAppointment]
+        profile_photo: DF.AttachImage | None
         publication: DF.Table[Publication]
         registry_name: DF.Data
         resignationorterminationrecord: DF.Text | None

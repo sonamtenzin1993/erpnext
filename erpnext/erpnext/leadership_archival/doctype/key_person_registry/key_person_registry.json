@@ -22,6 +22,7 @@
   "present_village",
   "social_media_account",
   "designation",
+  "profile_photo",
   "award_and_recognition_section",
   "column_break_pzrk",
   "award_recognition",
@@ -224,12 +225,18 @@
    "allow_on_submit": 1,
    "fieldname": "column_break_pzrk",
    "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "profile_photo",
+   "fieldtype": "Attach Image",
+   "label": "Profile Photo"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-01 16:57:24.798216",
+ "modified": "2026-08-27 11:19:28.625727",
  "modified_by": "Administrator",
  "module": "Leadership Archival",
  "name": "Key Person Registry",
