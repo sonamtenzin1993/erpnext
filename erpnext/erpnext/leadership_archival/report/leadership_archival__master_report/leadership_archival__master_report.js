@@ -79,10 +79,12 @@ frappe.query_reports["Leadership Archival  Master Report"] = {
                 const profile_id = $(this).data("profile");
                 console.log("Profile ID:", profile_id);
                 if (profile_id) {
-                    frappe.set_route(
-                        "leadership-profile",
-                        profile_id
-                    );
+                    // frappe.set_route(
+                    //     "leadership-profile",
+                    //     profile_id
+                    // );
+                    const url = `/app/leadership-profile/${profile_id}`;
+                    window.open(url, "_blank");
                 }
             }
         );
