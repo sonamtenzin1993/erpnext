@@ -1,4 +1,8 @@
-frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
+frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
+
+    // =========================================================
+    // CREATE FRAPPE PAGE
+    // =========================================================
 
     let page = frappe.ui.make_app_page({
         parent: wrapper,
@@ -6,26 +10,45 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
         single_column: true
     });
 
-    // Remove default padding/background from Frappe page
+
+    // =========================================================
+    // REMOVE DEFAULT FRAPPE SPACING
+    // =========================================================
+
     $(wrapper).find(".layout-main-section").css({
         "padding": "0",
-        "background": "#f7f8fa"
+        "background": "#f7f8fa",
+        "width": "100%"
     });
+
+
+    // =========================================================
+    // GET PROFILE FROM ROUTE
+    // =========================================================
 
     let route = frappe.get_route();
     let profile = route[1];
+
     if (!profile) {
 
         $(wrapper).find(".layout-main-section").html(`
-            <div class="alert alert-warning">
-                No profile selected.
+            <div class="leadership-profile-page">
+                <div class="alert alert-warning">
+                    No profile selected.
+                </div>
             </div>
         `);
 
         return;
     }
 
+
+    // =========================================================
+    // GET KEY PERSON REGISTRY
+    // =========================================================
+
     frappe.call({
+
         method: "frappe.client.get",
 
         args: {
@@ -33,77 +56,201 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
             name: profile
         },
 
-        callback: function(r) {
+        callback: function (r) {
 
             if (!r.message) {
 
                 $(wrapper).find(".layout-main-section").html(`
-                    <div class="alert alert-danger">
-                        Leadership profile not found.
+                    <div class="leadership-profile-page">
+                        <div class="alert alert-danger">
+                            Leadership profile not found.
+                        </div>
                     </div>
                 `);
 
                 return;
             }
 
+
             let person = r.message;
 
-            /*
-             * ==========================================
-             * MAIN PAGE HTML
-             * ==========================================
-             */
+
+            // =================================================
+            // CHILD TABLE DATA
+            // =================================================
+
+            let professional_information =
+                person.professional_information || [];
+
+            let award_recognition =
+                person.award_recognition || [];
+
+
+            // =================================================
+            // SERVICE JOURNEY
+            // =================================================
+
+            let timeline_html = professional_information
+                .map((row, index) => {
+
+                    let year = "";
+
+                    if (row.start_term) {
+                        year = row.start_term.split("-")[0];
+                    }
+
+                    return `
+                        <div class="timeline-item">
+
+                            <div class="timeline-dot"></div>
+
+                            <strong>
+                                ${year}
+                            </strong>
+
+                            <span>
+                                ${row.position || ""}
+                            </span>
+
+                        </div>
+                    `;
+
+                })
+                .join("");
+
+
+            // =================================================
+            // KEY POSITIONS
+            // =================================================
+
+            let positions_html = professional_information
+                .map((row) => {
+
+                    return `
+                        <li>
+
+                            <span class="position-name">
+                                ${row.position || ""}
+                            </span>
+
+                            <small>
+                                ${row.start_term || ""}
+                                -
+                                ${row.end_term || ""}
+                            </small>
+
+                        </li>
+                    `;
+
+                })
+                .join("");
+
+
+            // =================================================
+            // ACHIEVEMENTS
+            // =================================================
+
+            let achievements_html = award_recognition
+                .map((row) => {
+
+                    return `
+                        <div class="achievement">
+
+                            <div class="medal">
+                                <i class="fa fa-trophy"></i>
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    ${row.title || ""}
+                                </strong>
+
+                                <small>
+                                    Conferred by ${row.conferred_by || ""}
+                                </small>
+
+                            </div>
+
+                        </div>
+                    `;
+
+                })
+                .join("");
+
+
+            // =================================================
+            // MAIN PAGE
+            // =================================================
 
             $(wrapper).find(".layout-main-section").html(`
 
                 <div class="leadership-profile-page">
-                    <!-- ==============================
+
+                    <!-- =======================================
                          THREE COLUMN LAYOUT
-                    =============================== -->
+                    ======================================== -->
 
                     <div class="profile-grid">
 
 
-                        <!-- =================================
+                        <!-- ===================================
                              LEFT COLUMN
-                        ================================== -->
+                        ==================================== -->
 
                         <aside class="profile-left">
 
-
-                            <!-- PROFILE INFORMATION -->
-
                             <div class="profile-card">
+
+                                <!-- PROFILE PHOTO -->
 
                                 <div class="profile-photo-wrapper">
 
                                     ${
                                         person.profile_photo
+
                                         ?
-                                        `<img
+
+                                        `
+                                        <img
                                             src="${person.profile_photo}"
                                             class="profile-photo"
-                                        >`
+                                            alt="${person.registry_name || "Profile Photo"}"
+                                        >
+                                        `
+
                                         :
-                                        `<div class="profile-photo-placeholder">
+
+                                        `
+                                        <div class="profile-photo-placeholder">
                                             <i class="fa fa-user"></i>
-                                        </div>`
+                                        </div>
+                                        `
                                     }
 
                                 </div>
 
 
+                                <!-- NAME -->
+
                                 <h3>
                                     ${person.registry_name || ""}
                                 </h3>
+
+
+                                <!-- DESIGNATION -->
 
                                 <p class="muted">
                                     ${person.designation || ""}
                                 </p>
 
 
+                                <!-- DIVIDER -->
+
                                 <div class="profile-divider"></div>
 
+
+                                <!-- CID -->
 
                                 <div class="info-item">
 
@@ -118,6 +265,8 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
                                 </div>
 
 
+                                <!-- DATE OF BIRTH -->
+
                                 <div class="info-item">
 
                                     <span class="info-label">
@@ -130,6 +279,8 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
 
                                 </div>
 
+
+                                <!-- DZONGKHAG -->
 
                                 <div class="info-item">
 
@@ -144,6 +295,8 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
                                 </div>
 
 
+                                <!-- GEWOG -->
+
                                 <div class="info-item">
 
                                     <span class="info-label">
@@ -157,6 +310,8 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
                                 </div>
 
 
+                                <!-- VILLAGE -->
+
                                 <div class="info-item">
 
                                     <span class="info-label">
@@ -169,71 +324,21 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
 
                                 </div>
 
-
-                               <!-- <div class="info-item">
-
-                                    <span class="info-label">
-                                        Service Tags
-                                    </span>
-
-                                    <div class="tags">
-
-                                        <span>
-                                            Leadership
-                                        </span>
-
-                                        <span>
-                                            Government
-                                        </span>
-
-                                    </div>
-
-                                </div>-->
-
                             </div>
-
-
-                            <!-- PHOTO GALLERY -->
-
-                            <!--<div class="profile-card">
-
-                                <div class="card-title">
-                                    Photo Gallery
-                                </div>
-
-                                <div class="photo-grid">
-
-                                    <div class="photo-placeholder">
-                                        <i class="fa fa-image"></i>
-                                    </div>
-
-                                    <div class="photo-placeholder">
-                                        <i class="fa fa-image"></i>
-                                    </div>
-
-                                    <div class="photo-placeholder">
-                                        <i class="fa fa-image"></i>
-                                    </div>
-
-                                    <div class="photo-placeholder">
-                                        <i class="fa fa-image"></i>
-                                    </div>
-
-                                </div>
-
-                            </div>-->
 
                         </aside>
 
 
-                        <!-- =================================
+                        <!-- ===================================
                              MIDDLE COLUMN
-                        ================================== -->
+                        ==================================== -->
 
                         <main class="profile-middle">
 
 
-                            <!-- SERVICE JOURNEY -->
+                            <!-- =================================
+                                 SERVICE JOURNEY
+                            ================================== -->
 
                             <section class="profile-card">
 
@@ -241,26 +346,26 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
                                     Service Journey
                                 </div>
 
+
                                 <div class="timeline">
+
+                                    <!-- TIMELINE LINE -->
+
                                     <div class="timeline-line"></div>
-                                    ${
-                                    (person.professional_information || []).map((row, index) => `
-                                        <div class="timeline-item">
-                                            <div class="timeline-dot"></div>
-                                            <strong>
-                                                ${row.start_term ? row.start_term.split("-")[0] : ""}
-                                            </strong>
-                                            <span>
-                                                ${row.position || ""}
-                                            </span>
-                                        </div>
-                                        `).join("")
-                                    }
+
+
+                                    <!-- TIMELINE ITEMS -->
+
+                                    ${timeline_html}
+
                                 </div>
+
                             </section>
 
 
-                            <!-- KEY POSITIONS -->
+                            <!-- =================================
+                                 KEY POSITIONS
+                            ================================== -->
 
                             <section class="profile-card">
 
@@ -268,21 +373,19 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
                                     Key Positions Held
                                 </div>
 
+
                                 <ul class="position-list">
-                                     ${
-                                    (person.professional_information || []).map((row, index) => `
-                                    <li>
-                                        ${row.position || ""}
-                                        <small>(${row.start_term || ""})-(${row.end_term || ""})</small>
-                                    </li>
-                                    `).join("")
-                                    }
+
+                                    ${positions_html}
 
                                 </ul>
 
                             </section>
 
-                            <!-- ACHIEVEMENTS -->
+
+                            <!-- =================================
+                                 ACHIEVEMENTS
+                            ================================== -->
 
                             <section class="profile-card">
 
@@ -290,35 +393,15 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
                                     Achievements & Honors
                                 </div>
 
-                                ${
-                                    (person.award_recognition || []).map((row, index) => `
-                                        
-                                        <div class="achievement">
 
-                                            <div class="medal">
-                                                <i class="fa fa-trophy"></i>
-                                            </div>
-
-                                            <div>
-
-                                                <strong>
-                                                    ${row.title || ""}
-                                                </strong>
-
-                                                <small>
-                                                     Confered by ${row.conferred_by || ""}
-                                                </small>
-
-                                            </div>
-
-                                        </div>
-
-                                    `).join("")
-                                }
+                                ${achievements_html}
 
                             </section>
 
-                            <!-- DOCUMENTS -->
+
+                            <!-- =================================
+                                 DOCUMENTS
+                            ================================== -->
 
                             <section class="profile-card">
 
@@ -329,10 +412,15 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
 
                                 <div class="document-grid">
 
+
+                                    <!-- CERTIFICATE -->
+
                                     <div class="document">
 
                                         <div class="document-icon">
+
                                             <i class="fa fa-file-text"></i>
+
                                         </div>
 
                                         <span>
@@ -342,10 +430,14 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
                                     </div>
 
 
+                                    <!-- SERVICE RECORD -->
+
                                     <div class="document">
 
                                         <div class="document-icon">
+
                                             <i class="fa fa-book"></i>
+
                                         </div>
 
                                         <span>
@@ -355,10 +447,14 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
                                     </div>
 
 
+                                    <!-- REPORT -->
+
                                     <div class="document">
 
                                         <div class="document-icon">
+
                                             <i class="fa fa-file"></i>
+
                                         </div>
 
                                         <span>
@@ -367,117 +463,25 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
 
                                     </div>
 
+
                                 </div>
 
                             </section>
 
+
                         </main>
 
 
-                        <!-- =================================
+                        <!-- ===================================
                              RIGHT COLUMN
-                        ================================== -->
+                        ==================================== -->
 
-                       <aside class="profile-right">
-
-
-                            <!-- SEARCH -->
-
-                           <!-- <div class="profile-card">
-
-                                <div class="card-title">
-                                    Search Posts Across Time
-                                </div>
+                        <aside class="profile-right">
 
 
-                                <label>
-                                    Year
-                                </label>
-
-                                <select class="form-control">
-
-                                    <option>
-                                        All
-                                    </option>
-
-                                    <option>
-                                        2020
-                                    </option>
-
-                                    <option>
-                                        2015
-                                    </option>
-
-                                    <option>
-                                        2010
-                                    </option>
-
-                                </select>
-
-
-                                <label>
-                                    Position
-                                </label>
-
-                                <select class="form-control">
-
-                                    <option>
-                                        All
-                                    </option>
-
-                                    <option>
-                                        Director
-                                    </option>
-
-                                    <option>
-                                        Executive
-                                    </option>
-
-                                </select>
-
-
-                                <label>
-                                    Department
-                                </label>
-
-                                <select class="form-control">
-
-                                    <option>
-                                        All
-                                    </option>
-
-                                    <option>
-                                        Government
-                                    </option>
-
-                                </select>
-
-
-                                <label>
-                                    Region
-                                </label>
-
-                                <select class="form-control">
-
-                                    <option>
-                                        All
-                                    </option>
-
-                                    <option>
-                                        Central
-                                    </option>
-
-                                </select>
-
-
-                                <button class="btn btn-primary btn-block">
-                                    Search
-                                </button>
-
-                            </div>-->
-
-
-                            <!-- RELATED RECORDS -->
+                            <!-- =================================
+                                 RELATED RECORDS
+                            ================================== -->
 
                             <div class="profile-card">
 
@@ -485,6 +489,8 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
                                     Related Records
                                 </div>
 
+
+                                <!-- RELATED PERSON 1 -->
 
                                 <div class="related-record">
 
@@ -499,6 +505,8 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
                                 </div>
 
 
+                                <!-- RELATED PERSON 2 -->
+
                                 <div class="related-record">
 
                                     <i class="fa fa-user"></i>
@@ -512,6 +520,8 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
                                 </div>
 
 
+                                <!-- RELATED DOCUMENT -->
+
                                 <div class="related-record">
 
                                     <i class="fa fa-file"></i>
@@ -524,15 +534,20 @@ frappe.pages["leadership-profile"].on_page_load = function(wrapper) {
 
                                 </div>
 
+
                             </div>
 
                         </aside>
+
 
                     </div>
 
                 </div>
 
             `);
+
         }
+
     });
+
 };
