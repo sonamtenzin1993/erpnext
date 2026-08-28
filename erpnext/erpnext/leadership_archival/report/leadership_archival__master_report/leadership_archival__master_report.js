@@ -36,31 +36,26 @@ frappe.query_reports["Leadership Archival  Master Report"] = {
     // FORMATTER
     // =====================================================
 
-    formatter: function(value, row, column, data, default_formatter) {
+    formatter: function (value, row, column, data, default_formatter) {
 
-        value = default_formatter(
-            value,
-            row,
-            column,
-            data
-        );
+        value = default_formatter(value, row, column, data);
 
-        // Only Profile column
-        if (
-            column.fieldname === "profile" &&
-            data &&
-            data.profile
-        ) {
-            value = `
-                <a
-                    href="/app/leadership-profile?profile=${encodeURIComponent(data.profile)}"
-                    class="leadership-profile-link"
-                    data-profile="${frappe.utils.escape_html(data.profile)}"
-                >
-                    ${frappe.utils.escape_html(data.profile)}
-                </a>
+        if (column.fieldname === "profile" && data && data.profile) {
+
+            return `
+                <div style="text-align: center;">
+                    <span
+                        class="profile-link-icon"
+                        data-profile="${data.profile}"
+                        title="View Profile"
+                        style="cursor: pointer; font-size: 18px;"
+                    >
+                        <i class="fa fa-eye"></i>
+                    </span>
+                </div>
             `;
         }
+
         return value;
     },
 
@@ -76,30 +71,21 @@ frappe.query_reports["Leadership Archival  Master Report"] = {
         // PROFILE CLICK
         // =================================================
 
-        $(report.page.wrapper).on(
+        report.page.wrapper.on(
             "click",
-            ".leadership-profile-link",
-            function(e) {
-
-                e.preventDefault();
+            ".profile-link-icon",
+            function (e) {
                 e.stopPropagation();
-
-                const profile =
-                    $(this).attr("data-profile");
-
-                console.log("================================");
-                console.log("PROFILE CLICKED");
-                console.log("Profile:", profile);
-                console.log("================================");
-
-
-                frappe.set_route(
-                    "leadership-profile",
-                     profile
-                );
-
+                const profile_id = $(this).data("profile");
+                console.log("Profile ID:", profile_id);
+                if (profile_id) {
+                    frappe.set_route(
+                        "leadership-profile",
+                        profile_id
+                    );
+                }
             }
-        ); // <-- THIS WAS MISSING
+        );
 
 
         // =================================================

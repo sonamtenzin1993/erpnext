@@ -12,6 +12,12 @@ def execute(filters=None):
 def get_columns():
     return [
         {"label": "Name", "fieldname": "recipientName", "fieldtype": "Data", "width": 150},
+        {
+            "label": "View Profile",
+            "fieldname": "profile",
+            "fieldtype": "Data",
+            "width": 150
+        },
         {"label": "CID", "fieldname": "cid", "fieldtype": "Data", "width": 150},
         {"label": "DoB", "fieldname": "dob", "fieldtype": "phone", "width": 150},
         {"label": "Contact No", "fieldname": "contact_no", "fieldtype": "phone", "width": 150},
@@ -22,14 +28,6 @@ def get_columns():
         {"label": "Citation", "fieldname": "citation", "fieldtype": "Data", "width": 150},
         {"label": "Award or Appointment Date", "fieldname": "issued_date", "fieldtype": "Data", "width": 150},
         {"label": "PostThumous","fieldname": "postThumous", "fieldtype": "check", "width": 150},
-        # {"label": "Link to Profile","options": "Key Person Registry", "fieldname": "profile", "fieldtype": "Link", "width": 150},
-        # THIS IS THE IMPORTANT COLUMN
-        {
-            "label": "Profile",
-            "fieldname": "profile",
-            "fieldtype": "Data",
-            "width": 150
-        },
         {"label": "Kasho","options": "Kasho", "fieldname": "kasho", "fieldtype": "Link", "width": 150},
     ]
     

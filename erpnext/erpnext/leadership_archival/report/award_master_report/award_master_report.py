@@ -12,6 +12,9 @@ def execute(filters=None):
 def get_columns():
     return [
         {"label": "Name", "fieldname": "recipientName", "fieldtype": "Data", "width": 150},
+        {"label": "View Profile",
+         "fieldname": "profile",
+         "width": 150},
         {"label": "CID", "fieldname": "cid", "fieldtype": "Data", "width": 150},
         {"label": "DoB", "fieldname": "dob", "fieldtype": "phone", "width": 150},
         {"label": "Contact No", "fieldname": "contact_no", "fieldtype": "phone", "width": 150},
@@ -20,7 +23,6 @@ def get_columns():
         {"label": "Confer By","options": "Conferred By", "fieldname": "conferred_by", "fieldtype": "Link", "width": 150},
         {"label": "Start Term","fieldname": "start_term", "fieldtype": "Date", "width": 150},
         {"label": "End Term","fieldname": "end_term", "fieldtype": "Date", "width": 150},
-        {"label": "Link to Profile","options": "Key Person Registry", "fieldname": "profile", "fieldtype": "Link", "width": 150},
         {"label": "Kasho","options": "Kasho", "fieldname": "kasho", "fieldtype": "Link", "width": 150},
     ]
     

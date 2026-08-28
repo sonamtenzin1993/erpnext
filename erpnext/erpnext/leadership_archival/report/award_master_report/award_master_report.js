@@ -29,7 +29,70 @@ frappe.query_reports["Award Master Report"] = {
             "placeholder": "End Date"
         }
 	],
+    // =====================================================
+    // FORMATTER
+    // =====================================================
+    formatter: function (value, row, column, data, default_formatter) {
+
+        value = default_formatter(value, row, column, data);
+
+        if (column.fieldname === "profile" && data && data.profile) {
+
+            return `
+                <div style="text-align: center;">
+                    <span
+                        class="profile-link-icon"
+                        data-profile="${data.profile}"
+                        title="View Profile"
+                        style="cursor: pointer; font-size: 18px;"
+                    >
+                        <i class="fa fa-eye"></i>
+                    </span>
+                </div>
+            `;
+        }
+
+        return value;
+    },
+
+        
 	onload: function (report) {
+         // =================================================
+        // PROFILE CLICK
+        // =================================================
+
+       //$(report.page.wrapper).on(
+          //  "click",
+         //   ".leadership-profile-link",
+         //   function(e) {
+
+         //       e.preventDefault();
+         //       e.stopPropagation();
+
+         //       const profile =
+         //           $(this).attr("data-profile");
+         //       frappe.set_route(
+        //            "leadership-profile",
+        //             profile
+         //       );
+        //    }
+        //);
+
+        report.page.wrapper.on(
+            "click",
+            ".profile-link-icon",
+            function (e) {
+                e.stopPropagation();
+                const profile_id = $(this).data("profile");
+                console.log("Profile ID:", profile_id);
+                if (profile_id) {
+                    frappe.set_route(
+                        "leadership-profile",
+                        profile_id
+                    );
+                }
+            }
+        );
 
         function validate_dates() {
             const start = report.get_filter_value("start_date");
