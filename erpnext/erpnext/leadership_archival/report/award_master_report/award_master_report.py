@@ -24,6 +24,12 @@ def get_columns():
         {"label": "Start Term","fieldname": "start_term", "fieldtype": "Date", "width": 150},
         {"label": "End Term","fieldname": "end_term", "fieldtype": "Date", "width": 150},
         {"label": "Kasho","options": "Kasho", "fieldname": "kasho", "fieldtype": "Link", "width": 150},
+        {
+            "label": "Count Value",
+            "fieldname": "count_value",
+            "fieldtype": "Int",
+            "hidden": 1
+        }
     ]
     
 def get_data(filters):

@@ -69,30 +69,80 @@ export default class NumberCardWidget extends Widget {
 		});
 	}
 
+	// set_route() {
+	// 	if (this.card_doc.type === "Custom") {
+	// 		this.set_route_for_custom_card();
+	// 		return;
+	// 	}
+
+	// 	const is_document_type = this.card_doc.type !== "Report";
+	// 	const name = is_document_type ? this.card_doc.document_type : this.card_doc.report_name;
+	// 	const route = frappe.utils.generate_route({
+	// 		name: name,
+	// 		type: is_document_type ? "doctype" : "report",
+	// 		is_query_report: !is_document_type,
+	// 	});
+
+	// 	if (is_document_type) {
+	// 		const filters = JSON.parse(this.card_doc.filters_json);
+	// 		frappe.route_options = filters.reduce((acc, filter) => {
+	// 			return Object.assign(acc, {
+	// 				[`${filter[0]}.${filter[1]}`]: [filter[2], filter[3]],
+	// 			});
+	// 		}, {});
+	// 	}
+
+	// 	frappe.set_route(route);
+	// }
+
 	set_route() {
-		if (this.card_doc.type === "Custom") {
-			this.set_route_for_custom_card();
-			return;
-		}
+    if (this.card_doc.type === "Custom") {
+        this.set_route_for_custom_card();
+        return;
+    }
 
-		const is_document_type = this.card_doc.type !== "Report";
-		const name = is_document_type ? this.card_doc.document_type : this.card_doc.report_name;
-		const route = frappe.utils.generate_route({
-			name: name,
-			type: is_document_type ? "doctype" : "report",
-			is_query_report: !is_document_type,
-		});
+    const is_document_type = this.card_doc.type !== "Report";
 
-		if (is_document_type) {
-			const filters = JSON.parse(this.card_doc.filters_json);
-			frappe.route_options = filters.reduce((acc, filter) => {
-				return Object.assign(acc, {
-					[`${filter[0]}.${filter[1]}`]: [filter[2], filter[3]],
-				});
-			}, {});
-		}
+    const name = is_document_type
+        ? this.card_doc.document_type
+        : this.card_doc.report_name;
 
-		frappe.set_route(route);
+    const route = frappe.utils.generate_route({
+        name: name,
+        type: is_document_type ? "doctype" : "report",
+        is_query_report: !is_document_type,
+    });
+
+    // Apply filters for both DocType and Report cards
+    if (this.card_doc.filters_json) {
+        try {
+            const filters = JSON.parse(this.card_doc.filters_json);
+
+            if (is_document_type) {
+                frappe.route_options = filters.reduce((acc, filter) => {
+                    return Object.assign(acc, {
+                        [`${filter[0]}.${filter[1]}`]: [filter[2], filter[3]],
+                    });
+                }, {});
+            } else {
+                // Report Number Card
+                frappe.route_options = filters;
+            }
+
+            console.log("Number Card route filters:", frappe.route_options);
+
+        } catch (e) {
+            console.error("Error parsing Number Card filters:", e);
+        }
+    }
+
+    // frappe.set_route(route);
+	const filters = frappe.route_options || {};
+	const query = new URLSearchParams(filters).toString();
+
+	const report_url = `${route}${query ? "?" + query : ""}`;
+
+	window.open(report_url, "_blank");
 	}
 
 	set_route_for_custom_card() {

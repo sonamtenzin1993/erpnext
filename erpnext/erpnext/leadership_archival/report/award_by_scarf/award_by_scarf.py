@@ -71,6 +71,12 @@ def get_columns():
         {"label": "Award or Appointment Date", "fieldname": "issued_date", "fieldtype": "Data", "width": 150},
         {"label": "PostThumous","fieldname": "postThumous", "fieldtype": "check", "width": 150},
         {"label": "Kasho","options": "Kasho", "fieldname": "kasho", "fieldtype": "Link", "width": 150},
+        {
+            "label": "Count Value",
+            "fieldname": "count_value",
+            "fieldtype": "Int",
+            "hidden": 1
+        }
     ]
 
 
@@ -135,7 +141,8 @@ def get_data(filters):
             k.issue_date AS issued_date,
             k.name AS kasho,
             kpr.name AS profile,
-            aw.postThumous AS postThumous
+            aw.postThumous AS postThumous,
+            1 AS count_value
 
         FROM `tabAward and Appointment` aw
 

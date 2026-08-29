@@ -57,27 +57,18 @@ frappe.query_reports["Award Master Report"] = {
 
         
 	onload: function (report) {
-         // =================================================
-        // PROFILE CLICK
-        // =================================================
+         // =====================================================
+        // APPLY FILTER PASSED FROM NUMBER CARD
+        // =====================================================
 
-       //$(report.page.wrapper).on(
-          //  "click",
-         //   ".leadership-profile-link",
-         //   function(e) {
+        const url_params = new URLSearchParams(window.location.search);
+        const title_medal = url_params.get("title_medal");
 
-         //       e.preventDefault();
-         //       e.stopPropagation();
-
-         //       const profile =
-         //           $(this).attr("data-profile");
-         //       frappe.set_route(
-        //            "leadership-profile",
-        //             profile
-         //       );
-        //    }
-        //);
-
+        if (title_medal) {
+            report.set_filter_value("title_medal", title_medal);
+            report.refresh();
+        }
+        
         report.page.wrapper.on(
             "click",
             ".profile-link-icon",

@@ -61,6 +61,17 @@ frappe.query_reports["Award By Medal"] = {
     },
 
 	onload: function (report) {
+        // =====================================================
+        // APPLY FILTER PASSED FROM NUMBER CARD
+        // =====================================================
+
+        const url_params = new URLSearchParams(window.location.search);
+        const title_medal = url_params.get("title_medal");
+
+        if (title_medal) {
+            report.set_filter_value("title_medal", title_medal);
+            report.refresh();
+        }
          // =================================================
         // PROFILE CLICK
         // =================================================
@@ -71,7 +82,6 @@ frappe.query_reports["Award By Medal"] = {
             function (e) {
                 e.stopPropagation();
                 const profile_id = $(this).data("profile");
-                console.log("Profile ID:", profile_id);
                 if (profile_id) {
                     // frappe.set_route(
                     //     "leadership-profile",
