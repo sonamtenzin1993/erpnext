@@ -11,7 +11,7 @@
  "is_public": 0,
  "is_standard": 1,
  "label": "White Scarf",
- "modified": "2026-08-29 14:22:52.794353",
+ "modified": "2026-08-29 14:40:38.674491",
  "modified_by": "Administrator",
  "module": "Leadership Archival",
  "name": "White Scarf",
@@ -19,7 +19,7 @@
  "parent_document_type": "",
  "report_field": "count_value",
  "report_function": "Sum",
- "report_name": "Award By Medal",
+ "report_name": "Award by Scarf",
  "show_percentage_stats": 1,
  "stats_time_interval": "Daily",
  "type": "Report"
