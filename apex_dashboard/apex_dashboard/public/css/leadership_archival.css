@@ -1,0 +1,472 @@
+/* =========================================================
+   LEADERSHIP ARCHIVAL
+   ERPNext 15
+   NUMBER CARDS
+   ========================================================= */
+
+
+/* =========================================================
+   WORKSPACE BACKGROUND
+   ========================================================= */
+
+body.leadership-workspace {
+    background: #f5f6fa !important;
+}
+
+body.leadership-workspace .layout-main-section {
+    background: #f5f6fa !important;
+}
+
+
+/* =========================================================
+   NUMBER CARD BASE
+   ========================================================= */
+
+body.leadership-workspace .number-widget-box {
+    position: relative !important;
+
+    min-height: 110px !important;
+
+    padding: 0 !important;
+
+    background: #ffffff !important;
+
+    border: 1px solid #dfe2e8 !important;
+
+    border-radius: 14px !important;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.05) !important;
+
+    overflow: hidden !important;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease !important;
+}
+
+
+/* =========================================================
+   CARD HOVER
+   ========================================================= */
+
+body.leadership-workspace .number-widget-box:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.09) !important;
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box .widget-head {
+
+    padding:
+        16px
+        20px
+        0
+        22px !important;
+
+    margin: 0 !important;
+
+    border: none !important;
+
+    min-height: auto !important;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box .widget-title {
+
+    font-size: 11px !important;
+
+    font-weight: 700 !important;
+
+    letter-spacing: 0.4px !important;
+
+    text-transform: uppercase;
+
+    line-height: 1.3 !important;
+}
+
+
+/* =========================================================
+   NUMBER BODY
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box .widget-body {
+
+    padding:
+        4px
+        22px
+        16px
+        22px !important;
+
+}
+
+
+/* =========================================================
+   NUMBER
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box .number {
+
+    font-size: 30px !important;
+
+    font-weight: 700 !important;
+
+    line-height: 1.1 !important;
+
+    color: #252a34 !important;
+
+}
+
+
+/* =========================================================
+   REMOVE DEFAULT FOOTER
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box .widget-footer {
+
+    border: none !important;
+
+}
+
+
+/* =========================================================
+   LEFT COLOR BAR
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+
+    width: 5px;
+
+    z-index: 5;
+
+}
+
+
+/* =========================================================
+   NOM BRONZE
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="NOM Bronze"]
+)::before {
+
+    background: #b87333;
+}
+
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="NOM Bronze"]
+)
+.widget-title {
+
+    color: #b87333 !important;
+}
+
+
+/* =========================================================
+   NOM SILVER
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="NOM Silver"]
+)::before {
+
+    background: #7d8793;
+}
+
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="NOM Silver"]
+)
+.widget-title {
+
+    color: #69737f !important;
+}
+
+
+/* =========================================================
+   NOM GOLD
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="NOM Gold"]
+)::before {
+
+    background: #e0a800;
+}
+
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="NOM Gold"]
+)
+.widget-title {
+
+    color: #d69b00 !important;
+}
+
+
+/* =========================================================
+   RED SCARF
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="Red Scarf"]
+)::before {
+
+    background: #d9363e;
+}
+
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="Red Scarf"]
+)
+.widget-title {
+
+    color: #d9363e !important;
+}
+
+
+/* =========================================================
+   LUNGMAR SCARF
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="Lungmar Scarf"]
+)::before {
+
+    background: #e6a400;
+}
+
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="Lungmar Scarf"]
+)
+.widget-title {
+
+    color: #d39500 !important;
+}
+
+
+/* =========================================================
+   WHITE SCARF
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="White Scarf"]
+)::before {
+
+    background: #9ca3aa;
+}
+
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="White Scarf"]
+)
+.widget-title {
+
+    color: #777d85 !important;
+}
+
+
+/* =========================================================
+   ICON SPACE
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box::after {
+
+    content: "";
+
+    position: absolute;
+
+    right: 18px;
+
+    top: 50%;
+
+    width: 48px;
+
+    height: 48px;
+
+    transform: translateY(-50%);
+
+    background-repeat: no-repeat;
+
+    background-position: center;
+
+    background-size: contain;
+
+    pointer-events: none;
+
+}
+
+
+/* =========================================================
+   BRONZE ICON
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="NOM Bronze"]
+)::after {
+
+    background-image:
+        url("/assets/smart_erp/images/nom-bronze.png");
+
+}
+
+
+/* =========================================================
+   SILVER ICON
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="NOM Silver"]
+)::after {
+
+    background-image:
+        url("/assets/smart_erp/images/nom-silver.png");
+
+}
+
+
+/* =========================================================
+   GOLD ICON
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="NOM Gold"]
+)::after {
+
+    background-image:
+        url("/assets/smart_erp/images/nom-gold.png");
+
+}
+
+
+/* =========================================================
+   RED SCARF ICON
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="Red Scarf"]
+)::after {
+
+    background-image:
+        url("/assets/smart_erp/images/red-scarf.png");
+
+}
+
+
+/* =========================================================
+   LUNGMAR SCARF ICON
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="Lungmar Scarf"]
+)::after {
+
+    background-image:
+        url("/assets/smart_erp/images/lungmar-scarf.png");
+
+}
+
+
+/* =========================================================
+   WHITE SCARF ICON
+   ========================================================= */
+
+body.leadership-workspace
+.number-widget-box:has(
+    .widget-title span[title="White Scarf"]
+)::after {
+
+    background-image:
+        url("/assets/smart_erp/images/white-scarf.png");
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    body.leadership-workspace
+    .number-widget-box {
+
+        min-height: 100px !important;
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    body.leadership-workspace
+    .number-widget-box {
+
+        min-height: 95px !important;
+
+    }
+
+    body.leadership-workspace
+    .number-widget-box .number {
+
+        font-size: 26px !important;
+
+    }
+
+    body.leadership-workspace
+    .number-widget-box::after {
+
+        width: 40px;
+
+        height: 40px;
+
+        right: 14px;
+
+    }
+
+}
