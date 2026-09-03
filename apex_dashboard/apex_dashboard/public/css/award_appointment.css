@@ -1,0 +1,597 @@
+/* ============================================================
+   AWARD AND APPOINTMENT
+   ERPNext / Frappe v15
+   CLEAN ENTERPRISE WORKSPACE
+   ============================================================ */
+
+
+/* ============================================================
+   COLOR VARIABLES
+   ============================================================ */
+
+:root {
+    --aa-primary: #2563eb;
+    --aa-primary-dark: #1d4ed8;
+    --aa-primary-light: #eff6ff;
+
+    --aa-text: #1e293b;
+    --aa-muted: #64748b;
+
+    --aa-border: #e2e8f0;
+    --aa-border-light: #edf1f5;
+
+    --aa-bg: #f8fafc;
+    --aa-white: #ffffff;
+}
+
+
+/* ============================================================
+   PAGE
+   ============================================================ */
+
+body {
+    background: var(--aa-bg) !important;
+}
+
+
+/* ============================================================
+   MAIN PAGE
+   ============================================================ */
+
+.page-container {
+    background: var(--aa-bg) !important;
+}
+
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+
+.page-head {
+    background: var(--aa-white) !important;
+    border-bottom: 1px solid var(--aa-border) !important;
+}
+
+.page-head .title-text {
+    color: var(--aa-text) !important;
+
+    font-size: 24px !important;
+    font-weight: 700 !important;
+
+    letter-spacing: -0.3px !important;
+}
+
+
+/* ============================================================
+   WORKSPACE CONTAINER
+   ============================================================ */
+
+.workspace-container {
+    background: var(--aa-bg) !important;
+
+    padding: 24px !important;
+}
+
+
+/* ============================================================
+   EDITOR AREA
+   ============================================================ */
+
+.workspace-container .editor-js-container,
+.workspace-container #editorjs,
+.workspace-container .codex-editor,
+.workspace-container .codex-editor__redactor {
+    background: transparent !important;
+}
+
+
+/* ============================================================
+   EACH WORKSPACE BLOCK
+   ============================================================ */
+
+.workspace-container .ce-block {
+    background: transparent !important;
+}
+
+.workspace-container .ce-block__content {
+    background: transparent !important;
+}
+
+
+/* ============================================================
+   REMOVE DEFAULT WIDGET CARD STYLE
+   ============================================================ */
+
+.workspace-container .widget {
+    box-shadow: none !important;
+}
+
+
+/* ============================================================
+   ============================================================
+   SHORTCUT WIDGETS
+   ============================================================
+   Actual class in your HTML:
+   .shortcut-widget-box
+   ============================================================
+   */
+
+.workspace-container .shortcut-widget-box {
+
+    background: var(--aa-white) !important;
+
+    border: 1px solid var(--aa-border) !important;
+
+    border-radius: 10px !important;
+
+    box-shadow: none !important;
+
+    overflow: hidden !important;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease !important;
+}
+
+
+/* Shortcut hover */
+
+.workspace-container .shortcut-widget-box:hover {
+
+    border-color: var(--aa-primary) !important;
+
+    box-shadow:
+        0 6px 18px rgba(15, 23, 42, 0.08) !important;
+
+    transform: translateY(-2px) !important;
+}
+
+
+/* ============================================================
+   SHORTCUT HEADER
+   ============================================================ */
+
+.workspace-container .shortcut-widget-box .widget-head {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    min-height: 52px !important;
+
+    padding: 12px 15px !important;
+
+    margin: 0 !important;
+
+    background: var(--aa-white) !important;
+
+    border-bottom: 1px solid var(--aa-border-light) !important;
+}
+
+
+/* ============================================================
+   SHORTCUT TITLE
+   ============================================================ */
+
+.workspace-container .shortcut-widget-box .widget-title {
+
+    color: var(--aa-text) !important;
+
+    font-size: 14px !important;
+
+    font-weight: 600 !important;
+}
+
+
+/* ============================================================
+   SHORTCUT NUMBER
+   ============================================================ */
+
+.workspace-container .shortcut-widget-box .indicator-pill {
+
+    background: var(--aa-primary-light) !important;
+
+    color: var(--aa-primary) !important;
+
+    border: none !important;
+
+    font-weight: 600 !important;
+}
+
+
+/* ============================================================
+   SHORTCUT BODY
+   ============================================================ */
+
+.workspace-container .shortcut-widget-box .widget-body {
+
+    background: var(--aa-white) !important;
+}
+
+
+/* ============================================================
+   ============================================================
+   LINK WIDGETS
+   ============================================================
+   Actual class in your HTML:
+   .links-widget-box
+   ============================================================
+   */
+
+.workspace-container .links-widget-box {
+
+    background: var(--aa-white) !important;
+
+    border: 1px solid var(--aa-border) !important;
+
+    border-radius: 10px !important;
+
+    box-shadow: none !important;
+
+    overflow: hidden !important;
+}
+
+
+/* ============================================================
+   LINK WIDGET HEADER
+   ============================================================ */
+
+.workspace-container .links-widget-box .widget-head {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    min-height: 50px !important;
+
+    padding: 12px 15px !important;
+
+    margin: 0 !important;
+
+    background: var(--aa-white) !important;
+
+    border-bottom: 1px solid var(--aa-border) !important;
+
+    position: relative !important;
+}
+
+
+/* ============================================================
+   BLUE HEADER BAR
+   ============================================================ */
+
+.workspace-container .links-widget-box .widget-head::before {
+
+    content: "" !important;
+
+    width: 4px !important;
+
+    height: 22px !important;
+
+    margin-right: 10px !important;
+
+    background: var(--aa-primary) !important;
+
+    border-radius: 3px !important;
+
+    flex-shrink: 0 !important;
+}
+
+
+/* ============================================================
+   LINK WIDGET TITLE
+   ============================================================ */
+
+.workspace-container .links-widget-box .widget-title {
+
+    color: var(--aa-text) !important;
+
+    font-size: 15px !important;
+
+    font-weight: 700 !important;
+}
+
+
+/* ============================================================
+   LINK WIDGET BODY
+   ============================================================ */
+
+.workspace-container .links-widget-box .widget-body {
+
+    background: var(--aa-white) !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+}
+
+
+/* ============================================================
+   LINK ITEMS
+   ============================================================ */
+
+.workspace-container
+.links-widget-box
+.widget-body
+.link-item {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    min-height: 42px !important;
+
+    width: 100% !important;
+
+    padding: 9px 14px !important;
+
+    margin: 0 !important;
+
+    background: var(--aa-white) !important;
+
+    border-bottom: 1px solid var(--aa-border-light) !important;
+
+    color: var(--aa-text) !important;
+
+    font-size: 14px !important;
+
+    font-weight: 500 !important;
+
+    text-decoration: none !important;
+
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        padding-left 0.15s ease !important;
+}
+
+
+/* ============================================================
+   LAST LINK
+   ============================================================ */
+
+.workspace-container
+.links-widget-box
+.widget-body
+.link-item:last-child {
+
+    border-bottom: none !important;
+}
+
+
+/* ============================================================
+   LINK HOVER
+   ============================================================ */
+
+.workspace-container
+.links-widget-box
+.widget-body
+.link-item:hover {
+
+    background: var(--aa-primary-light) !important;
+
+    color: var(--aa-primary) !important;
+
+    padding-left: 19px !important;
+}
+
+
+/* ============================================================
+   LINK CONTENT
+   ============================================================ */
+
+.workspace-container
+.links-widget-box
+.link-content {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    width: 100% !important;
+
+    color: inherit !important;
+}
+
+
+/* ============================================================
+   LINK TEXT
+   ============================================================ */
+
+.workspace-container
+.links-widget-box
+.link-text {
+
+    color: inherit !important;
+
+    font-weight: 500 !important;
+}
+
+
+/* ============================================================
+   LINK ICON
+   ============================================================ */
+
+.workspace-container
+.links-widget-box
+.link-item
+svg {
+
+    color: #94a3b8 !important;
+
+    margin-left: auto !important;
+
+    transition: color 0.15s ease !important;
+}
+
+
+.workspace-container
+.links-widget-box
+.link-item:hover
+svg {
+
+    color: var(--aa-primary) !important;
+}
+
+
+/* ============================================================
+   DISABLED LINKS
+   ============================================================ */
+
+.workspace-container
+.links-widget-box
+.link-item.disabled-link {
+
+    opacity: 0.65 !important;
+
+    cursor: not-allowed !important;
+}
+
+
+/* ============================================================
+   WIDGET FOOTER
+   ============================================================ */
+
+.workspace-container .widget-footer {
+
+    background: var(--aa-white) !important;
+}
+
+
+/* ============================================================
+   SPACER
+   ============================================================ */
+
+.workspace-container .widget.spacer {
+
+    background: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+}
+
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.layout-side-section {
+
+    background: var(--aa-white) !important;
+
+    border-right: 1px solid var(--aa-border) !important;
+}
+
+
+.standard-sidebar-item {
+
+    margin: 3px 8px !important;
+
+    border-radius: 7px !important;
+
+    color: var(--aa-muted) !important;
+}
+
+
+.standard-sidebar-item:hover {
+
+    background: var(--aa-primary-light) !important;
+
+    color: var(--aa-primary) !important;
+}
+
+
+.standard-sidebar-item.selected {
+
+    background: var(--aa-primary-light) !important;
+
+    color: var(--aa-primary) !important;
+
+    font-weight: 600 !important;
+}
+
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn-primary {
+
+    background: var(--aa-primary) !important;
+
+    border-color: var(--aa-primary) !important;
+
+    border-radius: 7px !important;
+
+    font-weight: 600 !important;
+
+    box-shadow: none !important;
+}
+
+
+.btn-primary:hover {
+
+    background: var(--aa-primary-dark) !important;
+
+    border-color: var(--aa-primary-dark) !important;
+}
+
+
+/* ============================================================
+   WORKSPACE FOOTER
+   ============================================================ */
+
+.workspace-footer {
+
+    background: transparent !important;
+
+    border: none !important;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 992px) {
+
+    .workspace-container {
+        padding: 18px !important;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .workspace-container {
+        padding: 12px !important;
+    }
+
+    .workspace-container .ce-block {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
+
+    .workspace-container .shortcut-widget-box,
+    .workspace-container .links-widget-box {
+        border-radius: 8px !important;
+    }
+
+    .workspace-container .widget-title {
+        font-size: 14px !important;
+    }
+
+    .workspace-container
+    .links-widget-box
+    .widget-body
+    .link-item {
+
+        min-height: 44px !important;
+
+        padding: 10px 12px !important;
+    }
+
+}

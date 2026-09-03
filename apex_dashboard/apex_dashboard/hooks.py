@@ -27,7 +27,8 @@ app_license = "mit"
 # app_include_css = "/assets/apex_dashboard/css/apex_dashboard.css"
 #app_include_js = "/assets/apex_dashboard/js/apex_dashboard.js"
 app_include_css = [
-    "/assets/apex_dashboard/css/leadership_archival.css"
+    "/assets/apex_dashboard/css/leadership_archival.css",
+    "/assets/apex_dashboard/css/award_appointment.css"
     ]
 app_include_js = [
     "apex_dashboard.bundle.js"
