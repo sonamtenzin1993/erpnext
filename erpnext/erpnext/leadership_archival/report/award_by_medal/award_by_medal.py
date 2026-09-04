@@ -89,6 +89,16 @@ def get_data(filters):
     if filters.get("title_medal"):
         conditions.append("aw.title LIKE %(title_medal)s")
         filters["title_medal"] = f"%{filters['title_medal']}%"
+    
+    # =====================================================
+    # CONFERRED BY FILTER
+    # =====================================================
+    conferred_by = filters.get("conferred_by")
+
+    if conferred_by and conferred_by != "All":
+        conditions.append(
+            "aw.conferred_by = %(conferred_by)s"
+        )
 
     # Force title to contain "Scarf"
     conditions.append("aw.title NOT LIKE '%%Scarf%%'")

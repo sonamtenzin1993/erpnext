@@ -79,36 +79,89 @@ def get_columns():
         }
     ]
 
+def get_data(filters=None):
 
-def get_data(filters):
+    filters = filters or {}
+
     conditions = []
 
+    # =====================================================
+    # CID
+    # =====================================================
+
     if filters.get("cid"):
-        conditions.append("aw.cid = %(cid)s")
+        conditions.append(
+            "aw.cid = %(cid)s"
+        )
+
+
+    # =====================================================
+    # TITLE
+    # =====================================================
 
     if filters.get("title_medal"):
-        conditions.append("aw.title LIKE %(title_medal)s")
-        filters["title_medal"] = f"%{filters['title_medal']}%"
 
-    # Force title to contain "Scarf"
-    conditions.append("aw.title LIKE '%%Scarf%%'")
+        conditions.append(
+            "aw.title LIKE %(title_medal)s"
+        )
 
-    # Force Kasho Type
-    conditions.append("k.kasho_type IN ('Award')")
+        filters["title_medal"] = (
+            f"%{filters['title_medal']}%"
+        )
+
+
+    # =====================================================
+    # CONFERRED BY
+    # =====================================================
+
+    if filters.get("conferred_by"):
+
+        conditions.append(
+            "aw.conferred_by = %(conferred_by)s"
+        )
+
+
+    # =====================================================
+    # FORCE SCARF
+    # =====================================================
+
+    conditions.append(
+        "aw.title LIKE '%%Scarf%%'"
+    )
+
+
+    # =====================================================
+    # KASHO TYPE
+    # =====================================================
+
+    conditions.append(
+        "k.kasho_type = 'Award'"
+    )
+
+
+    # =====================================================
+    # DATE FILTER
+    # =====================================================
 
     start_date = filters.get("start_date")
     end_date = filters.get("end_date")
 
+
     if start_date and end_date:
 
         if end_date < start_date:
+
             frappe.throw(
                 "End Date must be greater than Start Date"
             )
 
         conditions.append(
-            "k.issue_date BETWEEN %(start_date)s AND %(end_date)s"
+            """
+            k.issue_date BETWEEN
+            %(start_date)s AND %(end_date)s
+            """
         )
+
 
     elif start_date:
 
@@ -116,47 +169,176 @@ def get_data(filters):
             "k.issue_date >= %(start_date)s"
         )
 
+
     elif end_date:
 
         conditions.append(
             "k.issue_date <= %(end_date)s"
         )
 
-    where_clause = " AND ".join(conditions)
 
-    if where_clause:
-        where_clause = "WHERE " + where_clause
+    # =====================================================
+    # WHERE
+    # =====================================================
+
+    where_clause = ""
+
+    if conditions:
+
+        where_clause = (
+            "WHERE " +
+            " AND ".join(conditions)
+        )
+
+
+    # =====================================================
+    # QUERY
+    # =====================================================
 
     return frappe.db.sql(
         f"""
         SELECT
+
             aw.cid AS cid,
+
             kpr.registry_name AS recipientName,
+
             kpr.dob AS dob,
+
             aw.title AS title,
+
             aw.location AS location,
+
             aw.event_name AS event_name,
+
             aw.conferred_by AS conferred_by,
+
             aw.citation AS citation,
+
             k.issue_date AS issued_date,
+
             k.name AS kasho,
+
             kpr.name AS profile,
+
             aw.postThumous AS postThumous,
+
             1 AS count_value
+
 
         FROM `tabAward and Appointment` aw
 
+
         INNER JOIN `tabKasho` k
+
             ON aw.parent = k.name
 
+
         LEFT JOIN `tabKey Person Registry` kpr
+
             ON kpr.cid = aw.cid
 
+
         {where_clause}
+
+
+        ORDER BY
+            k.issue_date DESC
+
         """,
+
         filters,
+
         as_dict=True
     )
+
+# def get_data(filters):
+#     conditions = []
+
+#     if filters.get("cid"):
+#         conditions.append("aw.cid = %(cid)s")
+
+#     if filters.get("title_medal"):
+#         conditions.append("aw.title LIKE %(title_medal)s")
+#         filters["title_medal"] = f"%{filters['title_medal']}%"
+    
+#     # =====================================================
+#     # CONFERRED BY FILTER
+#     # =====================================================
+#     conferred_by = filters.get("conferred_by")
+
+#     if conferred_by and conferred_by != "All":
+#         conditions.append(
+#             "aw.conferred_by = %(conferred_by)s"
+#         )
+
+#     # Force title to contain "Scarf"
+#     conditions.append("aw.title LIKE '%%Scarf%%'")
+
+#     # Force Kasho Type
+#     conditions.append("k.kasho_type IN ('Award')")
+
+#     start_date = filters.get("start_date")
+#     end_date = filters.get("end_date")
+
+#     if start_date and end_date:
+
+#         if end_date < start_date:
+#             frappe.throw(
+#                 "End Date must be greater than Start Date"
+#             )
+
+#         conditions.append(
+#             "k.issue_date BETWEEN %(start_date)s AND %(end_date)s"
+#         )
+
+#     elif start_date:
+
+#         conditions.append(
+#             "k.issue_date >= %(start_date)s"
+#         )
+
+#     elif end_date:
+
+#         conditions.append(
+#             "k.issue_date <= %(end_date)s"
+#         )
+
+#     where_clause = " AND ".join(conditions)
+
+#     if where_clause:
+#         where_clause = "WHERE " + where_clause
+
+#     return frappe.db.sql(
+#         f"""
+#         SELECT
+#             aw.cid AS cid,
+#             kpr.registry_name AS recipientName,
+#             kpr.dob AS dob,
+#             aw.title AS title,
+#             aw.location AS location,
+#             aw.event_name AS event_name,
+#             aw.conferred_by AS conferred_by,
+#             aw.citation AS citation,
+#             k.issue_date AS issued_date,
+#             k.name AS kasho,
+#             kpr.name AS profile,
+#             aw.postThumous AS postThumous,
+#             1 AS count_value
+
+#         FROM `tabAward and Appointment` aw
+
+#         INNER JOIN `tabKasho` k
+#             ON aw.parent = k.name
+
+#         LEFT JOIN `tabKey Person Registry` kpr
+#             ON kpr.cid = aw.cid
+
+#         {where_clause}
+#         """,
+#         filters,
+#         as_dict=True
+#     )
 
 
 

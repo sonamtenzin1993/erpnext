@@ -95,55 +95,340 @@ export default class NumberCardWidget extends Widget {
 	// 	frappe.set_route(route);
 	// }
 
+	// set_route() {
+	// 	if (this.card_doc.type === "Custom") {
+	// 		this.set_route_for_custom_card();
+	// 		return;
+	// 	}
+
+	// 	const is_document_type = this.card_doc.type !== "Report";
+
+	// 	const name = is_document_type
+	// 		? this.card_doc.document_type
+	// 		: this.card_doc.report_name;
+
+	// 	const route = frappe.utils.generate_route({
+	// 		name: name,
+	// 		type: is_document_type ? "doctype" : "report",
+	// 		is_query_report: !is_document_type,
+	// 	});
+
+	// 	// Apply filters for both DocType and Report cards
+	// 	if (this.card_doc.filters_json) {
+	// 		try {
+	// 			const filters = JSON.parse(this.card_doc.filters_json);
+
+	// 			if (is_document_type) {
+	// 				frappe.route_options = filters.reduce((acc, filter) => {
+	// 					return Object.assign(acc, {
+	// 						[`${filter[0]}.${filter[1]}`]: [filter[2], filter[3]],
+	// 					});
+	// 				}, {});
+	// 			} else {
+	// 				// Report Number Card
+	// 				frappe.route_options = filters;
+	// 			}
+
+	// 			console.log("Number Card route filters:", frappe.route_options);
+
+	// 		} catch (e) {
+	// 			console.error("Error parsing Number Card filters:", e);
+	// 		}
+	// 	}
+
+	// 	// frappe.set_route(route);
+	// 	const filters = frappe.route_options || {};
+	// 	const query = new URLSearchParams(filters).toString();
+
+	// 	const report_url = `${route}${query ? "?" + query : ""}`;
+
+	// 	window.open(report_url, "_blank");
+	// }
+
+
+
 	set_route() {
-    if (this.card_doc.type === "Custom") {
-        this.set_route_for_custom_card();
-        return;
-    }
 
-    const is_document_type = this.card_doc.type !== "Report";
+		/* ============================================================
+		CUSTOM NUMBER CARD
+		============================================================ */
 
-    const name = is_document_type
-        ? this.card_doc.document_type
-        : this.card_doc.report_name;
+		if (this.card_doc.type === "Custom") {
 
-    const route = frappe.utils.generate_route({
-        name: name,
-        type: is_document_type ? "doctype" : "report",
-        is_query_report: !is_document_type,
-    });
+			this.set_route_for_custom_card();
 
-    // Apply filters for both DocType and Report cards
-    if (this.card_doc.filters_json) {
-        try {
-            const filters = JSON.parse(this.card_doc.filters_json);
+			return;
+		}
 
-            if (is_document_type) {
-                frappe.route_options = filters.reduce((acc, filter) => {
-                    return Object.assign(acc, {
-                        [`${filter[0]}.${filter[1]}`]: [filter[2], filter[3]],
-                    });
-                }, {});
-            } else {
-                // Report Number Card
-                frappe.route_options = filters;
-            }
 
-            console.log("Number Card route filters:", frappe.route_options);
+		/* ============================================================
+		DETERMINE CARD TYPE
+		============================================================ */
 
-        } catch (e) {
-            console.error("Error parsing Number Card filters:", e);
-        }
-    }
+		const is_document_type =
+			this.card_doc.type !== "Report";
 
-    // frappe.set_route(route);
-	const filters = frappe.route_options || {};
-	const query = new URLSearchParams(filters).toString();
 
-	const report_url = `${route}${query ? "?" + query : ""}`;
+		const name =
+			is_document_type
+				? this.card_doc.document_type
+				: this.card_doc.report_name;
 
-	window.open(report_url, "_blank");
+
+		/* ============================================================
+		GENERATE NATIVE ERPNext ROUTE
+		============================================================ */
+
+		const route =
+			frappe.utils.generate_route({
+
+				name: name,
+
+				type:
+					is_document_type
+						? "doctype"
+						: "report",
+
+				is_query_report:
+					!is_document_type,
+
+			});
+
+
+		/* ============================================================
+		READ NUMBER CARD FILTERS
+		============================================================ */
+
+		let filters = {};
+
+
+		if (this.card_doc.filters_json) {
+
+			try {
+
+				const cardFilters =
+					JSON.parse(
+						this.card_doc.filters_json
+					);
+
+
+				/* ====================================================
+				DOCUMENT TYPE CARD
+				==================================================== */
+
+				if (is_document_type) {
+
+					frappe.route_options =
+						cardFilters.reduce(
+							(acc, filter) => {
+
+								return Object.assign(
+									acc,
+									{
+										[`${filter[0]}.${filter[1]}`]:
+											[
+												filter[2],
+												filter[3]
+											],
+									}
+								);
+
+							},
+							{}
+						);
+
+
+					filters =
+						frappe.route_options || {};
+
+				}
+
+
+				/* ====================================================
+				REPORT NUMBER CARD
+				==================================================== */
+
+				else {
+
+					filters =
+						cardFilters || {};
+
+				}
+
+			}
+
+			catch (error) {
+
+				console.error(
+					"[Number Card] Error parsing filters_json:",
+					error
+				);
+
+				filters = {};
+
+			}
+
+		}
+
+
+		/* ============================================================
+		LEADERSHIP ARCHIVAL GLOBAL FILTER
+		============================================================ */
+
+		if (
+			!is_document_type &&
+			typeof frappe !== "undefined" &&
+			typeof frappe.get_route === "function"
+		) {
+
+			const currentRoute =
+				frappe.get_route();
+
+
+			const isLeadershipArchival =
+				currentRoute &&
+				currentRoute.length >= 2 &&
+				currentRoute[0] === "Workspaces" &&
+				currentRoute[1] === "Leadership Archival";
+
+
+			if (isLeadershipArchival) {
+
+				/*
+				* Find the Conferred By dropdown
+				* created by the Leadership Archival
+				* Workspace JavaScript.
+				*/
+				const conferredByElement =
+					document.querySelector(
+						"#leadership-conferred-by"
+					);
+
+
+				const conferredBy =
+					conferredByElement
+						? (
+							conferredByElement.value ||
+							"All"
+						)
+						: "All";
+
+
+				console.log(
+					"=========================================="
+				);
+
+
+				console.log(
+					"[Leadership Archival] " +
+					"Native Number Card Router"
+				);
+
+
+				console.log(
+					"[Leadership Archival] " +
+					"Conferred By:",
+					conferredBy
+				);
+
+
+				console.log(
+					"[Leadership Archival] " +
+					"Card filters BEFORE global filter:",
+					filters
+				);
+
+
+				/* ====================================================
+				ADD CONFERRED BY
+				==================================================== */
+
+				if (
+					conferredBy &&
+					conferredBy !== "All"
+				) {
+
+					filters.conferred_by =
+						conferredBy;
+
+				}
+
+
+				/* ====================================================
+				REMOVE CONFERRED BY WHEN ALL IS SELECTED
+				==================================================== */
+
+				else {
+
+					delete filters.conferred_by;
+
+				}
+
+
+				console.log(
+					"[Leadership Archival] " +
+					"Card filters AFTER global filter:",
+					filters
+				);
+
+			}
+
+		}
+
+
+		/* ============================================================
+		SYNCHRONIZE ROUTE OPTIONS
+		============================================================ */
+
+		frappe.route_options =
+			filters;
+
+
+		/* ============================================================
+		BUILD QUERY STRING
+		============================================================ */
+
+		const query =
+			new URLSearchParams(
+				filters
+			).toString();
+
+
+		/* ============================================================
+		BUILD FINAL REPORT URL
+		============================================================ */
+
+		const report_url =
+			`${route}${query ? "?" + query : ""}`;
+
+
+		/* ============================================================
+		DEBUG
+		============================================================ */
+
+		console.log(
+			"[Leadership Archival] " +
+			"FINAL NUMBER CARD URL:",
+			report_url
+		);
+
+
+		console.log(
+			"=========================================="
+		);
+
+
+		/* ============================================================
+		KEEP NATIVE NUMBER CARD BEHAVIOUR
+		============================================================ */
+
+		window.open(
+			report_url,
+			"_blank"
+		);
 	}
+
+
 
 	set_route_for_custom_card() {
 		if (!this.data?.route) return;

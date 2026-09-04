@@ -31,7 +31,8 @@ app_include_css = [
     "/assets/apex_dashboard/css/award_appointment.css"
     ]
 app_include_js = [
-    "apex_dashboard.bundle.js"
+    "apex_dashboard.bundle.js",
+    "/assets/apex_dashboard/js/leadership_archival.js"
 ]
 
 # Jinja

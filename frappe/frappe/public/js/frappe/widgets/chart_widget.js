@@ -5,10 +5,28 @@ frappe.provide("frappe.dashboards");
 frappe.provide("frappe.dashboards.chart_sources");
 
 export default class ChartWidget extends Widget {
+	// constructor(opts) {
+	// 	opts.shadow = true;
+	// 	super(opts);
+	// 	this.height = this.height || 240;
+	// }
 	constructor(opts) {
-		opts.shadow = true;
-		super(opts);
-		this.height = this.height || 240;
+    opts.shadow = true;
+    super(opts);
+
+    this.height = this.height || 240;
+
+    /*
+     * Register this ChartWidget instance.
+     *
+     * The Leadership Archival workspace can then
+     * refresh every chart without knowing its name.
+     */
+    if (!window.__leadershipChartWidgets) {
+			window.__leadershipChartWidgets = new Set();
+		}
+
+		window.__leadershipChartWidgets.add(this);
 	}
 
 	get_config() {
@@ -195,27 +213,105 @@ export default class ChartWidget extends Widget {
 		return filters;
 	}
 
+	// fetch_and_update_chart() {
+	// 	this.args = {
+	// 		timespan: this.selected_timespan || this.chart_settings.timespan,
+	// 		time_interval: this.selected_time_interval || this.chart_settings.time_interval,
+	// 		from_date: this.selected_from_date || this.chart_settings.from_date,
+	// 		to_date: this.selected_to_date || this.chart_settings.to_date,
+	// 		heatmap_year: this.selected_heatmap_year || this.chart_settings.heatmap_year,
+	// 	};
+
+	// 	this.fetch(this.filters, true, this.args).then((data) => {
+	// 		if (this.chart_doc.chart_type == "Report") {
+	// 			this.report_result = data;
+	// 			this.summary = data.report_summary;
+	// 			data = this.get_report_chart_data(data);
+	// 		}
+
+	// 		this.update_chart_object();
+	// 		this.data = data;
+	// 		this.render();
+	// 	});
+	// }
+
 	fetch_and_update_chart() {
-		this.args = {
-			timespan: this.selected_timespan || this.chart_settings.timespan,
-			time_interval: this.selected_time_interval || this.chart_settings.time_interval,
-			from_date: this.selected_from_date || this.chart_settings.from_date,
-			to_date: this.selected_to_date || this.chart_settings.to_date,
-			heatmap_year: this.selected_heatmap_year || this.chart_settings.heatmap_year,
-		};
 
-		this.fetch(this.filters, true, this.args).then((data) => {
-			if (this.chart_doc.chart_type == "Report") {
-				this.report_result = data;
-				this.summary = data.report_summary;
-				data = this.get_report_chart_data(data);
-			}
+    this.args = {
+        timespan:
+            this.selected_timespan ||
+            this.chart_settings.timespan,
 
-			this.update_chart_object();
-			this.data = data;
-			this.render();
-		});
-	}
+        time_interval:
+            this.selected_time_interval ||
+            this.chart_settings.time_interval,
+
+        from_date:
+            this.selected_from_date ||
+            this.chart_settings.from_date,
+
+        to_date:
+            this.selected_to_date ||
+            this.chart_settings.to_date,
+
+        heatmap_year:
+            this.selected_heatmap_year ||
+            this.chart_settings.heatmap_year,
+    };
+
+    /*
+     * Apply Leadership global filter immediately
+     * before fetching Report chart data.
+     */
+    this.apply_leadership_global_filter();
+
+    console.log(
+        "[Leadership Chart] Fetching:",
+        this.chart_doc?.name,
+        this.chart_doc?.chart_type,
+        this.filters
+    );
+
+    this.fetch(
+        this.filters,
+        true,
+        this.args
+    ).then((data) => {
+
+        if (
+            this.chart_doc.chart_type ==
+            "Report"
+        ) {
+
+            this.report_result =
+                data;
+
+            this.summary =
+                data.report_summary;
+
+            data =
+                this.get_report_chart_data(
+                    data
+                );
+        }
+
+        this.update_chart_object();
+
+        this.data =
+            data;
+
+        this.render();
+
+    }).catch((error) => {
+
+        console.error(
+            "[Leadership Chart] Request failed:",
+            this.chart_doc?.name,
+            error
+        );
+
+    });
+}
 
 	render_date_range_field() {
 		if (!this.date_field_wrapper || !this.date_field_wrapper.is(":visible")) {
@@ -787,31 +883,450 @@ export default class ChartWidget extends Widget {
 		return this.set_chart_filters();
 	}
 
-	set_chart_filters() {
-		let user_saved_filters = this.chart_settings.filters || null;
-		let chart_saved_filters = frappe.dashboard_utils.get_all_filters(this.chart_doc);
+	get_leadership_global_filters() {
+			/*
+			* Global Conferred By filter supplied by
+			* Leadership Archival workspace.
+			*
+			* If it does not exist, do nothing.
+			*/
+			const conferredBy =
+				window.__leadershipConferredBy;
 
-		if (this.chart_doc.chart_type == "Report") {
-			return frappe.dashboard_utils
-				.get_filters_for_chart_type(this.chart_doc)
-				.then((filters) => {
-					chart_saved_filters = this.update_default_date_filters(
-						filters,
-						chart_saved_filters
-					);
-					this.filters =
-						frappe.utils.parse_array(user_saved_filters) ||
-						frappe.utils.parse_array(this.filters) ||
-						frappe.utils.parse_array(chart_saved_filters);
-				});
-		} else {
-			this.filters =
-				frappe.utils.parse_array(user_saved_filters) ||
-				frappe.utils.parse_array(this.filters) ||
-				frappe.utils.parse_array(chart_saved_filters);
-			return Promise.resolve();
+			if (
+				!conferredBy ||
+				conferredBy === "All"
+			) {
+				return {};
+			}
+
+			return {
+				conferred_by: conferredBy
+			};
 		}
-	}
+
+		// apply_leadership_global_filter() {
+
+		// 	const conferredBy =
+		// 		window.__leadershipConferredBy;
+
+		// 	/*
+		// 	* Make sure filters is an object.
+		// 	*/
+		// 	if (
+		// 		!this.filters ||
+		// 		typeof this.filters !== "object" ||
+		// 		Array.isArray(this.filters)
+		// 	) {
+		// 		this.filters = {};
+		// 	}
+
+		// 	/*
+		// 	* =========================================================
+		// 	* ALL
+		// 	* =========================================================
+		// 	*
+		// 	* Remove the global filter.
+		// 	*/
+
+		// 	if (
+		// 		!conferredBy ||
+		// 		conferredBy === "All"
+		// 	) {
+
+		// 		delete this.filters.conferred_by;
+
+		// 		return;
+		// 	}
+
+		// 	/*
+		// 	* =========================================================
+		// 	* SPECIFIC KING
+		// 	* =========================================================
+		// 	*/
+
+		// 	this.filters.conferred_by =
+		// 		conferredBy;
+
+		// 	console.log(
+		// 		"[Leadership Chart] Global filter applied:",
+		// 		this.chart_doc?.name,
+		// 		"→",
+		// 		conferredBy
+		// 	);
+		// }
+
+	// set_chart_filters() {
+	// 	let user_saved_filters = this.chart_settings.filters || null;
+	// 	let chart_saved_filters = frappe.dashboard_utils.get_all_filters(this.chart_doc);
+
+	// 	if (this.chart_doc.chart_type == "Report") {
+	// 		return frappe.dashboard_utils
+	// 			.get_filters_for_chart_type(this.chart_doc)
+	// 			.then((filters) => {
+	// 				chart_saved_filters = this.update_default_date_filters(
+	// 					filters,
+	// 					chart_saved_filters
+	// 				);
+	// 				this.filters =
+	// 					frappe.utils.parse_array(user_saved_filters) ||
+	// 					frappe.utils.parse_array(this.filters) ||
+	// 					frappe.utils.parse_array(chart_saved_filters);
+	// 			});
+	// 	} else {
+	// 		this.filters =
+	// 			frappe.utils.parse_array(user_saved_filters) ||
+	// 			frappe.utils.parse_array(this.filters) ||
+	// 			frappe.utils.parse_array(chart_saved_filters);
+	// 		return Promise.resolve();
+	// 	}
+	// }
+	
+	// set_chart_filters() {
+	// 	let user_saved_filters =
+	// 		this.chart_settings.filters || null;
+
+	// 	let chart_saved_filters =
+	// 		frappe.dashboard_utils.get_all_filters(
+	// 			this.chart_doc
+	// 		);
+
+	// 	/*
+	// 	* =========================================================
+	// 	* REPORT CHART
+	// 	* =========================================================
+	// 	*/
+
+	// 	if (this.chart_doc.chart_type == "Report") {
+
+	// 		return frappe.dashboard_utils
+	// 			.get_filters_for_chart_type(
+	// 				this.chart_doc
+	// 			)
+	// 			.then((filters) => {
+
+	// 				chart_saved_filters =
+	// 					this.update_default_date_filters(
+	// 						filters,
+	// 						chart_saved_filters
+	// 					);
+
+	// 				/*
+	// 				* Existing Frappe filters.
+	// 				*/
+	// 				this.filters =
+	// 					frappe.utils.parse_array(
+	// 						user_saved_filters
+	// 					) ||
+	// 					frappe.utils.parse_array(
+	// 						this.filters
+	// 					) ||
+	// 					frappe.utils.parse_array(
+	// 						chart_saved_filters
+	// 					);
+
+	// 				/*
+	// 				* =================================================
+	// 				* GLOBAL LEADERSHIP ARCHIVAL FILTER
+	// 				* =================================================
+	// 				*/
+
+	// 				this.apply_leadership_global_filter();
+
+	// 			});
+
+	// 	}
+
+	// 	/*
+	// 	* =========================================================
+	// 	* DOCUMENT / NORMAL DASHBOARD CHART
+	// 	* =========================================================
+	// 	*/
+
+	// 	this.filters =
+	// 		frappe.utils.parse_array(
+	// 			user_saved_filters
+	// 		) ||
+	// 		frappe.utils.parse_array(
+	// 			this.filters
+	// 		) ||
+	// 		frappe.utils.parse_array(
+	// 			chart_saved_filters
+	// 		);
+
+	// 	/*
+	// 	* Apply global Conferred By.
+	// 	*/
+	// 	this.apply_leadership_global_filter();
+
+	// 	return Promise.resolve();
+	// }
+
+	// set_chart_filters() {
+    // let user_saved_filters =
+    //     this.chart_settings.filters || null;
+
+    // let chart_saved_filters =
+    //     frappe.dashboard_utils.get_all_filters(
+    //         this.chart_doc
+    //     );
+
+    // if (this.chart_doc.chart_type == "Report") {
+    //     return frappe.dashboard_utils
+    //         .get_filters_for_chart_type(
+    //             this.chart_doc
+    //         )
+    //         .then((filters) => {
+
+    //             chart_saved_filters =
+    //                 this.update_default_date_filters(
+    //                     filters,
+    //                     chart_saved_filters
+    //                 );
+
+    //             this.filters =
+    //                 frappe.utils.parse_array(
+    //                     user_saved_filters
+    //                 ) ||
+    //                 frappe.utils.parse_array(
+    //                     this.filters
+    //                 ) ||
+    //                 frappe.utils.parse_array(
+    //                     chart_saved_filters
+    //                 );
+
+    //             this.apply_leadership_global_filter();
+    //         });
+    // } else {
+    //     this.filters =
+    //         frappe.utils.parse_array(
+    //             user_saved_filters
+    //         ) ||
+    //         frappe.utils.parse_array(
+    //             this.filters
+    //         ) ||
+    //         frappe.utils.parse_array(
+    //             chart_saved_filters
+    //         );
+
+    //     this.apply_leadership_global_filter();
+
+    //     return Promise.resolve();
+    // }
+	// }
+	   
+	  apply_leadership_global_filter() {
+
+    const conferredBy =
+        window.__leadershipConferredBy;
+
+    /*
+     * Global Conferred By is intended for
+     * Leadership Archival Report charts.
+     *
+     * Do not modify native document-chart
+     * filter arrays.
+     */
+    if (
+        !this.chart_doc ||
+        this.chart_doc.chart_type !== "Report"
+    ) {
+        return;
+    }
+
+    /*
+     * Report filters should be an object.
+     */
+    if (
+        !this.filters ||
+        typeof this.filters !== "object" ||
+        Array.isArray(this.filters)
+    ) {
+        this.filters = {};
+    }
+
+    /*
+     * "All" = remove global filter.
+     */
+    if (
+        !conferredBy ||
+        conferredBy === "All"
+    ) {
+
+        delete this.filters.conferred_by;
+
+        return;
+    }
+
+    /*
+     * Specific King.
+     */
+    this.filters.conferred_by =
+        conferredBy;
+
+    console.log(
+        "[Leadership Chart] Global filter applied:",
+        this.chart_doc.name,
+        "→",
+        conferredBy
+    );
+}
+
+	set_chart_filters() {
+    let user_saved_filters =
+        this.chart_settings.filters || null;
+
+    let chart_saved_filters =
+        frappe.dashboard_utils.get_all_filters(
+            this.chart_doc
+        );
+
+    if (this.chart_doc.chart_type == "Report") {
+
+        return frappe.dashboard_utils
+            .get_filters_for_chart_type(
+                this.chart_doc
+            )
+            .then((filters) => {
+
+                chart_saved_filters =
+                    this.update_default_date_filters(
+                        filters,
+                        chart_saved_filters
+                    );
+
+                this.filters =
+                    frappe.utils.parse_array(
+                        user_saved_filters
+                    ) ||
+                    frappe.utils.parse_array(
+                        this.filters
+                    ) ||
+                    frappe.utils.parse_array(
+                        chart_saved_filters
+                    );
+
+                this.apply_leadership_global_filter();
+            });
+
+    } else {
+
+        this.filters =
+            frappe.utils.parse_array(
+                user_saved_filters
+            ) ||
+            frappe.utils.parse_array(
+                this.filters
+            ) ||
+            frappe.utils.parse_array(
+                chart_saved_filters
+            );
+
+        /*
+         * Do NOT force conferred_by into
+         * native document-chart filters.
+         */
+        return Promise.resolve();
+    }
+}
+
+/*
+ * =========================================================
+ * REFRESH LEADERSHIP GLOBAL FILTER
+ * =========================================================
+ */
+
+// refresh_leadership_global_filter() {
+
+//     if (!this.chart_doc) {
+//         return;
+//     }
+
+//     /*
+//      * Apply current global filter to this chart.
+//      */
+//     this.apply_leadership_global_filter();
+
+//     /*
+//      * Fetch fresh data using the existing
+//      * ChartWidget mechanism.
+//      */
+//     this.fetch_and_update_chart();
+// }
+refresh_leadership_global_filter() {
+
+    if (!this.chart_doc) {
+        return;
+    }
+
+    /*
+     * Rebuild the normal filters first.
+     * This prevents old Conferred By values
+     * from remaining in the chart.
+     */
+    Promise.resolve(
+        this.set_chart_filters()
+    ).then(() => {
+
+        this.apply_leadership_global_filter();
+
+        this.fetch_and_update_chart();
+
+    });
+}
+
+
+/*
+ * =========================================================
+ * APPLY LEADERSHIP GLOBAL FILTER
+ * =========================================================
+ */
+
+// apply_leadership_global_filter() {
+
+//     const conferredBy =
+//         window.__leadershipConferredBy;
+
+//     if (
+//         !this.filters ||
+//         typeof this.filters !== "object" ||
+//         Array.isArray(this.filters)
+//     ) {
+//         this.filters = {};
+//     }
+
+//     /*
+//      * "All" means no global filter.
+//      */
+//     if (
+//         !conferredBy ||
+//         conferredBy === "All"
+//     ) {
+//         delete this.filters.conferred_by;
+//         return;
+//     }
+
+//     /*
+//      * Apply selected Conferred By.
+//      */
+//     this.filters.conferred_by =
+//         conferredBy;
+
+//     console.log(
+//         "[Leadership Chart] Global filter applied:",
+//         this.chart_doc?.name,
+//         "→",
+//         conferredBy
+//     );
+// }
+
+
+	// update_default_date_filters(
+	// 	report_filters,
+	// 	chart_filters
+	// ) {
+	// 	// your existing code...
+	// }
 
 	update_default_date_filters(report_filters, chart_filters) {
 		if (report_filters) {

@@ -470,3 +470,93 @@ body.leadership-workspace
     }
 
 }
+
+/* ============================================================
+   CONFERRED BY FILTER
+   ============================================================ */
+
+.leadership-conferred-filter {
+    display: block !important;
+
+    width: 100%;
+
+    margin: 0 0 20px 0;
+
+    padding: 12px 20px;
+
+    box-sizing: border-box;
+
+    position: relative;
+
+    z-index: 100;
+
+    background: transparent;
+}
+
+
+.leadership-filter-content {
+    display: flex !important;
+
+    align-items: center;
+
+    gap: 12px;
+
+    width: 100%;
+}
+
+
+.leadership-filter-label {
+    display: block !important;
+
+    margin: 0;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    color: #374151;
+}
+
+
+#leadership-conferred-by {
+    display: block !important;
+
+    width: 280px;
+
+    min-width: 280px;
+
+    height: 38px;
+
+    padding: 6px 12px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #111827;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    outline: none;
+}
+
+
+#leadership-conferred-by:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+
+#leadership-conferred-by option {
+    background: #ffffff;
+
+    color: #111827;
+}

@@ -31,7 +31,13 @@ frappe.query_reports["Award By Medal"] = {
             fieldname: "end_date",
             label: "End Date",
             fieldtype: "Date"
-        }
+        },
+        {
+            fieldname: "conferred_by",
+            label: "Conferred By",
+            fieldtype: "Link",
+            options: "Conferred By"
+        },
 	],
     
     // =====================================================
@@ -140,12 +146,29 @@ frappe.query_reports["Award By Medal"] = {
         }
 
         // Bind filters
+        // setTimeout(() => {
+        //     const start_filter = report.get_filter("start_date");
+        //     const end_filter = report.get_filter("end_date");
+
+        //     if (start_filter && end_filter) {
+        //         start_filter.$input.on("change", refresh_report);
+        //         end_filter.$input.on("change", refresh_report);
+        //     }
+        // }, 500);
         setTimeout(() => {
+            const conferred_by_filter = report.get_filter("conferred_by");
             const start_filter = report.get_filter("start_date");
             const end_filter = report.get_filter("end_date");
 
-            if (start_filter && end_filter) {
+            if (conferred_by_filter) {
+                conferred_by_filter.$input.on("change", refresh_report);
+            }
+
+            if (start_filter) {
                 start_filter.$input.on("change", refresh_report);
+            }
+
+            if (end_filter) {
                 end_filter.$input.on("change", refresh_report);
             }
         }, 500);
