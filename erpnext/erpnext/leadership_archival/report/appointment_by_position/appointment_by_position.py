@@ -43,19 +43,40 @@ def get_columns():
     ]
 
 
-def get_data(filters):
-    return frappe.db.sql("""
+def get_data(filters=None):
+    filters = filters or {}
+
+    conditions = [
+        "k.kasho_type = 'Appointment'"
+    ]
+
+    if filters.get("conferred_by"):
+        conditions.append(
+            "aw.conferred_by = %(conferred_by)s"
+        )
+
+    return frappe.db.sql(
+        f"""
         SELECT
             aw.position AS position,
             COUNT(*) AS total_appointment
         FROM `tabLeadership Appointment` aw
-		INNER JOIN `tabKasho` k 
-			ON aw.parent = k.name
-		LEFT JOIN `tabKey Person Registry` kpr 
-			ON kpr.cid = aw.cid
-        WHERE k.kasho_type = 'Appointment'
+
+        INNER JOIN `tabKasho` k
+            ON aw.parent = k.name
+
+        LEFT JOIN `tabKey Person Registry` kpr
+            ON kpr.cid = aw.cid
+
+        WHERE {" AND ".join(conditions)}
+
         GROUP BY aw.position
-    """, as_dict=True)
+
+        ORDER BY aw.position
+        """,
+        filters,
+        as_dict=True
+    )
 
 
 

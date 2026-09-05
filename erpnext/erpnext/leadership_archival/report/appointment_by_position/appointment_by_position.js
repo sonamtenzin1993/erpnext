@@ -3,6 +3,11 @@
 
 frappe.query_reports["Appointment by Position"] = {
 	"filters": [
-
+		{
+			fieldname: "conferred_by",
+			label: "Conferred By",
+			fieldtype: "Link",
+			options: "Conferred By"
+		}
 	]
 };

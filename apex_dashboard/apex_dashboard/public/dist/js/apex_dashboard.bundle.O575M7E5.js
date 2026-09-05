@@ -46361,89 +46361,633 @@
 
   // ../apex_dashboard/apex_dashboard/public/js/apex_renderer.js
   (function() {
+    "use strict";
     window.ApexDashboardRenderer = {
       render: function(container, config) {
+        config = config || {};
+        console.log(
+          "========== APEX RAW INPUT =========="
+        );
+        console.log(
+          "FULL CONFIG:",
+          JSON.stringify(config, null, 2)
+        );
+        console.log(
+          "CONFIG DATA:",
+          JSON.stringify(config.data, null, 2)
+        );
+        console.log(
+          "DATASETS:",
+          JSON.stringify(
+            config.data && config.data.datasets ? config.data.datasets : null,
+            null,
+            2
+          )
+        );
+        console.log(
+          "SERIES:",
+          JSON.stringify(
+            config.series,
+            null,
+            2
+          )
+        );
+        console.log(
+          "===================================="
+        );
         const chartType = String(
           config.type || "bar"
         ).toLowerCase();
         if (!container) {
+          console.error(
+            "[Apex Dashboard] Container not found."
+          );
           return;
         }
         if (typeof window.ApexCharts === "undefined") {
+          console.error(
+            "[Apex Dashboard] ApexCharts is not loaded."
+          );
           return;
         }
         container.innerHTML = "";
-        const chart_element = document.createElement("div");
-        chart_element.style.width = "100%";
-        chart_element.style.height = (config.height || 500) + "px";
+        const chartElement = document.createElement("div");
+        chartElement.style.width = "100%";
+        chartElement.style.height = String(
+          config.height || 500
+        ) + "px";
         container.appendChild(
-          chart_element
+          chartElement
         );
         let series = [];
         let labels = [];
-        if (config.data) {
-          labels = config.data.labels || [];
-          if (config.data.datasets && config.data.datasets.length) {
-            series = config.data.datasets.map(
-              (dataset) => {
-                return {
-                  name: dataset.name || "Value",
-                  data: dataset.values || []
-                };
-              }
-            );
-          } else if (config.data.values) {
-            series = [
-              {
-                name: "Value",
-                data: config.data.values
-              }
-            ];
-          }
+        if (config.data && Array.isArray(
+          config.data.labels
+        )) {
+          labels = config.data.labels.slice();
+        } else if (Array.isArray(
+          config.labels
+        )) {
+          labels = config.labels.slice();
         }
-        if (!series.length && config.series) {
-          series = config.series;
-        }
-        if (!labels.length && config.labels) {
-          labels = config.labels;
-        }
-        if (chartType === "pie" || chartType === "donut") {
-          series = labels.map(
-            () => 1
-          );
-        } else {
-          if (Array.isArray(series) && series.length && typeof series[0] !== "object") {
-            series = [
-              {
-                name: "Value",
-                data: series
+        if (config.data && Array.isArray(
+          config.data.datasets
+        ) && config.data.datasets.length) {
+          series = config.data.datasets.map(
+            function(dataset, datasetIndex) {
+              dataset = dataset || {};
+              console.log(
+                "[Apex Dashboard] Dataset " + datasetIndex + ":",
+                dataset
+              );
+              let values = [];
+              if (Array.isArray(
+                dataset.values
+              )) {
+                values = dataset.values.slice();
+              } else if (Array.isArray(
+                dataset.data
+              )) {
+                values = dataset.data.slice();
+              } else if (dataset.values && typeof dataset.values === "object") {
+                values = Object.values(
+                  dataset.values
+                );
+              } else if (dataset.data && typeof dataset.data === "object") {
+                values = Object.values(
+                  dataset.data
+                );
+              } else if (dataset.value !== void 0 && dataset.value !== null) {
+                values = [
+                  dataset.value
+                ];
               }
-            ];
-          }
-        }
-        if (chartType === "pie" || chartType === "donut") {
-        }
-        if (chartType === "pie" || chartType === "donut") {
-          const grouped = {};
-          labels.forEach(
-            (label, index) => {
-              if (label === void 0 || label === null || String(label).trim() === "") {
-                return;
-              }
-              const value = Number(
-                series[index]
-              ) || 0;
-              if (grouped[label] === void 0) {
-                grouped[label] = 0;
-              }
-              grouped[label] += value;
+              console.log(
+                "[Apex Dashboard] Extracted values:",
+                values
+              );
+              return {
+                name: dataset.name || dataset.label || "Value",
+                data: values
+              };
             }
           );
-          labels = Object.keys(
-            grouped
+        } else if (config.data && Array.isArray(
+          config.data.values
+        )) {
+          series = [
+            {
+              name: "Value",
+              data: config.data.values.slice()
+            }
+          ];
+        } else if (config.data && Array.isArray(
+          config.data.data
+        )) {
+          series = [
+            {
+              name: "Value",
+              data: config.data.data.slice()
+            }
+          ];
+        }
+        if (!series.length && Array.isArray(
+          config.series
+        )) {
+          series = config.series.slice();
+        }
+        if (!labels.length && Array.isArray(
+          config.labels
+        )) {
+          labels = config.labels.slice();
+        }
+        if (!Array.isArray(series)) {
+          series = [];
+        }
+        if (chartType !== "pie" && chartType !== "donut") {
+          if (series.length && typeof series[0] !== "object") {
+            series = [
+              {
+                name: "Value",
+                data: series.slice()
+              }
+            ];
+          }
+          series = series.map(
+            function(item) {
+              if (item && typeof item === "object") {
+                let itemData = item.data;
+                if (!Array.isArray(
+                  itemData
+                )) {
+                  if (Array.isArray(
+                    item.values
+                  )) {
+                    itemData = item.values.slice();
+                  } else {
+                    itemData = [];
+                  }
+                }
+                return {
+                  name: item.name || item.label || "Value",
+                  data: itemData
+                };
+              }
+              return {
+                name: "Value",
+                data: [item]
+              };
+            }
           );
-          series = labels.map(
-            (label) => grouped[label]
+        }
+        if (chartType === "pie" || chartType === "donut") {
+          console.log(
+            "========================================"
+          );
+          console.log(
+            "[Apex Dashboard] PROCESSING PIE/DONUT"
+          );
+          console.log(
+            "[Apex Dashboard] RAW LABEL COUNT:",
+            labels.length
+          );
+          const counts = /* @__PURE__ */ Object.create(null);
+          labels.forEach(
+            function(label) {
+              if (label === void 0 || label === null) {
+                return;
+              }
+              const cleanLabel = String(label).trim();
+              if (!cleanLabel) {
+                return;
+              }
+              if (counts[cleanLabel] === void 0) {
+                counts[cleanLabel] = 0;
+              }
+              counts[cleanLabel] += 1;
+            }
+          );
+          const uniqueLabels = Object.keys(counts);
+          let groupedLabels = uniqueLabels.slice();
+          let groupedValues = groupedLabels.map(
+            function(label) {
+              return counts[label];
+            }
+          );
+          console.log(
+            "[Apex Dashboard] UNIQUE LABELS:",
+            groupedLabels
+          );
+          console.log(
+            "[Apex Dashboard] COUNT VALUES:",
+            groupedValues
+          );
+          const filteredLabels = [];
+          const filteredValues = [];
+          groupedLabels.forEach(
+            function(label, index) {
+              const value = Number(
+                groupedValues[index]
+              );
+              if (Number.isFinite(value) && value > 0) {
+                filteredLabels.push(
+                  label
+                );
+                filteredValues.push(
+                  value
+                );
+              }
+            }
+          );
+          groupedLabels = filteredLabels;
+          groupedValues = filteredValues;
+          const maxSlices = Number(
+            config.maxSlices
+          );
+          if (Number.isFinite(maxSlices) && maxSlices > 0 && groupedLabels.length > maxSlices) {
+            const limitedLabels = groupedLabels.slice(
+              0,
+              maxSlices
+            );
+            const limitedValues = groupedValues.slice(
+              0,
+              maxSlices
+            );
+            const otherValue = groupedValues.slice(maxSlices).reduce(
+              function(total, value) {
+                return total + Number(value || 0);
+              },
+              0
+            );
+            if (otherValue > 0) {
+              limitedLabels.push(
+                "Other"
+              );
+              limitedValues.push(
+                otherValue
+              );
+            }
+            groupedLabels = limitedLabels;
+            groupedValues = limitedValues;
+          }
+          labels = groupedLabels;
+          series = groupedValues;
+          console.log(
+            "[Apex Dashboard] FINAL PIE LABELS:",
+            labels
+          );
+          console.log(
+            "[Apex Dashboard] FINAL PIE VALUES:",
+            series
+          );
+          console.log(
+            "========================================"
+          );
+        }
+        console.log(
+          "========================================"
+        );
+        console.log(
+          "[Apex Dashboard] Renderer started."
+        );
+        console.log(
+          "[Apex Dashboard] Chart Type:",
+          chartType
+        );
+        console.log(
+          "[Apex Dashboard] Labels:",
+          labels
+        );
+        console.log(
+          "[Apex Dashboard] Series:",
+          series
+        );
+        console.log(
+          "[Apex Dashboard] Click Action:",
+          config.clickAction
+        );
+        console.log(
+          "========================================"
+        );
+        function getGlobalConferredBy() {
+          const element = document.querySelector(
+            "#leadership-conferred-by"
+          );
+          if (!element) {
+            return null;
+          }
+          const value = element.value;
+          if (!value || value === "All") {
+            return null;
+          }
+          return value;
+        }
+        function openInNewTab(url) {
+          console.log(
+            "========================================"
+          );
+          console.log(
+            "[Apex Dashboard] OPENING NEW TAB:"
+          );
+          console.log(
+            url
+          );
+          console.log(
+            "========================================"
+          );
+          const newWindow = window.open(
+            url,
+            "_blank"
+          );
+          if (!newWindow) {
+            console.warn(
+              "[Apex Dashboard] Browser blocked the new tab."
+            );
+            return;
+          }
+          try {
+            newWindow.opener = null;
+          } catch (e) {
+            console.warn(
+              "[Apex Dashboard] Could not clear opener.",
+              e
+            );
+          }
+        }
+        function openReport(reportName, filters) {
+          if (!reportName) {
+            console.error(
+              "[Apex Dashboard] Report name is missing."
+            );
+            return;
+          }
+          const params = new URLSearchParams();
+          Object.keys(
+            filters || {}
+          ).forEach(
+            function(field) {
+              const value = filters[field];
+              if (value !== void 0 && value !== null && String(value).trim() !== "") {
+                params.set(
+                  field,
+                  String(value)
+                );
+              }
+            }
+          );
+          let reportUrl = "/app/query-report/" + encodeURIComponent(
+            reportName
+          );
+          const queryString = params.toString();
+          if (queryString) {
+            reportUrl += "?" + queryString;
+          }
+          console.log(
+            "[Apex Dashboard] REPORT:",
+            reportName
+          );
+          console.log(
+            "[Apex Dashboard] FILTERS:",
+            filters
+          );
+          console.log(
+            "[Apex Dashboard] REPORT URL:",
+            reportUrl
+          );
+          openInNewTab(
+            reportUrl
+          );
+        }
+        function openList(doctype, field, value) {
+          if (!doctype) {
+            console.error(
+              "[Apex Dashboard] Doctype is missing."
+            );
+            return;
+          }
+          if (!field) {
+            console.error(
+              "[Apex Dashboard] List field is missing."
+            );
+            return;
+          }
+          const filters = {};
+          filters[field] = value;
+          const conferredBy = getGlobalConferredBy();
+          if (conferredBy) {
+            filters.conferred_by = conferredBy;
+          }
+          const params = new URLSearchParams();
+          Object.keys(
+            filters
+          ).forEach(
+            function(key) {
+              const filterValue = filters[key];
+              if (filterValue !== void 0 && filterValue !== null && String(filterValue).trim() !== "") {
+                params.set(
+                  key,
+                  String(filterValue)
+                );
+              }
+            }
+          );
+          let doctypeSlug;
+          if (window.frappe && frappe.router && typeof frappe.router.slug === "function") {
+            doctypeSlug = frappe.router.slug(
+              doctype
+            );
+          } else {
+            doctypeSlug = String(
+              doctype
+            ).toLowerCase().replace(
+              /[^a-z0-9]+/g,
+              "-"
+            ).replace(
+              /^-+|-+$/g,
+              ""
+            );
+          }
+          let listUrl = "/app/" + doctypeSlug;
+          const queryString = params.toString();
+          if (queryString) {
+            listUrl += "?" + queryString;
+          }
+          console.log(
+            "[Apex Dashboard] LIST DOCTYPE:",
+            doctype
+          );
+          console.log(
+            "[Apex Dashboard] LIST FIELD:",
+            field
+          );
+          console.log(
+            "[Apex Dashboard] LIST VALUE:",
+            value
+          );
+          console.log(
+            "[Apex Dashboard] LIST URL:",
+            listUrl
+          );
+          openInNewTab(
+            listUrl
+          );
+        }
+        function getClickValue(index) {
+          if (index === void 0 || index === null || index < 0) {
+            return null;
+          }
+          const clickAction = config.clickAction;
+          if (clickAction && Array.isArray(
+            clickAction.values
+          ) && clickAction.values[index] !== void 0) {
+            return clickAction.values[index];
+          }
+          if (chartType === "pie" || chartType === "donut") {
+            return labels[index];
+          }
+          return labels[index];
+        }
+        function handleReportClick(index) {
+          const clickAction = config.clickAction;
+          if (!clickAction) {
+            console.log(
+              "[Apex Dashboard] No clickAction configured."
+            );
+            return;
+          }
+          if (clickAction.type !== "report") {
+            return;
+          }
+          const reportName = clickAction.report;
+          const filterField = clickAction.field;
+          if (!reportName) {
+            console.error(
+              "[Apex Dashboard] Report name missing."
+            );
+            return;
+          }
+          if (!filterField) {
+            console.error(
+              "[Apex Dashboard] Report filter field missing."
+            );
+            return;
+          }
+          const filterValue = getClickValue(
+            index
+          );
+          if (filterValue === void 0 || filterValue === null || String(filterValue).trim() === "") {
+            console.warn(
+              "[Apex Dashboard] Click value is empty."
+            );
+            return;
+          }
+          const filters = {};
+          filters[filterField] = filterValue;
+          const conferredBy = getGlobalConferredBy();
+          if (conferredBy) {
+            filters.conferred_by = conferredBy;
+          }
+          console.log(
+            "========================================"
+          );
+          console.log(
+            "[Apex Dashboard] REPORT CLICK"
+          );
+          console.log(
+            "Index:",
+            index
+          );
+          console.log(
+            "Label:",
+            labels[index]
+          );
+          console.log(
+            "Filter Field:",
+            filterField
+          );
+          console.log(
+            "Filter Value:",
+            filterValue
+          );
+          console.log(
+            "Report:",
+            reportName
+          );
+          console.log(
+            "Filters:",
+            filters
+          );
+          console.log(
+            "========================================"
+          );
+          openReport(
+            reportName,
+            filters
+          );
+        }
+        function handleListClick(index) {
+          const clickAction = config.clickAction;
+          if (!clickAction) {
+            console.log(
+              "[Apex Dashboard] No clickAction configured."
+            );
+            return;
+          }
+          if (clickAction.type !== "list") {
+            return;
+          }
+          const doctype = clickAction.doctype;
+          const field = clickAction.field;
+          if (!doctype) {
+            console.error(
+              "[Apex Dashboard] List doctype missing."
+            );
+            return;
+          }
+          if (!field) {
+            console.error(
+              "[Apex Dashboard] List field missing."
+            );
+            return;
+          }
+          const filterValue = getClickValue(
+            index
+          );
+          if (filterValue === void 0 || filterValue === null || String(filterValue).trim() === "") {
+            console.warn(
+              "[Apex Dashboard] List click value is empty."
+            );
+            return;
+          }
+          openList(
+            doctype,
+            field,
+            filterValue
+          );
+        }
+        function handleClick(index) {
+          const clickAction = config.clickAction;
+          if (!clickAction) {
+            console.log(
+              "[Apex Dashboard] No clickAction configured."
+            );
+            return;
+          }
+          if (clickAction.type === "report") {
+            handleReportClick(
+              index
+            );
+            return;
+          }
+          if (clickAction.type === "list") {
+            handleListClick(
+              index
+            );
+            return;
+          }
+          console.warn(
+            "[Apex Dashboard] Unsupported clickAction:",
+            clickAction.type
           );
         }
         const options2 = {
@@ -46455,63 +46999,50 @@
             },
             events: {
               dataPointSelection: function(event, chartContext, chartConfig) {
-                if (chartType !== "pie" && chartType !== "donut") {
-                  return;
-                }
                 const index = chartConfig.dataPointIndex;
-                if (index < 0) {
+                console.log(
+                  "[Apex Dashboard] Data point selected:",
+                  index
+                );
+                if (index === void 0 || index === null || index < 0) {
                   return;
                 }
-                const label = labels[index];
-                const value = series[index];
-                const clickAction = config.clickAction;
-                if (!clickAction) {
-                  return;
-                }
-                if (clickAction.type === "report") {
-                  const reportName = clickAction.report;
-                  const filterField = clickAction.field;
-                  const filterValue = clickAction.values ? clickAction.values[index] : label;
-                  frappe.set_route(
-                    "query-report",
-                    reportName
+                handleClick(
+                  index
+                );
+              },
+              markerClick: function(event, chartContext, data) {
+                const index = data.dataPointIndex;
+                if (chartType === "line" || chartType === "area") {
+                  console.log(
+                    "[Apex Dashboard] Marker clicked:",
+                    index
                   );
-                  setTimeout(
-                    () => {
-                      if (!frappe.query_report) {
-                        return;
-                      }
-                      frappe.query_report.set_filter_value(
-                        filterField,
-                        filterValue
-                      );
-                      frappe.query_report.refresh();
-                    },
-                    1e3
+                  handleClick(
+                    index
                   );
-                  return;
-                }
-                if (clickAction.type === "list") {
-                  const filterValue = clickAction.values ? clickAction.values[index] : label;
-                  frappe.set_route(
-                    "List",
-                    clickAction.doctype,
-                    "List",
-                    {
-                      [clickAction.field]: filterValue
-                    }
-                  );
-                  return;
                 }
               }
             }
           },
+          markers: {
+            size: chartType === "line" || chartType === "area" ? 6 : 0,
+            hover: {
+              size: chartType === "line" || chartType === "area" ? 9 : 0
+            }
+          },
           series,
           labels,
-          colors: Array.isArray(
+          colors: (Array.isArray(
             config.colors
-          ) && config.colors.length ? config.colors.filter(
-            (color) => typeof color === "string" && color.trim()
+          ) ? config.colors.filter(
+            function(color) {
+              return typeof color === "string" && color.trim() !== "";
+            }
+          ) : []).length > 0 ? config.colors.filter(
+            function(color) {
+              return typeof color === "string" && color.trim() !== "";
+            }
           ) : [
             "#F683AE",
             "#318AD8",
@@ -46523,8 +47054,8 @@
             "#D2691E"
           ],
           stroke: {
-            show: chartType === "line",
-            width: chartType === "line" ? 3 : 0,
+            show: chartType === "line" || chartType === "area",
+            width: chartType === "line" || chartType === "area" ? 3 : 0,
             curve: "straight"
           },
           xaxis: {
@@ -46555,12 +47086,66 @@
         }
         if (chartType === "donut") {
           options2.chart.type = "donut";
+          options2.plotOptions = {
+            pie: {
+              donut: {
+                size: "60%"
+              }
+            }
+          };
         }
-        const chart = new window.ApexCharts(
-          chart_element,
+        if (chartType === "pie" || chartType === "donut") {
+          options2.tooltip = {
+            enabled: true,
+            y: {
+              formatter: function(value) {
+                return String(
+                  value
+                );
+              }
+            }
+          };
+        }
+        console.log(
+          "========================================"
+        );
+        console.log(
+          "[Apex Dashboard] FINAL OPTIONS:",
           options2
         );
-        chart.render();
+        console.log(
+          "[Apex Dashboard] FINAL LABELS:",
+          labels
+        );
+        console.log(
+          "[Apex Dashboard] FINAL SERIES:",
+          series
+        );
+        console.log(
+          "========================================"
+        );
+        let chart;
+        try {
+          chart = new window.ApexCharts(
+            chartElement,
+            options2
+          );
+        } catch (error) {
+          console.error(
+            "[Apex Dashboard] Failed to create ApexCharts:",
+            error
+          );
+          return;
+        }
+        try {
+          chart.render();
+        } catch (error) {
+          console.error(
+            "[Apex Dashboard] Failed to render chart:",
+            error
+          );
+          return;
+        }
         return chart;
       }
     };
@@ -46588,4 +47173,4 @@
  *                       alignment; always smooth and non-self-intersecting,
  *                       at the cost of throwing away curve smoothness.
  */
-//# sourceMappingURL=apex_dashboard.bundle.D3WSBPGQ.js.map
+//# sourceMappingURL=apex_dashboard.bundle.O575M7E5.js.map

@@ -27,7 +27,14 @@ frappe.query_reports["Award Master Report"] = {
             "label": "End Date",
             "fieldtype": "Date",
             "placeholder": "End Date"
-        }
+        },
+        {
+			"fieldname": "conferred_by",
+			"label": "Conferred By",
+			"fieldtype": "Link",
+			"options": "Conferred By",
+			"placeholder": "Select Conferred By"
+		},
 	],
     // =====================================================
     // FORMATTER
@@ -57,35 +64,87 @@ frappe.query_reports["Award Master Report"] = {
 
         
 	onload: function (report) {
-         // =====================================================
-        // APPLY FILTER PASSED FROM NUMBER CARD
         // =====================================================
+    // APPLY FILTERS PASSED THROUGH URL
+    // =====================================================
 
-        const url_params = new URLSearchParams(window.location.search);
-        const title_medal = url_params.get("title_medal");
-
-        if (title_medal) {
-            report.set_filter_value("title_medal", title_medal);
-            report.refresh();
-        }
-        
-        report.page.wrapper.on(
-            "click",
-            ".profile-link-icon",
-            function (e) {
-                e.stopPropagation();
-                const profile_id = $(this).data("profile");
-                console.log("Profile ID:", profile_id);
-                if (profile_id) {
-                    // frappe.set_route(
-                    //     "leadership-profile",
-                    //     profile_id
-                    // );
-                    const url = `/app/leadership-profile/${profile_id}`;
-                    window.open(url, "_blank");
-                }
-            }
+    const url_params =
+        new URLSearchParams(
+            window.location.search
         );
+
+    const position =
+        url_params.get("position");
+
+    const conferred_by =
+        url_params.get("conferred_by");
+
+    let should_refresh = false;
+
+
+    if (position) {
+
+        console.log(
+            "[Award Master Report] URL Position:",
+            position
+        );
+
+        report.set_filter_value(
+            "position",
+            position
+        );
+
+        should_refresh = true;
+    }
+
+
+    if (conferred_by) {
+
+        console.log(
+            "[Award Master Report] URL Conferred By:",
+            conferred_by
+        );
+
+        report.set_filter_value(
+            "conferred_by",
+            conferred_by
+        );
+
+        should_refresh = true;
+    }
+
+
+    // =====================================================
+    // PROFILE CLICK
+    // =====================================================
+
+    report.page.wrapper.on(
+        "click",
+        ".profile-link-icon",
+        function (e) {
+
+            e.stopPropagation();
+
+            const profile_id =
+                $(this).data("profile");
+
+            console.log(
+                "Profile ID:",
+                profile_id
+            );
+
+            if (profile_id) {
+
+                const url =
+                    `/app/leadership-profile/${profile_id}`;
+
+                window.open(
+                    url,
+                    "_blank"
+                );
+            }
+        }
+    );
 
         function validate_dates() {
             const start = report.get_filter_value("start_date");
