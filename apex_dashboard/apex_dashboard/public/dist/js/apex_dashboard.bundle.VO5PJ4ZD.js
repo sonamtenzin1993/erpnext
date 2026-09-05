@@ -46365,36 +46365,6 @@
     window.ApexDashboardRenderer = {
       render: function(container, config) {
         config = config || {};
-        console.log(
-          "========== APEX RAW INPUT =========="
-        );
-        console.log(
-          "FULL CONFIG:",
-          JSON.stringify(config, null, 2)
-        );
-        console.log(
-          "CONFIG DATA:",
-          JSON.stringify(config.data, null, 2)
-        );
-        console.log(
-          "DATASETS:",
-          JSON.stringify(
-            config.data && config.data.datasets ? config.data.datasets : null,
-            null,
-            2
-          )
-        );
-        console.log(
-          "SERIES:",
-          JSON.stringify(
-            config.series,
-            null,
-            2
-          )
-        );
-        console.log(
-          "===================================="
-        );
         const chartType = String(
           config.type || "bar"
         ).toLowerCase();
@@ -46416,8 +46386,46 @@
         chartElement.style.height = String(
           config.height || 500
         ) + "px";
+        chartElement.style.overscrollBehavior = "auto";
+        chartElement.style.touchAction = "pan-y";
         container.appendChild(
           chartElement
+        );
+        function getScrollableParent(element) {
+          let parent = element.parentElement;
+          while (parent) {
+            const style = window.getComputedStyle(parent);
+            const overflowY = style.overflowY;
+            const canScroll = (overflowY === "auto" || overflowY === "scroll" || overflowY === "overlay") && parent.scrollHeight > parent.clientHeight;
+            if (canScroll) {
+              return parent;
+            }
+            parent = parent.parentElement;
+          }
+          return null;
+        }
+        chartElement.addEventListener(
+          "wheel",
+          function(event) {
+            if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
+              return;
+            }
+            const scrollParent = getScrollableParent(chartElement);
+            if (scrollParent) {
+              scrollParent.scrollTop += event.deltaY;
+              event.preventDefault();
+              return;
+            }
+            window.scrollBy(
+              0,
+              event.deltaY
+            );
+            event.preventDefault();
+          },
+          {
+            passive: false,
+            capture: true
+          }
         );
         let series = [];
         let labels = [];
@@ -46436,10 +46444,6 @@
           series = config.data.datasets.map(
             function(dataset, datasetIndex) {
               dataset = dataset || {};
-              console.log(
-                "[Apex Dashboard] Dataset " + datasetIndex + ":",
-                dataset
-              );
               let values = [];
               if (Array.isArray(
                 dataset.values
@@ -46462,10 +46466,6 @@
                   dataset.value
                 ];
               }
-              console.log(
-                "[Apex Dashboard] Extracted values:",
-                values
-              );
               return {
                 name: dataset.name || dataset.label || "Value",
                 data: values
@@ -46541,16 +46541,6 @@
           );
         }
         if (chartType === "pie" || chartType === "donut") {
-          console.log(
-            "========================================"
-          );
-          console.log(
-            "[Apex Dashboard] PROCESSING PIE/DONUT"
-          );
-          console.log(
-            "[Apex Dashboard] RAW LABEL COUNT:",
-            labels.length
-          );
           const counts = /* @__PURE__ */ Object.create(null);
           labels.forEach(
             function(label) {
@@ -46573,14 +46563,6 @@
             function(label) {
               return counts[label];
             }
-          );
-          console.log(
-            "[Apex Dashboard] UNIQUE LABELS:",
-            groupedLabels
-          );
-          console.log(
-            "[Apex Dashboard] COUNT VALUES:",
-            groupedValues
           );
           const filteredLabels = [];
           const filteredValues = [];
@@ -46632,43 +46614,7 @@
           }
           labels = groupedLabels;
           series = groupedValues;
-          console.log(
-            "[Apex Dashboard] FINAL PIE LABELS:",
-            labels
-          );
-          console.log(
-            "[Apex Dashboard] FINAL PIE VALUES:",
-            series
-          );
-          console.log(
-            "========================================"
-          );
         }
-        console.log(
-          "========================================"
-        );
-        console.log(
-          "[Apex Dashboard] Renderer started."
-        );
-        console.log(
-          "[Apex Dashboard] Chart Type:",
-          chartType
-        );
-        console.log(
-          "[Apex Dashboard] Labels:",
-          labels
-        );
-        console.log(
-          "[Apex Dashboard] Series:",
-          series
-        );
-        console.log(
-          "[Apex Dashboard] Click Action:",
-          config.clickAction
-        );
-        console.log(
-          "========================================"
-        );
         function getGlobalConferredBy() {
           const element = document.querySelector(
             "#leadership-conferred-by"
@@ -46683,18 +46629,6 @@
           return value;
         }
         function openInNewTab(url) {
-          console.log(
-            "========================================"
-          );
-          console.log(
-            "[Apex Dashboard] OPENING NEW TAB:"
-          );
-          console.log(
-            url
-          );
-          console.log(
-            "========================================"
-          );
           const newWindow = window.open(
             url,
             "_blank"
@@ -46742,18 +46676,6 @@
           if (queryString) {
             reportUrl += "?" + queryString;
           }
-          console.log(
-            "[Apex Dashboard] REPORT:",
-            reportName
-          );
-          console.log(
-            "[Apex Dashboard] FILTERS:",
-            filters
-          );
-          console.log(
-            "[Apex Dashboard] REPORT URL:",
-            reportUrl
-          );
           openInNewTab(
             reportUrl
           );
@@ -46812,22 +46734,6 @@
           if (queryString) {
             listUrl += "?" + queryString;
           }
-          console.log(
-            "[Apex Dashboard] LIST DOCTYPE:",
-            doctype
-          );
-          console.log(
-            "[Apex Dashboard] LIST FIELD:",
-            field
-          );
-          console.log(
-            "[Apex Dashboard] LIST VALUE:",
-            value
-          );
-          console.log(
-            "[Apex Dashboard] LIST URL:",
-            listUrl
-          );
           openInNewTab(
             listUrl
           );
@@ -46850,9 +46756,6 @@
         function handleReportClick(index) {
           const clickAction = config.clickAction;
           if (!clickAction) {
-            console.log(
-              "[Apex Dashboard] No clickAction configured."
-            );
             return;
           }
           if (clickAction.type !== "report") {
@@ -46887,39 +46790,6 @@
           if (conferredBy) {
             filters.conferred_by = conferredBy;
           }
-          console.log(
-            "========================================"
-          );
-          console.log(
-            "[Apex Dashboard] REPORT CLICK"
-          );
-          console.log(
-            "Index:",
-            index
-          );
-          console.log(
-            "Label:",
-            labels[index]
-          );
-          console.log(
-            "Filter Field:",
-            filterField
-          );
-          console.log(
-            "Filter Value:",
-            filterValue
-          );
-          console.log(
-            "Report:",
-            reportName
-          );
-          console.log(
-            "Filters:",
-            filters
-          );
-          console.log(
-            "========================================"
-          );
           openReport(
             reportName,
             filters
@@ -46928,9 +46798,6 @@
         function handleListClick(index) {
           const clickAction = config.clickAction;
           if (!clickAction) {
-            console.log(
-              "[Apex Dashboard] No clickAction configured."
-            );
             return;
           }
           if (clickAction.type !== "list") {
@@ -46968,9 +46835,6 @@
         function handleClick(index) {
           const clickAction = config.clickAction;
           if (!clickAction) {
-            console.log(
-              "[Apex Dashboard] No clickAction configured."
-            );
             return;
           }
           if (clickAction.type === "report") {
@@ -47000,10 +46864,6 @@
             events: {
               dataPointSelection: function(event, chartContext, chartConfig) {
                 const index = chartConfig.dataPointIndex;
-                console.log(
-                  "[Apex Dashboard] Data point selected:",
-                  index
-                );
                 if (index === void 0 || index === null || index < 0) {
                   return;
                 }
@@ -47014,10 +46874,6 @@
               markerClick: function(event, chartContext, data) {
                 const index = data.dataPointIndex;
                 if (chartType === "line" || chartType === "area") {
-                  console.log(
-                    "[Apex Dashboard] Marker clicked:",
-                    index
-                  );
                   handleClick(
                     index
                   );
@@ -47106,24 +46962,6 @@
             }
           };
         }
-        console.log(
-          "========================================"
-        );
-        console.log(
-          "[Apex Dashboard] FINAL OPTIONS:",
-          options2
-        );
-        console.log(
-          "[Apex Dashboard] FINAL LABELS:",
-          labels
-        );
-        console.log(
-          "[Apex Dashboard] FINAL SERIES:",
-          series
-        );
-        console.log(
-          "========================================"
-        );
         let chart;
         try {
           chart = new window.ApexCharts(
@@ -47173,4 +47011,4 @@
  *                       alignment; always smooth and non-self-intersecting,
  *                       at the cost of throwing away curve smoothness.
  */
-//# sourceMappingURL=apex_dashboard.bundle.HJJEFD6U.js.map
+//# sourceMappingURL=apex_dashboard.bundle.VO5PJ4ZD.js.map

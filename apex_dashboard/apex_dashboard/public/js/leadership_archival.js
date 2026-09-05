@@ -202,50 +202,50 @@
        CREATE HERO
        ============================================================ */
 
-    function createHero() {
+    // function createHero() {
 
-        if (!isLeadershipWorkspace()) {
-            return;
-        }
+    //     if (!isLeadershipWorkspace()) {
+    //         return;
+    //     }
 
-        const container =
-            document.querySelector(
-                ".layout-main-section"
-            );
+    //     const container =
+    //         document.querySelector(
+    //             ".layout-main-section"
+    //         );
 
-        if (!container) {
-            return;
-        }
+    //     if (!container) {
+    //         return;
+    //     }
 
-        if (
-            container.querySelector(
-                ".leadership-custom-hero"
-            )
-        ) {
-            return;
-        }
+    //     if (
+    //         container.querySelector(
+    //             ".leadership-custom-hero"
+    //         )
+    //     ) {
+    //         return;
+    //     }
 
-        const hero =
-            document.createElement("div");
+    //     const hero =
+    //         document.createElement("div");
 
-        hero.className =
-            "leadership-custom-hero";
+    //     hero.className =
+    //         "leadership-custom-hero";
 
-        hero.innerHTML =
-            '<div class="leadership-hero-inner">' +
+    //     hero.innerHTML =
+    //         '<div class="leadership-hero-inner">' +
 
-                '<div class="leadership-hero-logo">' +
+    //             '<div class="leadership-hero-logo">' +
 
-                    '<img ' +
-                        'src="' + LOGO_URL + '" ' +
-                        'alt="Leadership Archival">' +
+    //                 '<img ' +
+    //                     'src="' + LOGO_URL + '" ' +
+    //                     'alt="Leadership Archival">' +
 
-                '</div>' +
+    //             '</div>' +
 
-            '</div>';
+    //         '</div>';
 
-        container.prepend(hero);
-    }
+    //     container.prepend(hero);
+    // }
 
 
     /* ============================================================
@@ -880,6 +880,184 @@
         });
     }
 
+    /* ============================================================
+   RESPONSIVE FILTER CSS
+   ============================================================ */
+
+    function addLeadershipFilterStyles() {
+
+        /*
+        * Prevent adding the same CSS multiple times.
+        */
+        if (
+            document.getElementById(
+                "leadership-filter-responsive-css"
+            )
+        ) {
+            return;
+        }
+
+        const style =
+            document.createElement("style");
+
+        style.id =
+            "leadership-filter-responsive-css";
+
+        style.innerHTML = `
+
+            /* =====================================================
+            MAIN FILTER CONTAINER
+            ===================================================== */
+
+            .leadership-conferred-filter {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                padding: 0 0 15px 0;
+            }
+
+
+            /* =====================================================
+            FILTER CONTENT
+            ===================================================== */
+
+            .leadership-filter-content {
+                width: 100%;
+                max-width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: flex-end;
+                gap: 12px;
+                box-sizing: border-box;
+            }
+
+
+            /* =====================================================
+            FILTER FIELD
+            ===================================================== */
+
+            .leadership-filter-field {
+                flex: 1 1 300px;
+                width: 100%;
+                max-width: 350px;
+                min-width: 0;
+                box-sizing: border-box;
+            }
+
+
+            /* =====================================================
+            LABEL
+            ===================================================== */
+
+            .leadership-filter-label {
+                display: block;
+                width: 100%;
+                margin-bottom: 6px;
+                font-weight: 500;
+                white-space: nowrap;
+                box-sizing: border-box;
+            }
+
+
+            /* =====================================================
+            SELECT
+            ===================================================== */
+
+            .leadership-filter-select {
+                display: block;
+                width: 100% !important;
+                max-width: 100%;
+                min-width: 0;
+                box-sizing: border-box;
+            }
+
+
+            /* =====================================================
+            TABLET
+            ===================================================== */
+
+            @media (max-width: 768px) {
+
+                .leadership-conferred-filter {
+                    width: 100%;
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+
+                .leadership-filter-content {
+                    width: 100%;
+                    display: block;
+                }
+
+                .leadership-filter-field {
+                    width: 100%;
+                    max-width: 100%;
+                    flex: none;
+                }
+
+                .leadership-filter-select {
+                    width: 100% !important;
+                }
+            }
+
+
+            /* =====================================================
+            MOBILE
+            ===================================================== */
+
+            @media (max-width: 480px) {
+
+                .leadership-conferred-filter {
+                    width: 100%;
+                    max-width: 100%;
+                    padding-bottom: 12px;
+                }
+
+                .leadership-filter-content {
+                    width: 100%;
+                    max-width: 100%;
+                    display: block;
+                }
+
+                .leadership-filter-field {
+                    width: 100%;
+                    max-width: 100%;
+                    min-width: 0;
+                }
+
+                .leadership-filter-label {
+                    font-size: 13px;
+                    margin-bottom: 5px;
+                }
+
+                .leadership-filter-select {
+                    width: 100% !important;
+                    max-width: 100%;
+                    font-size: 13px;
+                }
+            }
+
+
+            /* =====================================================
+            VERY SMALL MOBILE
+            ===================================================== */
+
+            @media (max-width: 320px) {
+
+                .leadership-filter-label {
+                    font-size: 12px;
+                }
+
+                .leadership-filter-select {
+                    font-size: 12px;
+                }
+            }
+
+        `;
+
+        document.head.appendChild(style);
+    }
+
 
     /* ============================================================
        LOAD ALL CARD COUNTS
@@ -941,6 +1119,11 @@
         if (!isLeadershipWorkspace()) {
             return;
         }
+
+        /*
+        * Add responsive CSS.
+        */
+        addLeadershipFilterStyles();
 
 
         const container =
@@ -1032,22 +1215,47 @@
         //     </div>
         // `;
 
-         wrapper.innerHTML = `
+        //  wrapper.innerHTML = `
+        //     <div class="leadership-filter-content">
+
+        //         <label
+        //             for="leadership-conferred-by"
+        //             class="leadership-filter-label"
+        //         >
+        //             Conferred By
+        //         </label>
+
+        //         <select
+        //             id="leadership-conferred-by"
+        //             class="form-control"
+        //         >
+        //             <option value="All">All</option>
+        //         </select>
+
+        //     </div>
+        // `;
+
+
+        wrapper.innerHTML = `
             <div class="leadership-filter-content">
 
-                <label
-                    for="leadership-conferred-by"
-                    class="leadership-filter-label"
-                >
-                    Conferred By
-                </label>
+                <div class="leadership-filter-field">
 
-                <select
-                    id="leadership-conferred-by"
-                    class="form-control"
-                >
-                    <option value="All">All</option>
-                </select>
+                    <label
+                        for="leadership-conferred-by"
+                        class="leadership-filter-label"
+                    >
+                        Conferred By
+                    </label>
+
+                    <select
+                        id="leadership-conferred-by"
+                        class="form-control leadership-filter-select"
+                    >
+                        <option value="All">All</option>
+                    </select>
+
+                </div>
 
             </div>
         `;
@@ -1155,12 +1363,6 @@
             const value =
                 this.value || "All";
 
-            console.log(
-                "[Leadership Archival] " +
-                "Conferred By changed:",
-                value
-            );
-
             /*
             * Update Number Cards
             */
@@ -1176,7 +1378,7 @@
             );
         }
     );
-}
+    }
 
 
     /* ============================================================
@@ -1230,13 +1432,6 @@
 
                 return;
             }
-
-            console.log(
-                "[Leadership Archival] " +
-                "Refreshing ALL Dashboard Charts:",
-                window.__leadershipConferredBy
-            );
-
             widgets.forEach(
                 function (chartWidget) {
 
@@ -1573,18 +1768,6 @@
                 return;
             }
 
-            console.log(
-                "[Leadership Archival] " +
-                "Number Card clicked:",
-                clickedCard.card
-            );
-
-            console.log(
-                "[Leadership Archival] " +
-                "Conferred By:",
-                conferredBy
-            );
-
             /*
              * Build native Query Report URL.
              */
@@ -1618,12 +1801,6 @@
                 ) +
                 "?" +
                 params.toString();
-
-            console.log(
-                "[Leadership Archival] " +
-                "Final Number Card URL:",
-                reportURL
-            );
 
             /*
              * Stop ERPNext's native navigation.
@@ -1754,14 +1931,6 @@
 
         createConferredByFilter();
 
-
-        /* --------------------------------------------------------
-           Create hero
-           -------------------------------------------------------- */
-
-        createHero();
-
-
         /* --------------------------------------------------------
            Wait for native cards
            -------------------------------------------------------- */
@@ -1787,10 +1956,6 @@
                      * ERPNext may have rerendered.
                      */
                     createConferredByFilter();
-
-                    createHero();
-
-
                     waitForNumberCards(
                         20
                     );
@@ -1859,17 +2024,6 @@
                     observerMutationTimer =
                         setTimeout(
                             function () {
-
-                                if (
-                                    !document.querySelector(
-                                        ".leadership-custom-hero"
-                                    )
-                                ) {
-
-                                    createHero();
-                                }
-
-
                                 if (
                                     !document.querySelector(
                                         "#leadership-conferred-by"
