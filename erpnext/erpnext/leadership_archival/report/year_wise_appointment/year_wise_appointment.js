@@ -3,6 +3,11 @@
 
 frappe.query_reports["Year Wise Appointment"] = {
 	"filters": [
-
+		{
+			fieldname: "conferred_by",
+			label: "Conferred By",
+			fieldtype: "Link",
+			options: "Conferred By"
+		}
 	]
 };

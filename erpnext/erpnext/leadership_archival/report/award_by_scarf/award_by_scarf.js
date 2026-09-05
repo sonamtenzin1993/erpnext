@@ -1,37 +1,215 @@
-// // Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
-// // For license information, please see license.txt
+// // // Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
+// // // For license information, please see license.txt
+
+// // // frappe.query_reports["Award by Scarf"] = {
+// // // 	"filters": [
+
+// // // 	]
+// // // };
+
+// // // Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
+// // // For license information, please see license.txt
 
 // // frappe.query_reports["Award by Scarf"] = {
 // // 	"filters": [
+// //         {
+// //             fieldname: "title_medal",
+// //             label: "Title",
+// //             fieldtype: "Data"
+// //         },
+// //         {
+// //             fieldname: "cid",
+// //             label: "CID",
+// //             fieldtype: "Data"
+// //         },
+// //         {
+// //             fieldname: "start_date",
+// //             label: "Start Date",
+// //             fieldtype: "Date"
+// //         },
+// //         {
+// //             fieldname: "end_date",
+// //             label: "End Date",
+// //             fieldtype: "Date"
+// //         },
+// //         {
+// //             fieldname: "conferred_by",
+// //             label: "Conferred By",
+// //             fieldtype: "Link",
+// //             options: "Conferred By",
+// //             default: ""
+// //         }
+        
+// // 	],
+// //     // =====================================================
+// //     // FORMATTER
+// //     // =====================================================
 
-// // 	]
+// //     formatter: function (value, row, column, data, default_formatter) {
+
+// //         value = default_formatter(value, row, column, data);
+
+// //         if (column.fieldname === "profile" && data && data.profile) {
+
+// //             return `
+// //                 <div style="text-align: center;">
+// //                     <span
+// //                         class="profile-link-icon"
+// //                         data-profile="${data.profile}"
+// //                         title="View Profile"
+// //                         style="cursor: pointer; font-size: 18px;"
+// //                     >
+// //                         <i class="fa fa-eye"></i>
+// //                     </span>
+// //                 </div>
+// //             `;
+// //         }
+
+// //         return value;
+// //     },
+// // 	onload: function (report) {
+// //          // =====================================================
+// //         // APPLY FILTER PASSED FROM NUMBER CARD
+// //         // =====================================================
+
+// //         const url_params = new URLSearchParams(window.location.search);
+// //         const title_medal = url_params.get("title_medal");
+
+// //         if (title_medal) {
+// //             report.set_filter_value("title_medal", title_medal);
+// //             report.refresh();
+// //         }
+
+// //         if (title_medal) {
+// //             report.set_filter_value("conferred_by", conferred_by);
+// //             report.refresh();
+// //         }
+        
+// //         // =================================================
+// //         // PROFILE CLICK
+// //         // =================================================
+
+// //         report.page.wrapper.on(
+// //             "click",
+// //             ".profile-link-icon",
+// //             function (e) {
+// //                 e.stopPropagation();
+// //                 const profile_id = $(this).data("profile");
+// //                 console.log("Profile ID:", profile_id);
+// //                 if (profile_id) {
+// //                     // frappe.set_route(
+// //                     //     "leadership-profile",
+// //                     //     profile_id
+// //                     // );
+// //                     const url = `/app/leadership-profile/${profile_id}`;
+// //                     window.open(url, "_blank");
+// //                 }
+// //             }
+// //         );
+
+// //         function validate_dates() {
+// //             const start = report.get_filter_value("start_date");
+// //             const end = report.get_filter_value("end_date");
+
+// //             if (start && end && end < start) {
+// //                 frappe.msgprint({
+// //                     title: __("Invalid Date Range"),
+// //                     message: __("End Date must be greater than Start Date"),
+// //                     indicator: "red"
+// //                 });
+
+// //                 report.set_filter_value("end_date", null);
+// //                 return false;
+// //             }
+
+// //             return true;
+// //         }
+
+// //         function refresh_report() {
+// //             if (!validate_dates()) return;
+
+// //             // ✅ START PROGRESS BAR
+// //             frappe.show_progress(
+// //                 __("Loading Report"),
+// //                 50,
+// //                 100,
+// //                 __("Fetching data...")
+// //             );
+
+// //             report.refresh();
+
+// //             // ✅ STOP WHEN AJAX FINISHES (ERPNext standard way)
+// //             frappe.after_ajax(() => {
+// //                 frappe.show_progress(
+// //                     __("Loading Report"),
+// //                     100,
+// //                     100,
+// //                     __("Done")
+// //                 );
+
+// //                 setTimeout(() => {
+// //                     frappe.hide_progress();
+// //                 }, 300);
+// //             });
+// //         }
+
+// //         // Bind filters
+// //         setTimeout(() => {
+// //             const conferred_by_filter = report.get_filter("conferred_by");
+// //             const start_filter = report.get_filter("start_date");
+// //             const end_filter = report.get_filter("end_date");
+
+// //             if (conferred_by_filter) {
+// //                 conferred_by_filter.$input.on("change", refresh_report);
+// //             }
+
+// //             if (start_filter) {
+// //                 start_filter.$input.on("change", refresh_report);
+// //             }
+
+// //             if (end_filter) {
+// //                 end_filter.$input.on("change", refresh_report);
+// //             }
+// //         }, 500);
+
+// //         // Initial load
+// //         refresh_report();
+// //     }
 // // };
+
+
 
 // // Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
 // // For license information, please see license.txt
 
 // frappe.query_reports["Award by Scarf"] = {
-// 	"filters": [
+
+//     filters: [
+
 //         {
 //             fieldname: "title_medal",
 //             label: "Title",
 //             fieldtype: "Data"
 //         },
+
 //         {
 //             fieldname: "cid",
 //             label: "CID",
 //             fieldtype: "Data"
 //         },
+
 //         {
 //             fieldname: "start_date",
 //             label: "Start Date",
 //             fieldtype: "Date"
 //         },
+
 //         {
 //             fieldname: "end_date",
 //             label: "End Date",
 //             fieldtype: "Date"
 //         },
+
 //         {
 //             fieldname: "conferred_by",
 //             label: "Conferred By",
@@ -39,52 +217,155 @@
 //             options: "Conferred By",
 //             default: ""
 //         }
-        
-// 	],
+
+//     ],
+
 //     // =====================================================
 //     // FORMATTER
 //     // =====================================================
 
-//     formatter: function (value, row, column, data, default_formatter) {
+//     formatter: function (
+//         value,
+//         row,
+//         column,
+//         data,
+//         default_formatter
+//     ) {
 
-//         value = default_formatter(value, row, column, data);
+//         value = default_formatter(
+//             value,
+//             row,
+//             column,
+//             data
+//         );
 
-//         if (column.fieldname === "profile" && data && data.profile) {
+//         // -----------------------------------------------
+//         // VIEW PROFILE
+//         // -----------------------------------------------
+
+//         if (
+//             column.fieldname === "profile" &&
+//             data &&
+//             data.profile
+//         ) {
 
 //             return `
-//                 <div style="text-align: center;">
+//                 <div style="text-align:center;">
+
 //                     <span
 //                         class="profile-link-icon"
 //                         data-profile="${data.profile}"
 //                         title="View Profile"
-//                         style="cursor: pointer; font-size: 18px;"
+//                         style="
+//                             cursor:pointer;
+//                             font-size:18px;
+//                         "
 //                     >
 //                         <i class="fa fa-eye"></i>
 //                     </span>
+
 //                 </div>
 //             `;
 //         }
 
 //         return value;
 //     },
-// 	onload: function (report) {
-//          // =====================================================
-//         // APPLY FILTER PASSED FROM NUMBER CARD
-//         // =====================================================
 
-//         const url_params = new URLSearchParams(window.location.search);
-//         const title_medal = url_params.get("title_medal");
+
+//     // =====================================================
+//     // ONLOAD
+//     // =====================================================
+
+//     onload: function (report) {
+
+//         // =================================================
+//         // APPLY FILTERS FROM URL
+//         // =================================================
+
+//         const url_params =
+//             new URLSearchParams(window.location.search);
+
+//         const title_medal =
+//             url_params.get("title_medal");
+
+//         const conferred_by =
+//             url_params.get("conferred_by");
+
+//         const cid =
+//             url_params.get("cid");
+
+//         const start_date =
+//             url_params.get("start_date");
+
+//         const end_date =
+//             url_params.get("end_date");
+
+
+//         // -------------------------------------------------
+//         // Title
+//         // -------------------------------------------------
 
 //         if (title_medal) {
-//             report.set_filter_value("title_medal", title_medal);
-//             report.refresh();
+
+//             report.set_filter_value(
+//                 "title_medal",
+//                 title_medal
+//             );
 //         }
 
-//         if (title_medal) {
-//             report.set_filter_value("conferred_by", conferred_by);
-//             report.refresh();
+
+//         // -------------------------------------------------
+//         // Conferred By
+//         // -------------------------------------------------
+
+//         if (conferred_by) {
+
+//             report.set_filter_value(
+//                 "conferred_by",
+//                 conferred_by
+//             );
 //         }
-        
+
+
+//         // -------------------------------------------------
+//         // CID
+//         // -------------------------------------------------
+
+//         if (cid) {
+
+//             report.set_filter_value(
+//                 "cid",
+//                 cid
+//             );
+//         }
+
+
+//         // -------------------------------------------------
+//         // Start Date
+//         // -------------------------------------------------
+
+//         if (start_date) {
+
+//             report.set_filter_value(
+//                 "start_date",
+//                 start_date
+//             );
+//         }
+
+
+//         // -------------------------------------------------
+//         // End Date
+//         // -------------------------------------------------
+
+//         if (end_date) {
+
+//             report.set_filter_value(
+//                 "end_date",
+//                 end_date
+//             );
+//         }
+
+
 //         // =================================================
 //         // PROFILE CLICK
 //         // =================================================
@@ -93,42 +374,96 @@
 //             "click",
 //             ".profile-link-icon",
 //             function (e) {
+
 //                 e.stopPropagation();
-//                 const profile_id = $(this).data("profile");
-//                 console.log("Profile ID:", profile_id);
+
+//                 const profile_id =
+//                     $(this).data("profile");
+
+//                 console.log(
+//                     "Profile ID:",
+//                     profile_id
+//                 );
+
 //                 if (profile_id) {
-//                     // frappe.set_route(
-//                     //     "leadership-profile",
-//                     //     profile_id
+
+//                     const url =
+//                         `/app/leadership-profile/${profile_id}`;
+
+//                     // window.open(
+//                     //     url,
+//                     //     "_blank"
 //                     // );
-//                     const url = `/app/leadership-profile/${profile_id}`;
-//                     window.open(url, "_blank");
 //                 }
+
 //             }
 //         );
 
-//         function validate_dates() {
-//             const start = report.get_filter_value("start_date");
-//             const end = report.get_filter_value("end_date");
 
-//             if (start && end && end < start) {
+//         // =================================================
+//         // DATE VALIDATION
+//         // =================================================
+
+//         function validate_dates() {
+
+//             const start =
+//                 report.get_filter_value(
+//                     "start_date"
+//                 );
+
+//             const end =
+//                 report.get_filter_value(
+//                     "end_date"
+//                 );
+
+//             if (
+//                 start &&
+//                 end &&
+//                 end < start
+//             ) {
+
 //                 frappe.msgprint({
-//                     title: __("Invalid Date Range"),
-//                     message: __("End Date must be greater than Start Date"),
+
+//                     title: __(
+//                         "Invalid Date Range"
+//                     ),
+
+//                     message: __(
+//                         "End Date must be greater than Start Date"
+//                     ),
+
 //                     indicator: "red"
+
 //                 });
 
-//                 report.set_filter_value("end_date", null);
+//                 report.set_filter_value(
+//                     "end_date",
+//                     null
+//                 );
+
 //                 return false;
 //             }
 
 //             return true;
 //         }
 
-//         function refresh_report() {
-//             if (!validate_dates()) return;
 
-//             // ✅ START PROGRESS BAR
+//         // =================================================
+//         // REFRESH REPORT
+//         // =================================================
+
+//         function refresh_report() {
+
+//             if (!validate_dates()) {
+//                 return;
+//             }
+
+//             console.log(
+//                 "Award by Scarf filters:",
+//                 report.get_values()
+//             );
+
+
 //             frappe.show_progress(
 //                 __("Loading Report"),
 //                 50,
@@ -136,10 +471,12 @@
 //                 __("Fetching data...")
 //             );
 
+
 //             report.refresh();
 
-//             // ✅ STOP WHEN AJAX FINISHES (ERPNext standard way)
-//             frappe.after_ajax(() => {
+
+//             frappe.after_ajax(function () {
+
 //                 frappe.show_progress(
 //                     __("Loading Report"),
 //                     100,
@@ -147,42 +484,153 @@
 //                     __("Done")
 //                 );
 
-//                 setTimeout(() => {
-//                     frappe.hide_progress();
-//                 }, 300);
+//                 setTimeout(
+//                     function () {
+
+//                         frappe.hide_progress();
+
+//                     },
+//                     300
+//                 );
+
 //             });
+
 //         }
 
-//         // Bind filters
-//         setTimeout(() => {
-//             const conferred_by_filter = report.get_filter("conferred_by");
-//             const start_filter = report.get_filter("start_date");
-//             const end_filter = report.get_filter("end_date");
+
+//         // =================================================
+//         // FILTER CHANGE EVENTS
+//         // =================================================
+
+//         setTimeout(function () {
+
+//             const conferred_by_filter =
+//                 report.get_filter(
+//                     "conferred_by"
+//                 );
+
+//             const start_filter =
+//                 report.get_filter(
+//                     "start_date"
+//                 );
+
+//             const end_filter =
+//                 report.get_filter(
+//                     "end_date"
+//                 );
+
+//             const title_filter =
+//                 report.get_filter(
+//                     "title_medal"
+//                 );
+
+//             const cid_filter =
+//                 report.get_filter(
+//                     "cid"
+//                 );
+
+
+//             // ---------------------------------------------
+//             // Conferred By
+//             // ---------------------------------------------
 
 //             if (conferred_by_filter) {
-//                 conferred_by_filter.$input.on("change", refresh_report);
+
+//                 conferred_by_filter.$input.on(
+//                     "change",
+//                     function () {
+
+//                         console.log(
+//                             "Conferred By:",
+//                             report.get_filter_value(
+//                                 "conferred_by"
+//                             )
+//                         );
+
+//                         refresh_report();
+
+//                     }
+//                 );
 //             }
+
+
+//             // ---------------------------------------------
+//             // Start Date
+//             // ---------------------------------------------
 
 //             if (start_filter) {
-//                 start_filter.$input.on("change", refresh_report);
+
+//                 start_filter.$input.on(
+//                     "change",
+//                     refresh_report
+//                 );
 //             }
+
+
+//             // ---------------------------------------------
+//             // End Date
+//             // ---------------------------------------------
 
 //             if (end_filter) {
-//                 end_filter.$input.on("change", refresh_report);
+
+//                 end_filter.$input.on(
+//                     "change",
+//                     refresh_report
+//                 );
 //             }
+
+
+//             // ---------------------------------------------
+//             // Title
+//             // ---------------------------------------------
+
+//             if (title_filter) {
+
+//                 title_filter.$input.on(
+//                     "change",
+//                     refresh_report
+//                 );
+//             }
+
+
+//             // ---------------------------------------------
+//             // CID
+//             // ---------------------------------------------
+
+//             if (cid_filter) {
+
+//                 cid_filter.$input.on(
+//                     "change",
+//                     refresh_report
+//                 );
+//             }
+
 //         }, 500);
 
-//         // Initial load
-//         refresh_report();
-//     }
-// };
 
+//         // =================================================
+//         // INITIAL LOAD
+//         // =================================================
+
+//         setTimeout(function () {
+
+//             refresh_report();
+
+//         }, 700);
+
+//     }
+
+// };
 
 
 // Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
 frappe.query_reports["Award by Scarf"] = {
+
+    // =====================================================
+    // FILTERS
+    // =====================================================
 
     filters: [
 
@@ -214,11 +662,11 @@ frappe.query_reports["Award by Scarf"] = {
             fieldname: "conferred_by",
             label: "Conferred By",
             fieldtype: "Link",
-            options: "Conferred By",
-            default: ""
+            options: "Conferred By"
         }
 
     ],
+
 
     // =====================================================
     // FORMATTER
@@ -239,9 +687,9 @@ frappe.query_reports["Award by Scarf"] = {
             data
         );
 
-        // -----------------------------------------------
-        // VIEW PROFILE
-        // -----------------------------------------------
+        // =================================================
+        // PROFILE ICON
+        // =================================================
 
         if (
             column.fieldname === "profile" &&
@@ -250,15 +698,19 @@ frappe.query_reports["Award by Scarf"] = {
         ) {
 
             return `
-                <div style="text-align:center;">
+                <div style="
+                    text-align: center;
+                    width: 100%;
+                ">
 
                     <span
                         class="profile-link-icon"
-                        data-profile="${data.profile}"
+                        data-profile="${frappe.utils.escape_html(data.profile)}"
                         title="View Profile"
                         style="
-                            cursor:pointer;
-                            font-size:18px;
+                            cursor: pointer;
+                            font-size: 18px;
+                            display: inline-block;
                         "
                     >
                         <i class="fa fa-eye"></i>
@@ -278,12 +730,20 @@ frappe.query_reports["Award by Scarf"] = {
 
     onload: function (report) {
 
+        console.log(
+            "[Award by Scarf] Report loaded"
+        );
+
+
         // =================================================
-        // APPLY FILTERS FROM URL
+        // APPLY URL FILTERS
         // =================================================
 
         const url_params =
-            new URLSearchParams(window.location.search);
+            new URLSearchParams(
+                window.location.search
+            );
+
 
         const title_medal =
             url_params.get("title_medal");
@@ -301,11 +761,16 @@ frappe.query_reports["Award by Scarf"] = {
             url_params.get("end_date");
 
 
-        // -------------------------------------------------
-        // Title
-        // -------------------------------------------------
+        // =================================================
+        // TITLE
+        // =================================================
 
         if (title_medal) {
+
+            console.log(
+                "[Award by Scarf] URL title_medal:",
+                title_medal
+            );
 
             report.set_filter_value(
                 "title_medal",
@@ -314,11 +779,16 @@ frappe.query_reports["Award by Scarf"] = {
         }
 
 
-        // -------------------------------------------------
-        // Conferred By
-        // -------------------------------------------------
+        // =================================================
+        // CONFERRED BY
+        // =================================================
 
         if (conferred_by) {
+
+            console.log(
+                "[Award by Scarf] URL conferred_by:",
+                conferred_by
+            );
 
             report.set_filter_value(
                 "conferred_by",
@@ -327,11 +797,16 @@ frappe.query_reports["Award by Scarf"] = {
         }
 
 
-        // -------------------------------------------------
+        // =================================================
         // CID
-        // -------------------------------------------------
+        // =================================================
 
         if (cid) {
+
+            console.log(
+                "[Award by Scarf] URL cid:",
+                cid
+            );
 
             report.set_filter_value(
                 "cid",
@@ -340,9 +815,9 @@ frappe.query_reports["Award by Scarf"] = {
         }
 
 
-        // -------------------------------------------------
-        // Start Date
-        // -------------------------------------------------
+        // =================================================
+        // START DATE
+        // =================================================
 
         if (start_date) {
 
@@ -353,9 +828,9 @@ frappe.query_reports["Award by Scarf"] = {
         }
 
 
-        // -------------------------------------------------
-        // End Date
-        // -------------------------------------------------
+        // =================================================
+        // END DATE
+        // =================================================
 
         if (end_date) {
 
@@ -370,31 +845,74 @@ frappe.query_reports["Award by Scarf"] = {
         // PROFILE CLICK
         // =================================================
 
+        report.page.wrapper.off(
+            "click.award_scarf_profile",
+            ".profile-link-icon"
+        );
+
+
         report.page.wrapper.on(
-            "click",
+            "click.award_scarf_profile",
             ".profile-link-icon",
             function (e) {
 
+                e.preventDefault();
                 e.stopPropagation();
 
                 const profile_id =
-                    $(this).data("profile");
+                    $(this).attr("data-profile");
+
 
                 console.log(
-                    "Profile ID:",
+                    "================================="
+                );
+
+                console.log(
+                    "[Award by Scarf] PROFILE CLICK"
+                );
+
+                console.log(
+                    "[Award by Scarf] Profile ID:",
                     profile_id
                 );
 
-                if (profile_id) {
 
-                    const url =
-                        `/app/leadership-profile/${profile_id}`;
+                if (!profile_id) {
 
-                    // window.open(
-                    //     url,
-                    //     "_blank"
-                    // );
+                    console.error(
+                        "[Award by Scarf] Profile ID is missing"
+                    );
+
+                    frappe.msgprint({
+                        title: __("Profile Not Found"),
+                        message: __(
+                            "The profile ID is not available for this record."
+                        ),
+                        indicator: "red"
+                    });
+
+                    return;
                 }
+
+
+                // =================================================
+                // OPEN LEADERSHIP PROFILE
+                // =================================================
+
+                const url =
+                    `/app/leadership-profile/${encodeURIComponent(profile_id)}`;
+
+
+                console.log(
+                    "[Award by Scarf] Opening:",
+                    url
+                );
+
+
+                window.open(
+                    url,
+                    "_blank"
+                );
 
             }
         );
@@ -416,6 +934,7 @@ frappe.query_reports["Award by Scarf"] = {
                     "end_date"
                 );
 
+
             if (
                 start &&
                 end &&
@@ -436,13 +955,16 @@ frappe.query_reports["Award by Scarf"] = {
 
                 });
 
+
                 report.set_filter_value(
                     "end_date",
                     null
                 );
 
+
                 return false;
             }
+
 
             return true;
         }
@@ -458,8 +980,9 @@ frappe.query_reports["Award by Scarf"] = {
                 return;
             }
 
+
             console.log(
-                "Award by Scarf filters:",
+                "[Award by Scarf] Refreshing with filters:",
                 report.get_values()
             );
 
@@ -484,6 +1007,7 @@ frappe.query_reports["Award by Scarf"] = {
                     __("Done")
                 );
 
+
                 setTimeout(
                     function () {
 
@@ -502,122 +1026,118 @@ frappe.query_reports["Award by Scarf"] = {
         // FILTER CHANGE EVENTS
         // =================================================
 
-        setTimeout(function () {
+        setTimeout(
+            function () {
 
-            const conferred_by_filter =
-                report.get_filter(
-                    "conferred_by"
-                );
+                const conferred_by_filter =
+                    report.get_filter(
+                        "conferred_by"
+                    );
 
-            const start_filter =
-                report.get_filter(
-                    "start_date"
-                );
+                const start_filter =
+                    report.get_filter(
+                        "start_date"
+                    );
 
-            const end_filter =
-                report.get_filter(
-                    "end_date"
-                );
+                const end_filter =
+                    report.get_filter(
+                        "end_date"
+                    );
 
-            const title_filter =
-                report.get_filter(
-                    "title_medal"
-                );
+                const title_filter =
+                    report.get_filter(
+                        "title_medal"
+                    );
 
-            const cid_filter =
-                report.get_filter(
-                    "cid"
-                );
-
-
-            // ---------------------------------------------
-            // Conferred By
-            // ---------------------------------------------
-
-            if (conferred_by_filter) {
-
-                conferred_by_filter.$input.on(
-                    "change",
-                    function () {
-
-                        console.log(
-                            "Conferred By:",
-                            report.get_filter_value(
-                                "conferred_by"
-                            )
-                        );
-
-                        refresh_report();
-
-                    }
-                );
-            }
+                const cid_filter =
+                    report.get_filter(
+                        "cid"
+                    );
 
 
-            // ---------------------------------------------
-            // Start Date
-            // ---------------------------------------------
+                // ---------------------------------------------
+                // CONFERRED BY
+                // ---------------------------------------------
 
-            if (start_filter) {
+                if (conferred_by_filter) {
 
-                start_filter.$input.on(
-                    "change",
-                    refresh_report
-                );
-            }
-
-
-            // ---------------------------------------------
-            // End Date
-            // ---------------------------------------------
-
-            if (end_filter) {
-
-                end_filter.$input.on(
-                    "change",
-                    refresh_report
-                );
-            }
+                    conferred_by_filter.$input.on(
+                        "change",
+                        refresh_report
+                    );
+                }
 
 
-            // ---------------------------------------------
-            // Title
-            // ---------------------------------------------
+                // ---------------------------------------------
+                // START DATE
+                // ---------------------------------------------
 
-            if (title_filter) {
+                if (start_filter) {
 
-                title_filter.$input.on(
-                    "change",
-                    refresh_report
-                );
-            }
+                    start_filter.$input.on(
+                        "change",
+                        refresh_report
+                    );
+                }
 
 
-            // ---------------------------------------------
-            // CID
-            // ---------------------------------------------
+                // ---------------------------------------------
+                // END DATE
+                // ---------------------------------------------
 
-            if (cid_filter) {
+                if (end_filter) {
 
-                cid_filter.$input.on(
-                    "change",
-                    refresh_report
-                );
-            }
+                    end_filter.$input.on(
+                        "change",
+                        refresh_report
+                    );
+                }
 
-        }, 500);
+
+                // ---------------------------------------------
+                // TITLE
+                // ---------------------------------------------
+
+                if (title_filter) {
+
+                    title_filter.$input.on(
+                        "change",
+                        refresh_report
+                    );
+                }
+
+
+                // ---------------------------------------------
+                // CID
+                // ---------------------------------------------
+
+                if (cid_filter) {
+
+                    cid_filter.$input.on(
+                        "change",
+                        refresh_report
+                    );
+                }
+
+            },
+            500
+        );
 
 
         // =================================================
         // INITIAL LOAD
         // =================================================
 
-        setTimeout(function () {
+        setTimeout(
+            function () {
 
-            refresh_report();
+                refresh_report();
 
-        }, 700);
+            },
+            700
+        );
 
     }
 
 };
+
