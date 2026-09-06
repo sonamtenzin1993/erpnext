@@ -587,3 +587,144 @@ def get_family_tree_detail(cid=None):
                 return None
                 
     token = generate_token()
+
+# Local API
+@frappe.whitelist()
+def get_kasho_detail_by_cid(cid):
+    children = frappe.get_all(
+        "Award and Appointment",
+        filters={"cid": cid},
+        fields=[
+            "cid",
+            "parent",
+            "title",
+            "event_name",
+            "conferred_by",
+            "location",
+            "citation",
+            "dzongkhag",
+            "postthumous"
+        ]
+    )
+
+    result = []
+
+    for child in children:
+
+        parent = frappe.get_doc(
+            "Kasho",
+            child.parent
+        )
+
+        result.append({
+            "parent": parent.as_dict(),
+            "child": child
+        })
+
+    return result
+
+@frappe.whitelist()
+def get_recognition_by_cid(cid=None):
+
+    # =========================================================
+    # VALIDATE CID
+    # =========================================================
+
+    if not cid:
+        return []
+
+    # =========================================================
+    # GET KASHO PARENTS FROM
+    # "Award and Appointment"
+    # =========================================================
+
+    awards = frappe.get_all(
+        "Award and Appointment",
+        filters={
+            "cid": cid
+        },
+        fields=[
+            "parent"
+        ]
+    )
+
+    # =========================================================
+    # GET KASHO PARENTS FROM
+    # "Leadership Appointment"
+    # =========================================================
+
+    appointments = frappe.get_all(
+        "Leadership Appointment",
+        filters={
+            "cid": cid
+        },
+        fields=[
+            "parent"
+        ]
+    )
+
+    # =========================================================
+    # COMBINE BOTH CHILD TABLE RESULTS
+    # =========================================================
+
+    children = awards + appointments
+
+    # =========================================================
+    # REMOVE DUPLICATE PARENT NAMES
+    #
+    # Example:
+    #
+    # Award and Appointment
+    #     KASHO-0001
+    #
+    # Leadership Appointment
+    #     KASHO-0001
+    #
+    # Result:
+    #     KASHO-0001
+    # =========================================================
+
+    parent_names = list({
+        row.parent
+        for row in children
+        if row.parent
+    })
+
+    # =========================================================
+    # GET KASHO PARENT DOCUMENTS
+    # =========================================================
+
+    result = []
+
+    for parent_name in parent_names:
+
+        try:
+            parent = frappe.get_doc(
+                "Kasho",
+                parent_name
+            )
+
+        except frappe.DoesNotExistError:
+            continue
+
+        # -----------------------------------------------------
+        # Only return Kasho records that have an attachment
+        # -----------------------------------------------------
+
+        if not parent.get("kasho"):
+            continue
+
+        result.append({
+            "parent": parent.name,
+            "kasho": parent.get("kasho")
+        })
+
+    # =========================================================
+    # SORT BY KASHO NAME
+    # =========================================================
+
+    result.sort(
+        key=lambda row: row.get("parent", "")
+    )
+
+    return result

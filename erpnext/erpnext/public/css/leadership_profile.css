@@ -1398,3 +1398,196 @@
     }
 
 }
+
+
+/* Gallery  CSS */
+
+/* =========================================================
+   GALLERY - 2 COLUMN IMAGE GRID
+   ONLY AFFECTS THE GALLERY
+   ========================================================= */
+
+
+/* Gallery container */
+.profile-gallery .photo-grid {
+    display: grid !important;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+
+    gap: 10px !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+/* Individual gallery item */
+.profile-gallery .photo-grid .gallery-item {
+    position: relative;
+
+    display: block;
+
+    width: 100% !important;
+
+    height: 130px !important;
+
+    overflow: hidden;
+
+    background: #f8fafc;
+
+    border: 1px solid #dbeafe;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 2px 6px rgba(37, 99, 235, 0.08);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+/* Gallery image */
+.profile-gallery .photo-grid .gallery-image {
+    display: block !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    object-fit: cover !important;
+
+    border: 0 !important;
+
+    border-radius: 9px;
+
+    margin: 0 !important;
+
+    transition:
+        transform 0.3s ease;
+}
+
+
+/* Hover */
+.profile-gallery .photo-grid .gallery-item:hover {
+    transform: translateY(-3px);
+
+    border-color: #93c5fd;
+
+    box-shadow:
+        0 8px 18px rgba(37, 99, 235, 0.18);
+}
+
+
+.profile-gallery .photo-grid .gallery-item:hover .gallery-image {
+    transform: scale(1.05);
+}
+
+
+/* =========================================================
+   SINGLE IMAGE
+   If only one image exists, use full width
+   ========================================================= */
+
+.profile-gallery .photo-grid .gallery-item:only-child {
+    grid-column: 1 / -1;
+
+    height: 210px !important;
+}
+
+
+/* =========================================================
+   EMPTY GALLERY
+   ========================================================= */
+
+.profile-gallery .photo-grid .gallery-empty {
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 130px;
+
+    padding: 20px;
+
+    text-align: center;
+
+    background: linear-gradient(
+        135deg,
+        #f8fbff,
+        #f5f3ff
+    );
+
+    border: 1px dashed #c7d2fe;
+
+    border-radius: 10px;
+
+    color: var(--text-muted);
+}
+
+
+.profile-gallery .photo-grid .gallery-empty i {
+    margin-bottom: 8px;
+
+    font-size: 26px;
+
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+    .profile-gallery .photo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+
+        gap: 8px !important;
+    }
+
+    .profile-gallery .photo-grid .gallery-item {
+        height: 110px !important;
+    }
+
+    .profile-gallery .photo-grid .gallery-item:only-child {
+        height: 180px !important;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .profile-gallery .photo-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .profile-gallery .photo-grid .gallery-item {
+        height: 150px !important;
+    }
+
+    .profile-gallery .photo-grid .gallery-item:only-child {
+        height: 180px !important;
+    }
+
+}
