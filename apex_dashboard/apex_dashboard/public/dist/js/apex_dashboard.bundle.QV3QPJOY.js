@@ -46410,7 +46410,9 @@
             if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
               return;
             }
-            const scrollParent = getScrollableParent(chartElement);
+            const scrollParent = getScrollableParent(
+              chartElement
+            );
             if (scrollParent) {
               scrollParent.scrollTop += event.deltaY;
               event.preventDefault();
@@ -46557,7 +46559,9 @@
               counts[cleanLabel] += 1;
             }
           );
-          const uniqueLabels = Object.keys(counts);
+          const uniqueLabels = Object.keys(
+            counts
+          );
           let groupedLabels = uniqueLabels.slice();
           let groupedValues = groupedLabels.map(
             function(label) {
@@ -46583,35 +46587,6 @@
           );
           groupedLabels = filteredLabels;
           groupedValues = filteredValues;
-          const maxSlices = Number(
-            config.maxSlices
-          );
-          if (Number.isFinite(maxSlices) && maxSlices > 0 && groupedLabels.length > maxSlices) {
-            const limitedLabels = groupedLabels.slice(
-              0,
-              maxSlices
-            );
-            const limitedValues = groupedValues.slice(
-              0,
-              maxSlices
-            );
-            const otherValue = groupedValues.slice(maxSlices).reduce(
-              function(total, value) {
-                return total + Number(value || 0);
-              },
-              0
-            );
-            if (otherValue > 0) {
-              limitedLabels.push(
-                "Other"
-              );
-              limitedValues.push(
-                otherValue
-              );
-            }
-            groupedLabels = limitedLabels;
-            groupedValues = limitedValues;
-          }
           labels = groupedLabels;
           series = groupedValues;
         }
@@ -46951,6 +46926,16 @@
           };
         }
         if (chartType === "pie" || chartType === "donut") {
+          options2.dataLabels = {
+            enabled: true,
+            formatter: function(value, opts) {
+              const seriesIndex = opts.seriesIndex;
+              const actualValue = opts.w.config.series[seriesIndex];
+              return String(
+                actualValue
+              );
+            }
+          };
           options2.tooltip = {
             enabled: true,
             y: {
@@ -47011,4 +46996,4 @@
  *                       alignment; always smooth and non-self-intersecting,
  *                       at the cost of throwing away curve smoothness.
  */
-//# sourceMappingURL=apex_dashboard.bundle.VO5PJ4ZD.js.map
+//# sourceMappingURL=apex_dashboard.bundle.QV3QPJOY.js.map
