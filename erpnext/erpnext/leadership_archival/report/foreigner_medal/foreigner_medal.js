@@ -1,6 +1,8 @@
-frappe.query_reports["Award by Scarf"] = {
+// Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
+// For license information, please see license.txt
 
-    // =====================================================
+frappe.query_reports["Foreigner Medal"] = {
+	// =====================================================
     // FILTERS
     // =====================================================
 
@@ -28,12 +30,6 @@ frappe.query_reports["Award by Scarf"] = {
             fieldname: "end_date",
             label: "End Date",
             fieldtype: "Date"
-        },
-        {
-            fieldname: "country",
-            label: "Country",
-            fieldtype: "Link",
-            options: "Country"
         },
         {
             fieldname: "conferred_by",
@@ -514,6 +510,4 @@ frappe.query_reports["Award by Scarf"] = {
         );
 
     }
-
 };
-

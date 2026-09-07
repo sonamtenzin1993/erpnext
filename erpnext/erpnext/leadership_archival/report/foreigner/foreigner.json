@@ -1,0 +1,32 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2026-09-07 18:58:05.284718",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2026-09-07 18:58:05.284718",
+ "modified_by": "Administrator",
+ "module": "Leadership Archival",
+ "name": "Foreigner",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Kasho",
+ "report_name": "Foreigner",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Kidu Kasho Uploader"
+  },
+  {
+   "role": "Kidu Kasho Manager"
+  }
+ ]
+}

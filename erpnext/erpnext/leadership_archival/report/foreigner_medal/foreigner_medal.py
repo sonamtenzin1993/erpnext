@@ -1,3 +1,9 @@
+# Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
+# For license information, please see license.txt
+
+# import frappe
+
+
 # # # Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
 # # # For license information, please see license.txt
 
@@ -404,43 +410,14 @@ def get_data(filters=None):
         conditions.append(
             "aw.conferred_by = %(conferred_by)s"
         )
-
-
-    # =====================================================
-    # COUNTRY
-    # =====================================================
-
-    country_filter = filters.get("country")
-
-    if country_filter:
-
-        if country_filter.startswith("!= "):
-
-            country = country_filter[3:]
-
-            conditions.append(
-                "kpr.country != %(country)s"
-            )
-
-            filters["country"] = country
-
-        else:
-
-            conditions.append(
-                "kpr.country = %(country)s"
-            )
-
-            filters["country"] = country_filter
-
-
+        
+    conditions.append("kpr.country != 'Bhutan'")
     # =====================================================
     # FORCE SCARF
     # =====================================================
 
-    conditions.append(
-        "aw.title LIKE '%%Scarf%%'"
-    )
-
+    # Force title to contain "Scarf"
+    conditions.append("aw.title NOT LIKE '%%Scarf%%'")
 
     # =====================================================
     # KASHO TYPE
@@ -565,5 +542,6 @@ def get_data(filters=None):
 
         as_dict=True
     )
+
 
 

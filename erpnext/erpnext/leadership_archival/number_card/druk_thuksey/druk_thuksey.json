@@ -1,0 +1,23 @@
+{
+ "creation": "2026-09-07 19:23:15.491308",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{\"title_medal\":\"Druk Thuksey\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "Druk Thuksey",
+ "modified": "2026-09-07 19:23:15.491308",
+ "modified_by": "Administrator",
+ "module": "Leadership Archival",
+ "name": "Druk Thuksey",
+ "owner": "Administrator",
+ "report_field": "count_value",
+ "report_function": "Sum",
+ "report_name": "Award By Medal",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

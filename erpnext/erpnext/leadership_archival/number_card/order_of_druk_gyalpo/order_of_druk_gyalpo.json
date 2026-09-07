@@ -1,0 +1,23 @@
+{
+ "creation": "2026-09-07 19:27:03.146025",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{\"title_medal\":\"Order of Druk Gyalpo\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "Order of Druk Gyalpo",
+ "modified": "2026-09-07 19:27:03.146025",
+ "modified_by": "Administrator",
+ "module": "Leadership Archival",
+ "name": "Order of Druk Gyalpo",
+ "owner": "Administrator",
+ "report_field": "count_value",
+ "report_function": "Sum",
+ "report_name": "Award By Medal",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

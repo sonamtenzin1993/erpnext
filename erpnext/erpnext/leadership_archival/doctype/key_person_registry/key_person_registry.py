@@ -25,6 +25,7 @@ class KeyPersonRegistry(Document):
         associated_organization: DF.Table[AssociatedOrganization]
         award_recognition: DF.Table[AwardandRecognition]
         cid: DF.Data | None
+        country: DF.Link | None
         designation: DF.Link
         dob: DF.Date | None
         dzongkhag: DF.Data | None

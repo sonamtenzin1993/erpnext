@@ -404,35 +404,8 @@ def get_data(filters=None):
         conditions.append(
             "aw.conferred_by = %(conferred_by)s"
         )
-
-
-    # =====================================================
-    # COUNTRY
-    # =====================================================
-
-    country_filter = filters.get("country")
-
-    if country_filter:
-
-        if country_filter.startswith("!= "):
-
-            country = country_filter[3:]
-
-            conditions.append(
-                "kpr.country != %(country)s"
-            )
-
-            filters["country"] = country
-
-        else:
-
-            conditions.append(
-                "kpr.country = %(country)s"
-            )
-
-            filters["country"] = country_filter
-
-
+        
+    conditions.append("kpr.country != 'Bhutan'")
     # =====================================================
     # FORCE SCARF
     # =====================================================
