@@ -73,7 +73,7 @@
         },
 
         {
-            card: "LUNGMAR SCARF",
+            card: "LUGMAR SCARF",
             report: "Award by Scarf",
             filter_field: "title_medal",
             filter_value: "Lungmar Scarf"
