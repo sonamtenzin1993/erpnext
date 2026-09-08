@@ -1236,19 +1236,6 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
             // =====================================================
 
             let person = r.message;
-
-
-            console.log(
-                "[Leadership Profile] Person:",
-                person
-            );
-
-            console.log(
-                "[Leadership Profile] CID:",
-                person.cid
-            );
-
-
             // =====================================================
             // CHILD TABLE DATA
             // =====================================================
@@ -1373,13 +1360,6 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
                 limit: 100
 
             }).then(files => {
-
-                console.log(
-                    "[Leadership Profile] All attachments:",
-                    files
-                );
-
-
                 // =================================================
                 // FILTER IMAGE FILES
                 // =================================================
@@ -1843,14 +1823,6 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
 
             return;
         }
-
-
-        console.log(
-            "[Leadership Profile] Getting Related Kasho for CID:",
-            cid
-        );
-
-
         frappe.call({
 
             method:
@@ -1861,13 +1833,6 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
             },
 
             callback: function (response) {
-
-                console.log(
-                    "[Leadership Profile] Related Kasho response:",
-                    response
-                );
-
-
                 let data =
                     response.message || [];
 

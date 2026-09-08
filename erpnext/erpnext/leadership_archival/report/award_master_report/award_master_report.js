@@ -35,6 +35,18 @@ frappe.query_reports["Award Master Report"] = {
 			"options": "Conferred By",
 			"placeholder": "Select Conferred By"
 		},
+         // =====================================================
+        // START TERM
+        // =====================================================
+        // This receives the year from the dashboard click,
+        // e.g. 1954.
+        // Python will convert it to a date range.
+        {
+            "fieldname": "start_term",
+            "label": "Start Term",
+            "fieldtype": "Data",
+            "placeholder": "Enter year"
+        }
 	],
     // =====================================================
     // FORMATTER
@@ -79,16 +91,13 @@ frappe.query_reports["Award Master Report"] = {
     const conferred_by =
         url_params.get("conferred_by");
 
+    const start_term =
+        url_params.get("start_term");
+
     let should_refresh = false;
 
 
     if (position) {
-
-        console.log(
-            "[Award Master Report] URL Position:",
-            position
-        );
-
         report.set_filter_value(
             "position",
             position
@@ -100,11 +109,6 @@ frappe.query_reports["Award Master Report"] = {
 
     if (conferred_by) {
 
-        console.log(
-            "[Award Master Report] URL Conferred By:",
-            conferred_by
-        );
-
         report.set_filter_value(
             "conferred_by",
             conferred_by
@@ -113,6 +117,12 @@ frappe.query_reports["Award Master Report"] = {
         should_refresh = true;
     }
 
+   
+    if (start_term) {
+        report.set_filter_value("start_term", start_term);
+        should_refresh = true;
+    }
+       
 
     // =====================================================
     // PROFILE CLICK

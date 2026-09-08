@@ -611,10 +611,14 @@ def get_kasho_detail_by_cid(cid):
 
     for child in children:
 
-        parent = frappe.get_doc(
-            "Kasho",
-            child.parent
-        )
+        try:
+            parent = frappe.get_doc(
+                "Kasho",
+                child.parent
+            )
+
+        except frappe.DoesNotExistError:
+            continue
 
         result.append({
             "parent": parent.as_dict(),
@@ -623,20 +627,117 @@ def get_kasho_detail_by_cid(cid):
 
     return result
 
+# @frappe.whitelist()
+# def get_recognition_by_cid(cid=None):
+
+#     # =========================================================
+#     # VALIDATE CID
+#     # =========================================================
+
+#     if not cid:
+#         return []
+
+#     # =========================================================
+#     # GET KASHO PARENTS FROM
+#     # "Award and Appointment"
+#     # =========================================================
+
+#     awards = frappe.get_all(
+#         "Award and Appointment",
+#         filters={
+#             "cid": cid
+#         },
+#         fields=[
+#             "parent"
+#         ]
+#     )
+
+#     # =========================================================
+#     # GET KASHO PARENTS FROM
+#     # "Leadership Appointment"
+#     # =========================================================
+
+#     appointments = frappe.get_all(
+#         "Leadership Appointment",
+#         filters={
+#             "cid": cid
+#         },
+#         fields=[
+#             "parent"
+#         ]
+#     )
+
+#     # =========================================================
+#     # COMBINE BOTH CHILD TABLE RESULTS
+#     # =========================================================
+
+#     children = awards + appointments
+
+#     # =========================================================
+#     # REMOVE DUPLICATE PARENT NAMES
+#     #
+#     # Example:
+#     #
+#     # Award and Appointment
+#     #     KASHO-0001
+#     #
+#     # Leadership Appointment
+#     #     KASHO-0001
+#     #
+#     # Result:
+#     #     KASHO-0001
+#     # =========================================================
+
+#     parent_names = list({
+#         row.parent
+#         for row in children
+#         if row.parent
+#     })
+
+#     # =========================================================
+#     # GET KASHO PARENT DOCUMENTS
+#     # =========================================================
+
+#     result = []
+
+#     for parent_name in parent_names:
+
+#         try:
+#             parent = frappe.get_doc(
+#                 "Kasho",
+#                 parent_name
+#             )
+
+#         except frappe.DoesNotExistError:
+#             continue
+
+#         # -----------------------------------------------------
+#         # Only return Kasho records that have an attachment
+#         # -----------------------------------------------------
+
+#         if not parent.get("kasho"):
+#             continue
+
+#         result.append({
+#             "parent": parent.name,
+#             "kasho": parent.get("kasho")
+#         })
+
+#     # =========================================================
+#     # SORT BY KASHO NAME
+#     # =========================================================
+
+#     result.sort(
+#         key=lambda row: row.get("parent", "")
+#     )
+
+#     return result
+
 @frappe.whitelist()
 def get_recognition_by_cid(cid=None):
 
-    # =========================================================
-    # VALIDATE CID
-    # =========================================================
-
     if not cid:
         return []
-
-    # =========================================================
-    # GET KASHO PARENTS FROM
-    # "Award and Appointment"
-    # =========================================================
 
     awards = frappe.get_all(
         "Award and Appointment",
@@ -648,11 +749,6 @@ def get_recognition_by_cid(cid=None):
         ]
     )
 
-    # =========================================================
-    # GET KASHO PARENTS FROM
-    # "Leadership Appointment"
-    # =========================================================
-
     appointments = frappe.get_all(
         "Leadership Appointment",
         filters={
@@ -663,26 +759,7 @@ def get_recognition_by_cid(cid=None):
         ]
     )
 
-    # =========================================================
-    # COMBINE BOTH CHILD TABLE RESULTS
-    # =========================================================
-
     children = awards + appointments
-
-    # =========================================================
-    # REMOVE DUPLICATE PARENT NAMES
-    #
-    # Example:
-    #
-    # Award and Appointment
-    #     KASHO-0001
-    #
-    # Leadership Appointment
-    #     KASHO-0001
-    #
-    # Result:
-    #     KASHO-0001
-    # =========================================================
 
     parent_names = list({
         row.parent
@@ -690,27 +767,27 @@ def get_recognition_by_cid(cid=None):
         if row.parent
     })
 
-    # =========================================================
-    # GET KASHO PARENT DOCUMENTS
-    # =========================================================
-
     result = []
 
     for parent_name in parent_names:
 
-        try:
-            parent = frappe.get_doc(
-                "Kasho",
-                parent_name
-            )
-
-        except frappe.DoesNotExistError:
+        # ---------------------------------------------------------
+        # Check whether the parent Kasho document actually exists
+        # ---------------------------------------------------------
+        if not frappe.db.exists("Kasho", parent_name):
             continue
 
-        # -----------------------------------------------------
-        # Only return Kasho records that have an attachment
-        # -----------------------------------------------------
+        # ---------------------------------------------------------
+        # Only get the document if it exists
+        # ---------------------------------------------------------
+        parent = frappe.get_doc(
+            "Kasho",
+            parent_name
+        )
 
+        # ---------------------------------------------------------
+        # Skip Kasho records without an attached Kasho file/value
+        # ---------------------------------------------------------
         if not parent.get("kasho"):
             continue
 
@@ -718,10 +795,6 @@ def get_recognition_by_cid(cid=None):
             "parent": parent.name,
             "kasho": parent.get("kasho")
         })
-
-    # =========================================================
-    # SORT BY KASHO NAME
-    # =========================================================
 
     result.sort(
         key=lambda row: row.get("parent", "")
