@@ -2115,6 +2115,18 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
 
                                 </div>
 
+                                <div class="info-item">
+
+                                    <span class="info-label">
+                                        Country
+                                    </span>
+
+                                    <span class="info-value">
+                                        ${person.country || ""}
+                                    </span>
+
+                                </div>
+
 
                             </div>
 
