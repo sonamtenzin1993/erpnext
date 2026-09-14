@@ -3560,13 +3560,13 @@
                 ];
 
                 values.forEach(value => {
-
                     const option = document.createElement("option");
+                    if(value!="RGoB"){
+                        option.value = value;
+                        option.textContent = value;
+                        select.appendChild(option);
+                    }
 
-                    option.value = value;
-                    option.textContent = value;
-
-                    select.appendChild(option);
                 });
             }
         });

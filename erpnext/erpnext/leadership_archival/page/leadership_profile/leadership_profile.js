@@ -1304,7 +1304,6 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
 
             let positions_html = [...professional_information]
                 .sort((a, b) => {
-
                     let dateA = a.start_term
                         ? new Date(a.start_term)
                         : new Date(0);
@@ -1322,7 +1321,7 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
                         <li>
 
                             <span class="position-name">
-                                ${row.position || ""}
+                                ${row.position || ""},${" "+row.organization || ""} 
                             </span>
 
                             <small>
@@ -1336,8 +1335,6 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
 
                 })
                 .join("");
-
-
             // =====================================================
             // GET ATTACHMENTS / GALLERY
             // =====================================================

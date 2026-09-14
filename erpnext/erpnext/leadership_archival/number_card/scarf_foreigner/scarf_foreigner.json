@@ -1,0 +1,23 @@
+{
+ "creation": "2026-09-14 17:34:13.235110",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "Scarf-Foreigner",
+ "modified": "2026-09-14 17:34:13.235110",
+ "modified_by": "Administrator",
+ "module": "Leadership Archival",
+ "name": "Scarf-Foreigner",
+ "owner": "Administrator",
+ "report_field": "count_value",
+ "report_function": "Sum",
+ "report_name": "Foreigner",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}
