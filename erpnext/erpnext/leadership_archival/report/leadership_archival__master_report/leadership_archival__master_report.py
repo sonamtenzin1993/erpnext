@@ -72,8 +72,8 @@ def get_data(filters):
 
     return frappe.db.sql(f"""
         SELECT 
-			aw.cid AS cid,
-			kpr.registry_name AS recipientName,
+            IF(k.recipient_type = 'Individual',aw.cid,"") AS cid,
+            IF(k.recipient_type = 'Institution',aw.cid,kpr.registry_name) AS recipientName,
 			kpr.dob AS dob,
 			aw.title AS title,
 			aw.location AS location,
