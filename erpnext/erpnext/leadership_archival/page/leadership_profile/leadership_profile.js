@@ -1832,8 +1832,6 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
             callback: function (response) {
                 let data =
                     response.message || [];
-
-
                 // =================================================
                 // CREATE RELATED KASHO HTML
                 // =================================================
@@ -1987,8 +1985,6 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
                             ================================== -->
 
                             <div class="profile-card">
-
-
                                 <!-- PROFILE PHOTO -->
 
                                 <div class="profile-photo-wrapper">

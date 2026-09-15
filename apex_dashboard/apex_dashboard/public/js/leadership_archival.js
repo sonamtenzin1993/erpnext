@@ -2184,6 +2184,22 @@
     const AWARD_CARDS = [
 
         /* ========================================================
+           TOTAL SCARF
+           ======================================================== */
+           {
+            card: "TOTAL SCARF",
+            report: "Award by Scarf"
+        },
+
+        /* ========================================================
+           TOTAL MEDALS
+           ======================================================== */
+           {
+            card: "TOTAL MEDAL",
+            report: "Award By Medal"
+        },
+
+        /* ========================================================
            MEDALS
            ======================================================== */
 
@@ -2205,6 +2221,10 @@
             filter_field: "title_medal",
             filter_value: "Order of Druk Gyalpo"
         },
+        {
+            card: "MEDAL-FOREIGNER",
+            report: "Foreigner Medal"
+        },
         // {
         //     card: "NOM SILVER",
         //     report: "Award By Medal",
@@ -2217,10 +2237,10 @@
         //     filter_field: "title_medal",
         //     filter_value: "NOM – Bronze"
         // },
-        {
-            card: "FOREIGNER",
-            report: "Foreigner"
-        },
+        // {
+        //     card: "FOREIGNER",
+        //     report: "Foreigner"
+        // },
         /* ========================================================
            SCARVES
            ======================================================== */
@@ -2246,8 +2266,8 @@
             filter_value: "White Scarf"
         },
         {
-            card: "International",
-            report: "Foreigner Medal"
+            card: "SCARF-FOREIGNER",
+            report: "Foreigner"
         }
 
     ];
