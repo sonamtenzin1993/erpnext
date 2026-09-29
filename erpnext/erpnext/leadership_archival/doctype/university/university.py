@@ -15,7 +15,6 @@ class University(Document):
 		from frappe.types import DF
 
 		amended_from: DF.Link | None
-		name: DF.Int | None
 		university: DF.Data | None
 		year_of_completion: DF.Date | None
 	# end: auto-generated types

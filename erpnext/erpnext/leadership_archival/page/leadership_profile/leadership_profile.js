@@ -1236,6 +1236,8 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
             // =====================================================
 
             let person = r.message;
+
+            
             // =====================================================
             // CHILD TABLE DATA
             // =====================================================
@@ -1245,6 +1247,9 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
 
             let award_recognition =
                 person.award_recognition || [];
+
+            let education_and_qualification =
+                person.education_and_qualification || [];
 
 
             // =====================================================
@@ -1299,7 +1304,57 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
 
 
             // =====================================================
-            // KEY POSITIONS
+            // Education and Qualification
+            // =====================================================
+
+            let educationAndQualification_html = [...education_and_qualification]
+                .sort((a, b) => {
+                    let dateA = a.year_of_completion
+                        ? new Date(a.year_of_completion)
+                        : new Date(0);
+
+                    let dateB = b.year_of_completion
+                        ? new Date(b.year_of_completion)
+                        : new Date(0);
+
+                    return dateA - dateB;
+
+                })
+                .map((row) => {
+
+                    // return `
+                    //     // <li>
+
+                    //     //     <span class="position-name">
+                    //     //         ${row.course || ""},${" "+row.university || ""} 
+                    //     //     </span>
+
+                    //     //     <small>
+                    //     //         ${row.year_of_completion || ""}
+                    //     //     </small>
+
+                    //     // </li>
+
+                        
+                    // `;
+
+                    return `
+                        <li>
+                            <span class="position-name">
+                                ${row.course || ""},${" "+row.university || ""},${" "+row.country || ""} 
+                            </span>
+
+                            <small>
+                                ${row.year_of_completion || ""}
+                            </small>
+
+                        </li>                        
+                    `;
+                })
+                .join("");
+
+            // =====================================================
+            // Position
             // =====================================================
 
             let positions_html = [...professional_information]
@@ -1334,7 +1389,7 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
                     `;
 
                 })
-                .join("");
+                .join("");    
             // =====================================================
             // GET ATTACHMENTS / GALLERY
             // =====================================================
@@ -1553,7 +1608,8 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
                                     positions_html,
                                     achievements_html,
                                     gallery_html,
-                                    related_kasho_html
+                                    related_kasho_html,
+                                    educationAndQualification_html
                                 );
 
                             }
@@ -1601,7 +1657,8 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
                                     positions_html,
                                     achievements_html,
                                     gallery_html,
-                                    related_kasho_html
+                                    related_kasho_html,
+                                    educationAndQualification_html
                                 );
 
                             }
@@ -1957,7 +2014,8 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
         positions_html,
         achievements_html,
         gallery_html,
-        related_kasho_html
+        related_kasho_html,
+        educationAndQualification_html
     ) {
 
         $(wrapper)
@@ -2231,73 +2289,24 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
                             <!-- =================================
                                  DOCUMENTS
                             ================================== -->
+                            <!-- =================================
+                                 KEY POSITIONS
+                            ================================== -->
 
                             <section class="profile-card">
 
                                 <div class="card-title">
-                                    Documents & Media
+                                    Key Positions Held
                                 </div>
 
 
-                                <div class="document-grid">
+                                <ul class="position-list">
 
+                                    ${educationAndQualification_html}
 
-                                    <!-- CERTIFICATE -->
-
-                                    <div class="document">
-
-                                        <div class="document-icon">
-
-                                            <i class="fa fa-file-text"></i>
-
-                                        </div>
-
-                                        <span>
-                                            Certificate
-                                        </span>
-
-                                    </div>
-
-
-                                    <!-- SERVICE RECORD -->
-
-                                    <div class="document">
-
-                                        <div class="document-icon">
-
-                                            <i class="fa fa-book"></i>
-
-                                        </div>
-
-                                        <span>
-                                            Service Record
-                                        </span>
-
-                                    </div>
-
-
-                                    <!-- REPORT -->
-
-                                    <div class="document">
-
-                                        <div class="document-icon">
-
-                                            <i class="fa fa-file"></i>
-
-                                        </div>
-
-                                        <span>
-                                            Report
-                                        </span>
-
-                                    </div>
-
-
-                                </div>
+                                </ul>
 
                             </section>
-
-
                         </main>
 
 

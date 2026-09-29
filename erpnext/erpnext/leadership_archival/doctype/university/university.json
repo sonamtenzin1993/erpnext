@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "autoincrement",
+ "autoname": "field:university",
  "creation": "2026-05-06 14:24:27.266044",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -28,7 +28,8 @@
   {
    "fieldname": "university",
    "fieldtype": "Data",
-   "label": "University"
+   "label": "University",
+   "unique": 1
   },
   {
    "fieldname": "year_of_completion",
@@ -39,11 +40,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-06 14:33:47.308055",
+ "modified": "2026-09-29 16:27:49.156206",
  "modified_by": "Administrator",
  "module": "Leadership Archival",
  "name": "University",
- "naming_rule": "Autoincrement",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
