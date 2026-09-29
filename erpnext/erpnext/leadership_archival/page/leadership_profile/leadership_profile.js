@@ -2287,16 +2287,13 @@ frappe.pages["leadership-profile"].on_page_load = function (wrapper) {
 
 
                             <!-- =================================
-                                 DOCUMENTS
-                            ================================== -->
-                            <!-- =================================
-                                 KEY POSITIONS
+                                Education and Qualification
                             ================================== -->
 
                             <section class="profile-card">
 
                                 <div class="card-title">
-                                    Key Positions Held
+                                    Education and Qualification
                                 </div>
 
 
