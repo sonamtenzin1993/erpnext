@@ -1,6 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
+ "autoname": "autoincrement",
  "creation": "2026-10-05 09:24:47.343268",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -20,6 +20,7 @@
   "amount",
   "disbursement_date",
   "payment_to",
+  "payment_interval",
   "remarks"
  ],
  "fields": [
@@ -130,15 +131,22 @@
    "fieldname": "course_stream",
    "fieldtype": "Data",
    "label": "Course/Stream"
+  },
+  {
+   "fieldname": "payment_interval",
+   "fieldtype": "Link",
+   "label": "Payment Interval",
+   "options": "Payment Interval"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-10-06 16:43:02.803253",
+ "modified": "2026-10-08 15:23:59.769419",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Soelra  Management",
+ "naming_rule": "Autoincrement",
  "owner": "Administrator",
  "permissions": [
   {

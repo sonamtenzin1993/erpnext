@@ -23,6 +23,8 @@ class SoelraManagement(Document):
 		disbursement_date: DF.Date
 		dzongkhag: DF.Data | None
 		is_college: DF.Check
+		name: DF.Int | None
+		payment_interval: DF.Link | None
 		payment_to: DF.Link
 		registration: DF.Link
 		remarks: DF.Text | None
