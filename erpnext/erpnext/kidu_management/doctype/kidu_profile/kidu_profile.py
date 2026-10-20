@@ -30,6 +30,7 @@ class KiduProfile(Document):
 		application_mode: DF.Link | None
 		batch_no: DF.Link | None
 		brief_background: DF.TextEditor
+		case_type: DF.Link | None
 		cid: DF.Data | None
 		contact_no: DF.Data | None
 		dob: DF.Date | None
@@ -49,6 +50,8 @@ class KiduProfile(Document):
 		profile_date: DF.Date
 		rc: DF.Data | None
 		registration_no: DF.Link
+		status: DF.Link | None
+		std_code: DF.Data | None
 		village: DF.Data | None
 	# end: auto-generated types
 	# begin: auto-generated types

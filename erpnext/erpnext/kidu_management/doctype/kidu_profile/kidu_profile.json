@@ -22,8 +22,10 @@
   "kidu_type",
   "is_soelra",
   "kidu_sub_type",
+  "case_type",
   "application_channel",
   "rc",
+  "std_code",
   "batch_no",
   "application",
   "appeal_reason",
@@ -34,7 +36,8 @@
   "section_break_otrr",
   "brief_background",
   "ground_for_decision",
-  "member"
+  "member",
+  "status"
  ],
  "fields": [
   {
@@ -122,6 +125,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "registration_no",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -152,6 +156,7 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "application",
    "fieldtype": "Attach",
    "label": "Application",
@@ -207,6 +212,7 @@
    "label": "RC"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "ground_for_decision",
    "fieldtype": "Text",
    "label": "Ground for Decision"
@@ -229,12 +235,30 @@
    "fieldname": "is_soelra",
    "fieldtype": "Check",
    "label": "Is Soelra"
+  },
+  {
+   "fieldname": "case_type",
+   "fieldtype": "Link",
+   "label": "Case Type",
+   "options": "Case Type"
+  },
+  {
+   "fieldname": "std_code",
+   "fieldtype": "Data",
+   "label": "Std Code"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "status",
+   "fieldtype": "Link",
+   "label": "Status",
+   "options": "Status"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-18 17:11:20.916948",
+ "modified": "2026-10-20 16:42:32.392409",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Kidu Profile",

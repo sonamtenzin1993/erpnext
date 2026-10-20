@@ -7,16 +7,24 @@ frappe.ui.form.on("Kidu Registration", {
     },
 	refresh(frm) {
         toggle_fields(frm);
-
-        if (frm.doc.kidu_type === 'Land' && !frm.doc.is_soelra) {
+        //Show the Kidu specific fields
+        //Land Kidu 
+        if (frm.doc.kidu_type === 'Land' && !frm.doc.is_soelra || frm.doc.kidu_sub_type=='Legal') {
             frm.set_df_property('kidu_sub_type', 'hidden', 0);
             frm.set_df_property('kidu_sub_type', 'reqd', 1);
         } else {
             frm.set_df_property('kidu_sub_type', 'hidden', 1);
             frm.set_df_property('kidu_sub_type', 'reqd', 0);
         }
+        //Legal Kidu
+        if (frm.doc.kidu_type === 'Legal') {
+            frm.set_df_property('case_type', 'hidden', 0);
+            frm.set_df_property('case_type', 'reqd', 1);
+        } else {
+            frm.set_df_property('case_type', 'hidden', 1);
+            frm.set_df_property('case_type', 'reqd', 0);
+        }
 	},
-
     onload(frm){
        if (frm.doc.kidu_type === 'Land') {
             frm.set_df_property('kidu_sub_type', 'hidden', 0);
@@ -24,8 +32,15 @@ frappe.ui.form.on("Kidu Registration", {
         } else {
             frm.set_df_property('kidu_sub_type', 'hidden', 1);
             frm.set_df_property('kidu_sub_type', 'reqd', 0);
-}
+        }
 
+        if (frm.doc.kidu_type === 'Legal') {
+            frm.set_df_property('case_type', 'hidden', 0);
+            frm.set_df_property('case_type', 'reqd', 1);
+        } else {
+            frm.set_df_property('case_type', 'hidden', 1);
+            frm.set_df_property('case_type', 'reqd', 0);
+        }
     },
 
     cid:function(frm){
@@ -68,8 +83,9 @@ frappe.ui.form.on("Kidu Registration", {
 
     kidu_type:function (frm){
         let selected_kidu_type = frm.doc.kidu_type;
+        console.log(selected_kidu_type)
         // frm.trigger('toggle_child_table_visibility');
-        if(selected_kidu_type=='Land'){
+        if(selected_kidu_type == 'Land' || selected_kidu_type=='Legal'){
             frappe.call({
                 method: "erpnext.kidu_management.doctype.kidu_registration.kidu_registration.get_kidu_sub_type",
                 args: {
@@ -78,7 +94,7 @@ frappe.ui.form.on("Kidu Registration", {
                 callback: function(r) {
                     frm.set_df_property('kidu_sub_type', 'hidden', 0);
                     if (r.message) {
-                    const options = r.message.map(item => item.kidu_sub_type);
+                    const options = r.message.map(item => item.kidu_sub_type_name);
                       frm.set_query('kidu_sub_type', function() {
                         return {
                           filters: {
@@ -87,17 +103,27 @@ frappe.ui.form.on("Kidu Registration", {
                         };
                       });
                     } else {
-                        frappe.msgprint("No Land found");
+                        frappe.msgprint("No data found");
                         frm.set_df_property('kidu_sub_type', 'hidden', 1);
                     }
                 }
             });
+            //Legal
+
+            if (frm.doc.kidu_type === 'Legal') {
+                frm.set_df_property('case_type', 'hidden', 0);
+                frm.set_df_property('case_type', 'reqd', 1);
+            } 
         } else{
+            frm.set_df_property('case_type', 'hidden', 1);
+            frm.set_df_property('case_type', 'reqd', 0);
+            frm.set_df_property('kidu_sub_type', 'reqd', 0);
+            frm.set_df_property('kidu_sub_type', 'hidden', 1);
             frm.set_query('kidu_sub_type', function() {
                 return {};
               });
         }   
-    },
+     },
 });
 
 frappe.ui.form.on("Member", {  // Replace with your child table DocType
@@ -210,19 +236,9 @@ frappe.ui.form.on("Member", {  // Replace with your child table DocType
     }
 });
 
-
 function toggle_fields(frm) {
     let application_mode = frm.doc.application_mode; // Assuming you have a field to determine type
 
-
-    // // 🔥 FORCE CLEAR FIRST
-
-    // frm.set_value('emergency_contact_no', '');
-    // // THEN set actual value from doc
-    // if (frm.doc.emergency_contact_no) {
-    //     frm.set_value('emergency_contact_no', frm.doc.emergency_contact_no);
-    // }
-    
     // frm.refresh_field('emergency_contact_no');
     if (application_mode === 'Individual') {
         frm.set_df_property('cid', 'hidden', 0);
@@ -247,8 +263,7 @@ function toggle_fields(frm) {
         frm.set_df_property('member', 'reqd', 0);
         frm.set_df_property('organization', 'reqd', 0);
         frm.set_df_property('contact_no', 'reqd', 1);
-    } 
-    else if (application_mode === 'Group') {
+    } else if (application_mode === 'Group') {
         frm.set_df_property('cid', 'hidden', 1);
         frm.set_df_property('full_name', 'hidden', 1);
         frm.set_df_property('dob', 'hidden', 1);
@@ -274,8 +289,7 @@ function toggle_fields(frm) {
         frm.set_df_property('member', 'reqd', 1);
         frm.set_df_property('organization', 'reqd', 0);
         frm.set_df_property('contact_no', 'reqd', 0);
-    } 
-    else if (application_mode === 'Individual and Member') {
+    } else if (application_mode === 'Individual and Member') {
         frm.set_df_property('cid', 'hidden', 0);
         frm.set_df_property('full_name', 'hidden', 0);
         frm.set_df_property('dob', 'hidden', 0);

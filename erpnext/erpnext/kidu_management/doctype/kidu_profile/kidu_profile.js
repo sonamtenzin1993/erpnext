@@ -1,12 +1,20 @@
 // Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
-    frappe.ui.form.on("Kidu Profile", {
+frappe.ui.form.on("Kidu Profile", {
     // Triggered when the form is loaded
     onload(frm) {
         // Auto-fetch if link is already selected
         if(frm.doc.kidu_registration) {
             frm.trigger('registration_no');
+        }
+
+        if(frm.doc.kidu_type) {
+            toggle_fields_on_kidu_type(frm, frm.doc.kidu_type);
+        }
+
+        if(frm.doc.application_mode) {
+            toggle_fields_on_kidu_type(frm, frm.doc.application_mode);
         }
     },
 
@@ -16,7 +24,6 @@
 
         // Fetch the linked Kidu Registration document
         frappe.db.get_doc('Kidu Registration', frm.doc.registration_no)
-
         .then(reg => {
             //Fetch citizen photo from DCRC
             frappe.call({
@@ -64,15 +71,16 @@
                     }
                 }
             });
+            // // Populate Profile fields
+            // if(reg.application_mode === 'Organization' || reg.application_mode==='Group'){
+            //     frm.set_df_property('photo', 'reqd', 0);
+            //     frm.set_df_property('photo', 'hidden', 1);
+            // }else{
+            //     frm.set_df_property('photo', 'reqd', 1);
+            //     frm.set_df_property('photo', 'hidden', 0);  
+            // }
 
-            // Populate Profile fields
             frm.set_df_property('emergency_contact_no', 'hidden', 1);
-            if(frm.doc.application_mode==='Organization' || frm.doc.application_mode==='Group'){
-                frm.set_df_property('photo', 'reqd', 0);
-                frm.set_df_property('photo', 'hidden', 1);
-            }else{
-                frm.set_df_property('photo', 'reqd', 1);
-                frm.set_df_property('photo', 'hidden', 0);            }
             frm.set_value('cid', reg.cid || '');
             frm.set_value('full_name', reg.full_name || '');
             frm.set_value('dob', reg.dob || '');
@@ -88,10 +96,60 @@
             frm.set_value('gewog', reg.gewog || '');
             frm.set_value('village', reg.village || '');
             frm.set_value('kidu_sub_type', reg.kidu_sub_type || '');
-            frm.set_value('organization', reg.organization || '');
             frm.set_value('is_soelra', reg.is_soelra || 0);
+            frm.set_value('case_type', reg.case_type || '');
+            frm.set_value('organization', reg.organization || '');
+            
+            //populate the field based on the Kidu
+            // if(reg.kidu_type=='Legal'){
+            //     frm.set_df_property('case_type', 'reqd', 1);
+            //     frm.set_df_property('case_type', 'hidden', 0);
+            //     frm.set_value('case_type', reg.case_type);
 
+            // }else{
+            //     frm.set_df_property('case_type', 'reqd', 0);
+            //     frm.set_df_property('case_type', 'hidden', 1);
+            //     frm.set_value('case_type','');
+            // }
 
+            // //populate the field based on the Kidu
+            // if(reg.organization=='Organization'){
+            //     frm.set_df_property('organization', 'reqd', 1);
+            //     frm.set_df_property('organization', 'hidden', 0);
+            //     frm.set_value('organization', reg.organization);
+            // }else{
+            //     frm.set_df_property('organization', 'reqd', 0);
+            //     frm.set_df_property('organization', 'hidden', 1);
+            //     frm.set_value('organization','');
+            // }
+
+            // //Gyalpoi Tozay
+            // if(reg.kidu_type=='Gyalpoi Tozay'){
+            //     frm.set_df_property('std_code', 'reqd', 1);
+            //     frm.set_df_property('std_code', 'hidden', 0);
+            // }else{
+            //     frm.set_df_property('std_code', 'reqd', 0);
+            //     frm.set_df_property('std_code', 'hidden', 1);
+            // }
+
+            // // Status field for Gensho Zhabtoga or Gyalpoi Tozay
+            // if(reg.kidu_type=='Gensho Zhabtog' || reg.kidu_type=='Gyalpoi Tozay'){
+            //     frm.set_df_property('status', 'reqd', 1);
+            //     frm.set_df_property('status', 'hidden', 0);
+            // }else{
+            //     frm.set_df_property('status', 'reqd', 0);
+            //     frm.set_df_property('status', 'hidden', 1);
+            // }
+            //  //Populate Land and Legal fields
+            // if(reg.kidu_type=='Land'|| reg.kidu_type=='Legal'){
+            //     frm.set_df_property('kidu_sub_type', 'reqd', 1);
+            //     frm.set_df_property('kidu_sub_type', 'hidden', 0);
+            // }else{
+            //     frm.set_df_property('kidu_sub_type', 'reqd', 0);
+            //     frm.set_df_property('kidu_sub_type', 'hidden', 1);
+            // }
+            toggle_fields_on_kidu_type(frm, reg.kidu_type);
+            toggle_fields_on_application_mode(frm, reg.application_mode)
             // Clear existing child table rows
     frm.clear_table('member'); // 'members' = your child table fieldname
 
@@ -110,27 +168,47 @@
             child.photo = member.photo || '';
         });
         }
-
         frm.refresh_fields(); // Ensure updated values appear
         });
     }
+});
 
-    });
 
+function toggle_fields_on_kidu_type(frm, kidu_type) {
+    // Land
+    // frm.set_df_property('land_size', 'hidden', kidu_type !== 'Land');
 
-function toggle_fields_on_kidu_type(frm) {
- // Logic based on Kidu Type
- if (frm.doc.kidu_type === 'Land') {
-    frm.set_df_property('land_size', 'hidden', 0);
- } 
-else if (frm.doc.kidu_type === 'Elderly') {
-    // frm.set_df_property('cid', 'hidden', 0);
-    // frm.set_df_property('gender', 'hidden', 0);
-    // frm.set_df_property('dzongkhag', 'hidden', 0);
- } 
-else if (frm.doc.kidu_type === 'Disability') {
-    // frm.set_df_property('cid', 'hidden', 0);
-    // frm.set_df_property('full_name', 'hidden', 0);
-    // frm.set_df_property('gewog', 'hidden', 0);
+    //Show and hide kidu Sub Type field
+    const show_kidu_sub_type = kidu_type === 'Land' || 
+    kidu_type === 'Legal';
+    frm.set_df_property('kidu_sub_type', 'reqd', show_kidu_sub_type ? 1 : 0);
+    frm.set_df_property('kidu_sub_type', 'hidden', show_kidu_sub_type ? 0 : 1);
+
+    // Status field for Gensho Zhabtog Gyalpoi Tozay
+    const show_status = kidu_type === 'Gensho Zhabtog' || 
+    kidu_type === 'Gyalpoi Tozay';
+    frm.set_df_property('status', 'reqd', show_status ? 1 : 0);
+    frm.set_df_property('status', 'hidden', show_status ? 0 : 1);
+
+    // Gyalpoi Tozay
+    const show_std_code = kidu_type === 'Gyalpoi Tozay';
+    frm.set_df_property('std_code', 'reqd', show_std_code ? 1 : 0);
+    frm.set_df_property('std_code', 'hidden', show_std_code ? 0 : 1);
+    
+    //Legal
+    const show_cast_type = kidu_type === 'Legal';
+    frm.set_df_property('case_type', 'reqd', show_cast_type ? 1 : 0);
+    frm.set_df_property('case_type', 'hidden', show_cast_type ? 0 : 1);
 }
+
+function toggle_fields_on_application_mode(frm, application_mode) {
+    //Application mode Organization or Group
+    const show_photo = application_mode === 'Organization' || application_mode === 'Group' ;
+    frm.set_df_property('photo', 'reqd', show_photo ? 0 : 1);
+    frm.set_df_property('photo', 'hidden', show_photo ? 1 : 0);
+
+    //Applicatio is Organization
+    const show_organization = application_mode === 'Organization';
+    frm.set_df_property('organization', 'reqd', show_photo ? 1 : 0);
+    frm.set_df_property('organization', 'hidden', show_photo ? 0 : 1);
 }

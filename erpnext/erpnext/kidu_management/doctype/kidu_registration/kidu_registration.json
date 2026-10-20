@@ -21,6 +21,7 @@
   "kidu_type",
   "is_soelra",
   "kidu_sub_type",
+  "case_type",
   "application_channel",
   "rc",
   "registration_date",
@@ -183,12 +184,18 @@
    "fieldname": "is_soelra",
    "fieldtype": "Check",
    "label": "Is Soelra"
+  },
+  {
+   "fieldname": "case_type",
+   "fieldtype": "Link",
+   "label": "Case Type",
+   "options": "Case Type"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-08-07 10:08:55.675461",
+ "modified": "2026-10-15 14:26:06.646647",
  "modified_by": "Administrator",
  "module": "Kidu Management",
  "name": "Kidu Registration",

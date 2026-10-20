@@ -22,6 +22,7 @@ class KiduRegistration(Document):
 		application: DF.Attach | None
 		application_channel: DF.Link
 		application_mode: DF.Link
+		case_type: DF.Link | None
 		cid: DF.Data | None
 		contact_no: DF.Data | None
 		dob: DF.Date | None
@@ -161,9 +162,11 @@ class KiduRegistration(Document):
 
 @frappe.whitelist()
 def get_kidu_sub_type(kidu_type):
+    
+     # Fetch all records to inspect the stored values    
     result = frappe.db.get_list('Kidu Sub Type',                           # DocType
     	filters={'kidu_type': kidu_type},     # Condition
-    	fields=['kidu_sub_type']     # Fields to fetch
+    	fields=['kidu_sub_type_name']     # Fields to fetch
     )
     return result or {}
 
