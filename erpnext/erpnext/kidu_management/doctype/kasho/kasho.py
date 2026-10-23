@@ -68,20 +68,33 @@ class Kasho(Document):
             else:
                 recipient_count = len(self.kidu_recipient or [])
                 institution_code=frappe.get_value("Dzongkhag",self.dzongkhag,"dzongkhag_code")
-                
             kasho_type_code = frappe.get_value("Kidu Type Name",self.kasho_type,"kidu_type_code")
 
             # Generate Kasho number
             kasho_no = generate_kasho_no(
                 kasho_type_code=kasho_type_code,
-                institution_code=institution_code,
                 recipient_count=recipient_count,
-                kasho_issued_date=self.issue_date
+                kasho_issued_date=self.issue_date,
+                document_type=self.document_type,
+                institution_code=institution_code
             )
-            
             self.name=kasho_no
             self.kasho_no=kasho_no
-
+        elif document_type=="DOCUMENT":
+            self.append_members_to_kidu_recipient()
+            #Count total recipients     
+            kasho_type_code = frappe.get_value("Kidu Type Name",self.kasho_type,"kidu_type_code")
+            recipient_count = len(self.kidu_recipient or [])
+            # Generate Kasho number
+            kasho_no = generate_kasho_no(
+                kasho_type_code=kasho_type_code,
+                recipient_count=recipient_count,
+                kasho_issued_date=self.issue_date,
+                document_type=self.document_type,
+                institution_code=None,
+            )
+            self.name=kasho_no
+            self.kasho_no=kasho_no
         else: 
             kasho_type = (self.kasho_type or "").strip().upper()
             if "LAND" in kasho_type:
@@ -265,7 +278,7 @@ def get_award_profile(cid):
         as_dict=True
     )
 
-def generate_kasho_no(kasho_type_code, institution_code, recipient_count,kasho_issued_date):
+def generate_kasho_no(kasho_type_code,recipient_count,kasho_issued_date,document_type,institution_code=None,):
     """
     Generate Kasho number in the format:
     [KashoType][yymmdd][Dzongkhag][Serial][RecipientCount]
@@ -283,11 +296,16 @@ def generate_kasho_no(kasho_type_code, institution_code, recipient_count,kasho_i
         "Kasho",
         filters={
             "issue_date": kasho_issued_date_converted,
-            "document_type": "Kasho"
+            "document_type": document_type
         }
     )
     next_serial = total_count_kasho_on_that_date + 1
     serial_part = f"{next_serial:03d}"
     recipient_part = f"{int(recipient_count):04d}"
+    if(document_type=='Kasho'):
+        return f"{kasho_type_code}{date_part}{institution_code}{serial_part}{recipient_part}"
+    else:
+        return f"{kasho_type_code}{date_part}{serial_part}"
+            
 
-    return f"{kasho_type_code}{date_part}{institution_code}{serial_part}{recipient_part}"
+    
